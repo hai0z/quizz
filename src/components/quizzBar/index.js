@@ -9,31 +9,51 @@ const quizQuestions = {
             question: "What is the capital city of France?",
             answers: ["Paris", "Berlin", "London", "Madrid"],
             correctAnswer: "Paris",
+            yourChoice: "",
+            id: 1,
         },
         {
             question: "What year did World War II end?",
             answers: ["1945", "1939", "1950", "1960"],
             correctAnswer: "1945",
+            yourChoice: "",
+            id: 2,
         },
         {
             question: 'Who wrote the novel "To Kill a Mockingbird?"',
             answers: ["Harper Lee", "J.K. Rowling", "Stephen King", "Ernest Hemingway"],
             correctAnswer: "Harper Lee",
+            yourChoice: "",
+            id: 3,
         },
         {
             question: "What is the largest organ in the human body?",
             answers: ["Skin", "Liver", "Heart", "Brain"],
             correctAnswer: "Skin",
+            yourChoice: "",
+            id: 4,
         },
     ],
 };
 
-function QuizzBar(props) {
+function QuizzBar(_props) {
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [listQuestions, setListQuestions] = useState(quizQuestions);
 
-    const chooseAnswer = () => {
-        alert(1);
+    const chooseAnswer = (questionId, choice) => {
+        setListQuestions((prevState) => ({
+            ...prevState,
+            questions: prevState.questions.map((q) =>
+                q.id === questionId ? { ...q, yourChoice: choice } : q
+            ),
+        }));
+    };
+
+    const finished = () => {
+        const correctAnswer = listQuestions.questions.filter(
+            (q) => q.correctAnswer === q.yourChoice
+        ).length;
+        alert("bạn đã làm đúng: " + correctAnswer + "/" + listQuestions.questions.length);
     };
     return (
         <div className="bg-white">
@@ -45,15 +65,26 @@ function QuizzBar(props) {
                         <p className="text-lg text-black">
                             {listQuestions.questions[currentQuestion - 1].question}
                         </p>
+
                         <div className="flex flex-col gap-5 mt-3">
-                            {listQuestions.questions[currentQuestion - 1].answers.map((q) => {
+                            {listQuestions.questions[currentQuestion - 1].answers.map((q, i) => {
                                 return (
-                                    <div className="flex flex-row py-3">
+                                    <div className="flex flex-row py-3" key={i}>
                                         <input
-                                            onChange={chooseAnswer}
+                                            onChange={(e) =>
+                                                chooseAnswer(
+                                                    listQuestions.questions[currentQuestion - 1].id,
+                                                    e.target.value
+                                                )
+                                            }
                                             type="radio"
                                             name="radio-10"
                                             className="radio radio-primary mr-4"
+                                            value={q}
+                                            checked={
+                                                listQuestions.questions[currentQuestion - 1]
+                                                    .yourChoice === q
+                                            }
                                         />
                                         <span className="text-black">{q}</span>
                                     </div>
@@ -66,6 +97,7 @@ function QuizzBar(props) {
                             {Array.from({ length: quizQuestions.questions.length }).map(
                                 (_, index) => (
                                     <div
+                                        key={index}
                                         onClick={() => setCurrentQuestion(index + 1)}
                                         className={`${
                                             currentQuestion === Number(index + 1)
@@ -79,7 +111,9 @@ function QuizzBar(props) {
                             )}
                         </div>
                         <div className="text-center mt-14 ">
-                            <button className="btn btn-success">Nộp bài</button>
+                            <button className="btn btn-success" onClick={finished}>
+                                Nộp bài
+                            </button>
                         </div>
                     </div>
                 </div>

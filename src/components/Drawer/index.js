@@ -10,7 +10,7 @@ function Drawer({ children }) {
                 <label htmlFor="my-drawer" className="drawer-overlay"></label>
                 <ul className="menu p-4 w-80 bg-base-100 text-base-content">
                     <li>
-                        <Link to="/test">Sidebar Item 1</Link>
+                        <Link to="/test">Start Quizz</Link>
                     </li>
                 </ul>
             </div>
