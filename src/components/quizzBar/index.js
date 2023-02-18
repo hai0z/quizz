@@ -41,9 +41,10 @@ function QuizzBar(_props) {
     };
     const finished = async () => {
         const pointPerQuestion = 10 / listQuestions.questions.length;
-        const score =
+        const score = (
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
-            pointPerQuestion;
+            pointPerQuestion
+        ).toFixed(2);
         const correctAnswer =
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length +
             "/" +
