@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import QuizzBar from "./components/quizzBar";
+import ExamResult from "./page/ViewExamResult";
 
 const router = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     {
         path: "/test",
         element: <QuizzBar />,
+    },
+    {
+        path: "/examResult",
+        element: <ExamResult />,
     },
 ]);
 
