@@ -41,7 +41,7 @@ function ExamResult() {
                                     <td>{examRs?.correctAnswer}</td>
                                     <td>{examRs?.score}</td>
                                     <td>
-                                        <Link to="/">View</Link>
+                                        <Link to="/descriptions">View</Link>
                                     </td>
                                 </tr>
                             </tbody>

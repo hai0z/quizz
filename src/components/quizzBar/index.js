@@ -42,8 +42,10 @@ function QuizzBar(_props) {
                 return rest;
             }),
         };
+        const examRef = doc(db, "exams", "user1/exam/exam1");
         const historyRef = doc(db, "histories", "user1/exam/exam1");
         await setDoc(historyRef, { ...l, score, correctAnswer });
+        await setDoc(examRef, { ...l });
 
         navigate("/examResult");
     };
