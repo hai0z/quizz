@@ -35,10 +35,27 @@ function QuizzBar(_props) {
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length +
             "/" +
             listQuestions.questions.length;
+        const l = {
+            ...listQuestions,
+            questions: listQuestions.questions.map((q) => {
+                const { flag, ...rest } = q;
+                return rest;
+            }),
+        };
         const historyRef = doc(db, "histories", "user1/exam/exam1");
-        await setDoc(historyRef, { ...listQuestions, score, correctAnswer });
+        await setDoc(historyRef, { ...l, score, correctAnswer });
 
         navigate("/examResult");
+    };
+    const toggleFlag = async (questionId) => {
+        const l = {
+            ...listQuestions,
+            questions: listQuestions.questions.map((q) =>
+                q.id === questionId ? { ...q, flag: !q.flag ?? true } : q
+            ),
+        };
+        const examRef = doc(db, "exams", "user1/exam/exam1");
+        await setDoc(examRef, l);
     };
     return (
         <div className="bg-white">
@@ -75,6 +92,29 @@ function QuizzBar(_props) {
                                     </div>
                                 );
                             })}
+                            <div className="flex flex-row">
+                                <span className="text-black mr-2 ">Phân vân</span>
+                                <svg
+                                    onClick={() =>
+                                        toggleFlag(listQuestions.questions[currentQuestion - 1].id)
+                                    }
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className={`w-6 h-6 ${
+                                        listQuestions?.questions[currentQuestion - 1].flag &&
+                                        "text-red-600"
+                                    } cursor-pointer`}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+                                    />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                     <div className="w-3/12 bg-teal-700 flex-col flex pt-5">
@@ -86,21 +126,35 @@ function QuizzBar(_props) {
                             </p>
                         </div>
                         <div className="flex flex-row justify-evenly">
-                            {Array.from({ length: listQuestions?.questions.length }).map(
-                                (_, index) => (
-                                    <div
-                                        key={index}
-                                        onClick={() => setCurrentQuestion(index + 1)}
-                                        className={`${
-                                            currentQuestion === Number(index + 1)
-                                                ? "btn btn-primary"
-                                                : "btn btn-outline"
-                                        } `}
-                                    >
-                                        Câu {index + 1}
-                                    </div>
-                                )
-                            )}
+                            {listQuestions?.questions.map((item, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => setCurrentQuestion(index + 1)}
+                                    className={`${
+                                        currentQuestion === Number(index + 1)
+                                            ? "btn btn-primary"
+                                            : "btn btn-outline"
+                                    } `}
+                                >
+                                    Câu {index + 1}{" "}
+                                    {item?.flag && (
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={1.5}
+                                            stroke="currentColor"
+                                            className="text-red-600 h-4 w-4"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+                                            />
+                                        </svg>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                         <div className="text-center mt-14 ">
                             <button className="btn btn-success" onClick={finished}>

@@ -18,7 +18,6 @@ function ExamResult() {
         };
         getResult();
     }, []);
-    console.log(examRs);
     return (
         <div className="bg-white ">
             <Navbar />
