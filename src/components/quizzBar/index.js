@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "../Drawer";
 import Navbar from "../Navbar";
-import { onSnapshot, doc, setDoc } from "firebase/firestore";
+import { onSnapshot, doc, setDoc, query, collection } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+
 function QuizzBar(_props) {
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [listQuestions, setListQuestions] = useState();
@@ -13,6 +14,18 @@ function QuizzBar(_props) {
             setListQuestions({ ...doc.data() });
         });
         return () => unsub();
+        // const q = query(collection(db, "questions"));
+        // const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        //     const questions = {
+        //         time: 15,
+        //         questions: [],
+        //     };
+        //     querySnapshot.forEach((doc) => {
+        //         questions.questions.push({ ...doc.data(), id: doc.id });
+        //     });
+        //     setListQuestions(questions);
+        // });
+        // return () => unsubscribe();
     }, []);
 
     const chooseAnswer = async (questionId, choice) => {
