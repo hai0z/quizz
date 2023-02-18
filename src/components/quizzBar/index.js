@@ -93,6 +93,13 @@ function QuizzBar(_props) {
                         </div>
                     </div>
                     <div className="w-3/12 bg-teal-700 flex-col flex pt-5">
+                        <div className="pl-4 mb-5 ">
+                            <p className="text-white">
+                                Số câu đã làm:{" "}
+                                {listQuestions.questions.filter((q) => q.yourChoice !== "").length}/{" "}
+                                {listQuestions.questions.length}
+                            </p>
+                        </div>
                         <div className="flex flex-row justify-evenly">
                             {Array.from({ length: quizQuestions.questions.length }).map(
                                 (_, index) => (
