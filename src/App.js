@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Drawer from "./components/Drawer";
 function App() {
     return (
-        <div className="bg-white">
+        <div>
             <Navbar />
             <Drawer />
         </div>

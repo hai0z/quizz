@@ -43,7 +43,7 @@ function Navbar() {
                 </Link>
             </div>
             <div className="flex-none gap-2">
-                <div className="dropdown dropdown-end">
+                <div className="dropdown dropdown-end ">
                     <label tabIndex={0} className="btn m-1 btn-ghost ">
                         <span className="mr-2">Theme</span>
                         <svg
@@ -63,35 +63,39 @@ function Navbar() {
                     </label>
                     <ul
                         tabIndex={0}
-                        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto rounded-t-box"
                     >
-                        <li onClick={() => changeTheme("light")}>
-                            <span className={`${theme === "light" && "active"}`}>Light</span>
-                        </li>
-                        <li onClick={() => changeTheme("dark")}>
-                            <span className={`${theme === "dark" && "active"}`}>Dark</span>
-                        </li>
-                        <li onClick={() => changeTheme("valentine")}>
-                            <span className={`${theme === "valentine" && "active"}`}>
-                                Valentine
-                            </span>
-                        </li>
-                        <li onClick={() => changeTheme("cyberpunk")}>
-                            <span className={`${theme === "cyberpunk" && "active"}`}>
-                                Cyberpunk
-                            </span>
-                        </li>
-                        <li onClick={() => changeTheme("lofi")}>
-                            <span className={`${theme === "lofi" && "active"}`}>Lofi</span>
-                        </li>
-                        <li onClick={() => changeTheme("synthwave")}>
-                            <span className={`${theme === "synthwave" && "active"}`}>
-                                Synthwave
-                            </span>
-                        </li>
-                        <li onClick={() => changeTheme("cupcake")}>
-                            <span className={`${theme === "cupcake" && "active"}`}>Cupcake</span>
-                        </li>
+                        <div className="grid grid-cols-1 gap-3 p-3">
+                            <li onClick={() => changeTheme("light")}>
+                                <span className={`${theme === "light" && "active"}`}>Light</span>
+                            </li>
+                            <li onClick={() => changeTheme("dark")}>
+                                <span className={`${theme === "dark" && "active"}`}>Dark</span>
+                            </li>
+                            <li onClick={() => changeTheme("valentine")}>
+                                <span className={`${theme === "valentine" && "active"}`}>
+                                    Valentine
+                                </span>
+                            </li>
+                            <li onClick={() => changeTheme("cyberpunk")}>
+                                <span className={`${theme === "cyberpunk" && "active"}`}>
+                                    Cyberpunk
+                                </span>
+                            </li>
+                            <li onClick={() => changeTheme("lofi")}>
+                                <span className={`${theme === "lofi" && "active"}`}>Lofi</span>
+                            </li>
+                            <li onClick={() => changeTheme("synthwave")}>
+                                <span className={`${theme === "synthwave" && "active"}`}>
+                                    Synthwave
+                                </span>
+                            </li>
+                            <li onClick={() => changeTheme("cupcake")}>
+                                <span className={`${theme === "cupcake" && "active"}`}>
+                                    Cupcake
+                                </span>
+                            </li>
+                        </div>
                     </ul>
                 </div>
                 <div className="dropdown dropdown-end">
