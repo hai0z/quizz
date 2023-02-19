@@ -163,10 +163,8 @@ function QuizzBar(_props) {
                                     key={index}
                                     onClick={() => setCurrentQuestion(index + 1)}
                                     className={`${
-                                        currentQuestion === Number(index + 1)
-                                            ? "btn btn-primary"
-                                            : "btn btn-outline"
-                                    } `}
+                                        currentQuestion === Number(index + 1) && "btn btn-primary"
+                                    } ${item.yourChoice ? "btn btn-primary" : "btn btn-outline"}`}
                                 >
                                     Câu {index + 1}{" "}
                                     {item?.flag && (
