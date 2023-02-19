@@ -63,7 +63,7 @@ function Navbar() {
                     </label>
                     <ul
                         tabIndex={0}
-                        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto rounded-t-box mt-4"
+                        className="dropdown-content menu p-2 shadow bg-base-100  w-52 max-h-96 overflow-y-auto rounded-t-sm mt-4"
                     >
                         <div className="grid grid-cols-1 gap-3 p-3">
                             <li onClick={() => changeTheme("light")}>
