@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+    const [theme, setTheme] = useState("light");
+
+    useEffect(() => {
+        const currentTheme = localStorage.getItem("theme");
+
+        if (currentTheme) {
+            setTheme(currentTheme);
+        }
+        const html = document.getElementById("html");
+        html.setAttribute("data-theme", currentTheme);
+    }, [theme]);
+
     const changeTheme = (themeName) => {
+        setTheme(themeName);
+        localStorage.setItem("theme", themeName);
         const html = document.getElementById("html");
         html.setAttribute("data-theme", themeName);
     };
@@ -52,22 +66,31 @@ function Navbar() {
                         className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
                     >
                         <li onClick={() => changeTheme("light")}>
-                            <span>Light</span>
+                            <span className={`${theme === "light" && "active"}`}>Light</span>
                         </li>
                         <li onClick={() => changeTheme("dark")}>
-                            <span>Dark</span>
+                            <span className={`${theme === "dark" && "active"}`}>Dark</span>
                         </li>
                         <li onClick={() => changeTheme("valentine")}>
-                            <span>Valentine</span>
+                            <span className={`${theme === "valentine" && "active"}`}>
+                                Valentine
+                            </span>
                         </li>
                         <li onClick={() => changeTheme("cyberpunk")}>
-                            <span>Cyberpunk</span>
+                            <span className={`${theme === "cyberpunk" && "active"}`}>
+                                Cyberpunk
+                            </span>
                         </li>
                         <li onClick={() => changeTheme("lofi")}>
-                            <span>Lofi</span>
+                            <span className={`${theme === "lofi" && "active"}`}>Lofi</span>
                         </li>
                         <li onClick={() => changeTheme("synthwave")}>
-                            <span>Synthwave</span>
+                            <span className={`${theme === "synthwave" && "active"}`}>
+                                Synthwave
+                            </span>
+                        </li>
+                        <li onClick={() => changeTheme("cupcake")}>
+                            <span className={`${theme === "cupcake" && "active"}`}>Cupcake</span>
                         </li>
                     </ul>
                 </div>
