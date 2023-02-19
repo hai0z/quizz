@@ -21,7 +21,7 @@ function Navbar() {
         html.setAttribute("data-theme", themeName);
     };
     return (
-        <div className="navbar bg-base-300">
+        <div className="navbar bg-base-300 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full">
             <div className="flex-1">
                 <label htmlFor="my-drawer" className="drawer-button">
                     <svg
@@ -63,7 +63,7 @@ function Navbar() {
                     </label>
                     <ul
                         tabIndex={0}
-                        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto rounded-t-box"
+                        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 max-h-96 overflow-y-auto rounded-t-box mt-4"
                     >
                         <div className="grid grid-cols-1 gap-3 p-3">
                             <li onClick={() => changeTheme("light")}>
