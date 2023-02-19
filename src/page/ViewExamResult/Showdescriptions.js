@@ -132,9 +132,7 @@ function ShowDescription(_props) {
                             ))}
                         </div>
                         <div className="text-center mt-5 ">
-                            <Link to="/examResult" className="text-white hover:text-yellow-400 ">
-                                Go back
-                            </Link>
+                            <Link to="/examResult">Go back</Link>
                         </div>
                     </div>
                 </div>

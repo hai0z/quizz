@@ -21,7 +21,7 @@ function Navbar() {
                     </svg>
                 </label>
                 <Link className="btn btn-ghost normal-case text-xl" to="/">
-                    daisyUI
+                    Quizz
                 </Link>
             </div>
             <div className="flex-none gap-2">
