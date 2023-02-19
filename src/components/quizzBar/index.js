@@ -85,7 +85,7 @@ function QuizzBar(_props) {
             <Navbar />
             <Drawer>
                 <div className="flex">
-                    <div className="w-9/12 min-h-screen p-10 bg-white">
+                    <div className="w-9/12 min-h-screen p-10">
                         <p className="">Câu {currentQuestion}:</p>
                         <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1].question}
@@ -140,7 +140,7 @@ function QuizzBar(_props) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-3/12 flex-col flex pt-5">
+                    <div className="w-3/12 flex-col flex pt-5 bg-base-200">
                         <div className="pl-4 mb-5 ">
                             <p>
                                 Số câu đã làm:{" "}
@@ -157,7 +157,7 @@ function QuizzBar(_props) {
                                 <option>Gắn cờ</option>
                             </select>
                         </div>
-                        <div className="flex flex-row justify-evenly">
+                        <div className="flex flex-row gap-2 flex-wrap justify-center">
                             {listQuestions?.questions.map((item, index) => (
                                 <div
                                     key={index}

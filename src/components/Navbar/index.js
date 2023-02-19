@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+    const changeTheme = (themeName) => {
+        const html = document.getElementById("html");
+        html.setAttribute("data-theme", themeName);
+    };
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-300">
             <div className="flex-1">
                 <label htmlFor="my-drawer" className="drawer-button">
                     <svg
@@ -25,8 +29,47 @@ function Navbar() {
                 </Link>
             </div>
             <div className="flex-none gap-2">
-                <div className="form-control">
-                    <input type="text" placeholder="Search" className="input input-bordered" />
+                <div className="dropdown dropdown-end">
+                    <label tabIndex={0} className="btn m-1 btn-ghost ">
+                        <span className="mr-2">Theme</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                            />
+                        </svg>
+                    </label>
+                    <ul
+                        tabIndex={0}
+                        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                    >
+                        <li onClick={() => changeTheme("light")}>
+                            <span>Light</span>
+                        </li>
+                        <li onClick={() => changeTheme("dark")}>
+                            <span>Dark</span>
+                        </li>
+                        <li onClick={() => changeTheme("valentine")}>
+                            <span>Valentine</span>
+                        </li>
+                        <li onClick={() => changeTheme("cyberpunk")}>
+                            <span>Cyberpunk</span>
+                        </li>
+                        <li onClick={() => changeTheme("lofi")}>
+                            <span>Lofi</span>
+                        </li>
+                        <li onClick={() => changeTheme("synthwave")}>
+                            <span>Synthwave</span>
+                        </li>
+                    </ul>
                 </div>
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">

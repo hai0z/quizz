@@ -20,7 +20,7 @@ function ShowDescription(_props) {
             <Navbar />
             <Drawer>
                 <div className="flex">
-                    <div className="w-9/12 min-h-screen bg-white p-10">
+                    <div className="w-9/12 min-h-screen p-10">
                         <p className="">Câu {currentQuestion}:</p>
                         <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1].question}
