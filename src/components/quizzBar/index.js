@@ -56,10 +56,17 @@ function QuizzBar(_props) {
                 return rest;
             }),
         };
+        const l1 = {
+            ...listQuestions,
+            questions: listQuestions.questions.map((q) => {
+                const { flag, yourChoice, ...rest } = q;
+                return rest;
+            }),
+        };
         const examRef = doc(db, "exams", "user1/exam/exam1");
         const historyRef = doc(db, "histories", "user1/exam/exam1");
         await setDoc(historyRef, { ...l, score, correctAnswer });
-        await setDoc(examRef, { ...l });
+        await setDoc(examRef, { ...l1 });
 
         navigate("/examResult");
     };
@@ -74,13 +81,13 @@ function QuizzBar(_props) {
         await setDoc(examRef, l);
     };
     return (
-        <div className="bg-white">
+        <div>
             <Navbar />
             <Drawer>
                 <div className="flex">
-                    <div className="w-9/12 min-h-screen bg-white p-10">
-                        <p className="text-black">Câu {currentQuestion}:</p>
-                        <p className="text-lg text-black">
+                    <div className="w-9/12 min-h-screen p-10 bg-white">
+                        <p className="">Câu {currentQuestion}:</p>
+                        <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1].question}
                         </p>
 
@@ -104,12 +111,12 @@ function QuizzBar(_props) {
                                                     .yourChoice === q
                                             }
                                         />
-                                        <span className="text-black">{q}</span>
+                                        <span className="">{q}</span>
                                     </div>
                                 );
                             })}
                             <div className="flex flex-row">
-                                <span className="text-black mr-2 ">Phân vân</span>
+                                <span className=" mr-2 ">Phân vân</span>
                                 <svg
                                     onClick={() =>
                                         toggleFlag(listQuestions.questions[currentQuestion - 1].id)
@@ -133,13 +140,22 @@ function QuizzBar(_props) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-3/12 bg-teal-700 flex-col flex pt-5">
+                    <div className="w-3/12 flex-col flex pt-5">
                         <div className="pl-4 mb-5 ">
-                            <p className="text-white">
+                            <p>
                                 Số câu đã làm:{" "}
-                                {listQuestions?.questions.filter((q) => q.yourChoice !== "").length}
-                                / {listQuestions?.questions.length}
+                                {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
+                                {listQuestions?.questions.length}
                             </p>
+                        </div>
+                        <div className="px-2 py-2">
+                            <span className="ml-2">Lọc</span>
+                            <select className="select select-bordered w-full max-w-xs select-sm ml-2">
+                                <option selected>Tất cả</option>
+                                <option>Đã làm</option>
+                                <option>Chưa làm</option>
+                                <option>Gắn cờ</option>
+                            </select>
                         </div>
                         <div className="flex flex-row justify-evenly">
                             {listQuestions?.questions.map((item, index) => (
@@ -173,7 +189,7 @@ function QuizzBar(_props) {
                             ))}
                         </div>
                         <div className="text-center mt-14 ">
-                            <button className="btn btn-success" onClick={finished}>
+                            <button className="btn" onClick={finished}>
                                 Nộp bài
                             </button>
                         </div>

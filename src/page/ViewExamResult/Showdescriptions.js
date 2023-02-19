@@ -16,13 +16,13 @@ function ShowDescription(_props) {
     }, []);
 
     return (
-        <div className="bg-white">
+        <div>
             <Navbar />
             <Drawer>
                 <div className="flex">
                     <div className="w-9/12 min-h-screen bg-white p-10">
-                        <p className="text-black">Câu {currentQuestion}:</p>
-                        <p className="text-lg text-black">
+                        <p className="">Câu {currentQuestion}:</p>
+                        <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1].question}
                         </p>
 
@@ -41,7 +41,7 @@ function ShowDescription(_props) {
                                             }
                                         />
                                         <div className="flex flex-row">
-                                            <span className="text-black"> {q}</span>
+                                            <span className=""> {q}</span>
                                             {listQuestions.questions[currentQuestion - 1]
                                                 .yourChoice === q &&
                                                 q ===
@@ -82,18 +82,38 @@ function ShowDescription(_props) {
                                                         />
                                                     </svg>
                                                 )}
+                                            {listQuestions.questions[currentQuestion - 1]
+                                                .yourChoice === q &&
+                                                q !==
+                                                    listQuestions?.questions[currentQuestion - 1]
+                                                        .correctAnswer && (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        strokeWidth={1.5}
+                                                        stroke="currentColor"
+                                                        className="w-6 h-6 ml-10 text-red-500"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                        />
+                                                    </svg>
+                                                )}
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
                     </div>
-                    <div className="w-3/12 bg-teal-700 flex-col flex pt-5">
+                    <div className="w-3/12 flex-col flex pt-5">
                         <div className="pl-4 mb-5 ">
-                            <p className="text-white">
+                            <p>
                                 Số câu đã làm:{" "}
-                                {listQuestions?.questions.filter((q) => q.yourChoice !== "").length}
-                                / {listQuestions?.questions.length}
+                                {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
+                                {listQuestions?.questions.length}
                             </p>
                         </div>
                         <div className="flex flex-row justify-evenly">

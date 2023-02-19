@@ -31,7 +31,10 @@ function Navbar() {
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                            <img
+                                src="https://symbols.vn/wp-content/uploads/2021/11/Hinh-nen-Anime-cute.jpg"
+                                alt="heheh"
+                            />
                         </div>
                     </label>
                     <ul
@@ -39,16 +42,16 @@ function Navbar() {
                         className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
                     >
                         <li>
-                            <a className="justify-between">
+                            <Link className="justify-between">
                                 Profile
                                 <span className="badge">New</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a>Settings</a>
+                            <Link>Settings</Link>
                         </li>
                         <li>
-                            <a>Logout</a>
+                            <Link>Logout</Link>
                         </li>
                     </ul>
                 </div>
