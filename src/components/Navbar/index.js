@@ -10,9 +10,9 @@ function Navbar() {
     const { handleLogout } = useAuthContext();
     const user = useSelector((state) => state.authSlice.user);
     return (
-        <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
+        <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-md transition-all duration-150">
             <div className="flex-1">
-                <label htmlFor="my-drawer" className="drawer-button lg:hidden">
+                <label htmlFor="my-drawer" className="lg:hidden p-4 btn btn-ghost">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -27,7 +27,10 @@ function Navbar() {
                         ></path>
                     </svg>
                 </label>
-                <Link className="btn btn-ghost normal-case text-xl lg:hidden" to="/">
+                <Link
+                    className="btn btn-ghost normal-case text-xl lg:-translate-x-96 transition-all duration-1000 translate-x-0 text-primary font-mono"
+                    to="/"
+                >
                     Quizz
                 </Link>
             </div>
@@ -66,9 +69,9 @@ function Navbar() {
                                     Valentine
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("cyberpunk")}>
-                                <span className={`${theme === "cyberpunk" && "active"}`}>
-                                    Cyberpunk
+                            <li onClick={() => handleChangeTheme("lemonade")}>
+                                <span className={`${theme === "lemonade" && "active"}`}>
+                                    Lemonade
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("lofi")}>
@@ -82,6 +85,11 @@ function Navbar() {
                             <li onClick={() => handleChangeTheme("cupcake")}>
                                 <span className={`${theme === "cupcake" && "active"}`}>
                                     Cupcake
+                                </span>
+                            </li>
+                            <li onClick={() => handleChangeTheme("bumblebee")}>
+                                <span className={`${theme === "bumblebee" && "active"}`}>
+                                    Bumblebee
                                 </span>
                             </li>
                         </div>

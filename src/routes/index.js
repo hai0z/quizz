@@ -6,8 +6,18 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthProvider from "../context/AuthProvider";
 import Login from "../page/login";
 import App from "../App";
+import AdminPage from "../page/admin";
+import AddQuestion from "../page/AddQuestion";
+import RandomExam from "../page/RandomExam";
 
 const AuthLayOut = () => {
+    return (
+        <AuthProvider>
+            <Outlet />
+        </AuthProvider>
+    );
+};
+const AdminLayout = () => {
     return (
         <AuthProvider>
             <Outlet />
@@ -28,7 +38,7 @@ export const router = createBrowserRouter([
                 children: [
                     { path: "/", element: <App /> },
                     {
-                        path: "/test",
+                        path: "/test/:id",
                         element: <QuizzBar />,
                     },
                     { path: "/examResult", element: <ExamResult /> },
@@ -36,5 +46,17 @@ export const router = createBrowserRouter([
                 ],
             },
         ],
+    },
+    {
+        element: <AdminLayout />,
+        children: [{ path: "/admin", element: <AdminPage /> }],
+    },
+    {
+        element: <AdminLayout />,
+        children: [{ path: "/admin/add-question", element: <AddQuestion /> }],
+    },
+    {
+        element: <AdminLayout />,
+        children: [{ path: "/admin/make-exam", element: <RandomExam /> }],
     },
 ]);

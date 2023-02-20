@@ -1,31 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "../Drawer";
-import { onSnapshot, doc, setDoc, query, collection } from "firebase/firestore";
+import { onSnapshot, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function QuizzBar(_props) {
+    const { id } = useParams();
+    console.log(id);
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [listQuestions, setListQuestions] = useState();
     const navigate = useNavigate();
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "exams", "user1/exam/exam1"), (doc) => {
-            setListQuestions({ ...doc.data() });
+        const unsub = onSnapshot(doc(db, "exams", id), (doc) => {
+            setListQuestions({ ...doc.data(), id: doc.id });
         });
         return () => unsub();
-        // const q = query(collection(db, "questions"))
-        // const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        //     const questions = {
-        //         time: 15,
-        //         questions: [],
-        //     }
-        //     querySnapshot.forEach((doc) => {
-        //         questions.questions.push({ ...doc.data(), id: doc.id })
-        //     })
-        //     setListQuestions(questions)
-        // })
-        // return () => unsubscribe()
-    }, []);
+    }, [id]);
 
     const chooseAnswer = async (questionId, choice) => {
         const l = {
@@ -35,7 +25,7 @@ function QuizzBar(_props) {
             ),
         };
 
-        const examRef = doc(db, "exams", "user1/exam/exam1");
+        const examRef = doc(db, "histories", "user1/exam/exam1");
         await setDoc(examRef, l);
     };
     const finished = async () => {
@@ -55,17 +45,9 @@ function QuizzBar(_props) {
                 return rest;
             }),
         };
-        const l1 = {
-            ...listQuestions,
-            questions: listQuestions.questions.map((q) => {
-                const { flag, yourChoice, ...rest } = q;
-                return rest;
-            }),
-        };
-        const examRef = doc(db, "exams", "user1/exam/exam1");
+
         const historyRef = doc(db, "histories", "user1/exam/exam1");
         await setDoc(historyRef, { ...l, score, correctAnswer });
-        await setDoc(examRef, { ...l1 });
 
         navigate("/examResult");
     };
@@ -76,7 +58,7 @@ function QuizzBar(_props) {
                 q.id === questionId ? { ...q, flag: !q.flag ?? true } : q
             ),
         };
-        const examRef = doc(db, "exams", "user1/exam/exam1");
+        const examRef = doc(db, "histories", "user1/exam/exam1");
         await setDoc(examRef, l);
     };
 

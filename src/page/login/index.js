@@ -12,10 +12,10 @@ function Login() {
         return;
     }
     return (
-        <div className="min-h-screen w-full flex justify-center items-center ">
+        <div className="min-h-screen w-full flex justify-center items-center bg-base-100">
             <div className="text-center">
-                <h3 className="font-serif text-3xl pb-10">Quizzzzz</h3>
-                <button className="btn btn-primary" onClick={handleLogin}>
+                <h3 className="font-mono text-4xl pb-10 text-primary">Quizzzzz</h3>
+                <button className="btn btn-outline btn-primary" onClick={handleLogin}>
                     Login with google
                 </button>
             </div>

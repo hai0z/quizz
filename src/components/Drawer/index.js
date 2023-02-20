@@ -15,10 +15,16 @@ function Drawer({ children }) {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer" className="drawer-overlay"></label>
-                    <div className="bg-base-200 w-80">
+                    <div className="bg-base-200 w-80 overflow-x-hidden">
                         <div className="hidden lg:flex h-16 p-4 items-center">
                             <Link to="/" className="btn btn-ghost">
-                                Quizz App
+                                <span className="text-primary font-bold text-2xl capitalize font-mono ">
+                                    Quizz{" "}
+                                    <span className="text-4xl text-base-content font-serif">
+                                        {" "}
+                                        App
+                                    </span>
+                                </span>
                             </Link>
                         </div>
                         <ul className="menu menu-compact p-4 bg-base-200 text-base-content sticky">

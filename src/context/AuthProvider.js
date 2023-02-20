@@ -43,6 +43,7 @@ const AuthProvider = ({ children }) => {
     const handleLogout = async () => {
         try {
             await signOut(auth);
+            navigate("/login");
         } catch (error) {
             throw error;
         }
