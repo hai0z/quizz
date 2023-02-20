@@ -6,16 +6,21 @@ const initialState = {
         uid: null,
         displayName: null,
         photoURL: null,
+        email: null,
     },
 };
 const authSlice = createSlice({
-    name: "auth",
+    name: "authSlice",
     initialState,
     reducers: {
-        googleLogin: (state, action) => {},
-        logOut: (state, action) => {},
+        setAuth: (state, action) => {
+            state.auth = action.payload;
+        },
+        setUser: (state, action) => {
+            state.user = action.payload;
+        },
     },
 });
 
-export const { googleLogin, logOut } = authSlice.actions;
+export const { setAuth, setUser } = authSlice.actions;
 export default authSlice.reducer;

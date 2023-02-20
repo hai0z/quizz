@@ -1,29 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthProvider";
+import { useAppContext } from "../../context/AppProvider";
 
 function Navbar() {
-    const [theme, setTheme] = useState("light");
-
-    useEffect(() => {
-        const currentTheme = localStorage.getItem("theme");
-
-        if (currentTheme) {
-            setTheme(currentTheme);
-        }
-        const html = document.getElementById("html");
-        html.setAttribute("data-theme", currentTheme);
-    }, [theme]);
-
-    const changeTheme = (themeName) => {
-        setTheme(themeName);
-        localStorage.setItem("theme", themeName);
-        const html = document.getElementById("html");
-        html.setAttribute("data-theme", themeName);
-    };
+    const theme = useSelector((state) => state.themeSlice.theme);
+    const { handleChangeTheme } = useAppContext();
+    const { handleLogout } = useAuthContext();
+    const user = useSelector((state) => state.authSlice.user);
     return (
-        <div className="navbar bg-base-300 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full">
+        <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full">
             <div className="flex-1">
-                <label htmlFor="my-drawer" className="drawer-button">
+                <label htmlFor="my-drawer" className="drawer-button lg:hidden">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -66,31 +55,31 @@ function Navbar() {
                         className="dropdown-content menu p-2 shadow bg-base-100  w-52 max-h-96 overflow-y-auto rounded-t-sm mt-4"
                     >
                         <div className="grid grid-cols-1 gap-3 p-3">
-                            <li onClick={() => changeTheme("light")}>
+                            <li onClick={() => handleChangeTheme("light")}>
                                 <span className={`${theme === "light" && "active"}`}>Light</span>
                             </li>
-                            <li onClick={() => changeTheme("dark")}>
+                            <li onClick={() => handleChangeTheme("dark")}>
                                 <span className={`${theme === "dark" && "active"}`}>Dark</span>
                             </li>
-                            <li onClick={() => changeTheme("valentine")}>
+                            <li onClick={() => handleChangeTheme("valentine")}>
                                 <span className={`${theme === "valentine" && "active"}`}>
                                     Valentine
                                 </span>
                             </li>
-                            <li onClick={() => changeTheme("cyberpunk")}>
+                            <li onClick={() => handleChangeTheme("cyberpunk")}>
                                 <span className={`${theme === "cyberpunk" && "active"}`}>
                                     Cyberpunk
                                 </span>
                             </li>
-                            <li onClick={() => changeTheme("lofi")}>
+                            <li onClick={() => handleChangeTheme("lofi")}>
                                 <span className={`${theme === "lofi" && "active"}`}>Lofi</span>
                             </li>
-                            <li onClick={() => changeTheme("synthwave")}>
+                            <li onClick={() => handleChangeTheme("synthwave")}>
                                 <span className={`${theme === "synthwave" && "active"}`}>
                                     Synthwave
                                 </span>
                             </li>
-                            <li onClick={() => changeTheme("cupcake")}>
+                            <li onClick={() => handleChangeTheme("cupcake")}>
                                 <span className={`${theme === "cupcake" && "active"}`}>
                                     Cupcake
                                 </span>
@@ -101,10 +90,7 @@ function Navbar() {
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img
-                                src="https://symbols.vn/wp-content/uploads/2021/11/Hinh-nen-Anime-cute.jpg"
-                                alt="heheh"
-                            />
+                            <img src={user.photoURL} alt="heheh" />
                         </div>
                     </label>
                     <ul
@@ -121,7 +107,7 @@ function Navbar() {
                             <Link>Settings</Link>
                         </li>
                         <li>
-                            <Link>Logout</Link>
+                            <Link onClick={handleLogout}>Logout</Link>
                         </li>
                     </ul>
                 </div>

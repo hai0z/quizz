@@ -1,7 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Drawer from "../../components/Drawer";
-import Navbar from "../../components/Navbar";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 function ExamResult() {
@@ -19,8 +18,7 @@ function ExamResult() {
         getResult();
     }, []);
     return (
-        <div className="bg-white ">
-            <Navbar />
+        <div>
             <Drawer>
                 <div className="flex justify-center items-center mt-20">
                     <div className="overflow-x-auto">

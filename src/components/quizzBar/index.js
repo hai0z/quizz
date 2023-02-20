@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "../Drawer";
-import Navbar from "../Navbar";
 import { onSnapshot, doc, setDoc, query, collection } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
@@ -14,18 +13,18 @@ function QuizzBar(_props) {
             setListQuestions({ ...doc.data() });
         });
         return () => unsub();
-        // const q = query(collection(db, "questions"));
+        // const q = query(collection(db, "questions"))
         // const unsubscribe = onSnapshot(q, (querySnapshot) => {
         //     const questions = {
         //         time: 15,
         //         questions: [],
-        //     };
+        //     }
         //     querySnapshot.forEach((doc) => {
-        //         questions.questions.push({ ...doc.data(), id: doc.id });
-        //     });
-        //     setListQuestions(questions);
-        // });
-        // return () => unsubscribe();
+        //         questions.questions.push({ ...doc.data(), id: doc.id })
+        //     })
+        //     setListQuestions(questions)
+        // })
+        // return () => unsubscribe()
     }, []);
 
     const chooseAnswer = async (questionId, choice) => {
@@ -80,27 +79,13 @@ function QuizzBar(_props) {
         const examRef = doc(db, "exams", "user1/exam/exam1");
         await setDoc(examRef, l);
     };
-    let [counter, setCounter] = useState(10);
-    useEffect(() => {
-        console.log(1);
-        const countdown = setInterval(() => {
-            if (counter > 0) {
-                setCounter(counter - 1);
-            }
-            document.getElementById("cd").style.setProperty("--value", counter);
-        }, 1000);
-        return () => clearInterval(countdown);
-    }, [counter]);
+
     return (
         <div>
-            <Navbar />
             <Drawer>
                 <div className="flex">
-                    <span className="countdown">
-                        <span id="cd" style={{ "--value": 10 }}></span>
-                    </span>
-                    <div className="w-9/12 min-h-screen p-10">
-                        <p className="">Câu {currentQuestion}:</p>
+                    <div className="w-9/12 p-10">
+                        <p>Câu {currentQuestion}:</p>
                         <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1].question}
                         </p>
@@ -154,7 +139,7 @@ function QuizzBar(_props) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-3/12 flex-col flex pt-5 bg-base-200">
+                    <div className="w-3/12 flex-col flex pt-5 bg-base-200 min-h-screen">
                         <div className="pl-4 mb-5 ">
                             <p>
                                 Số câu đã làm:{" "}

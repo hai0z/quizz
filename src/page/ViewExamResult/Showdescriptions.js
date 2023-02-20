@@ -17,7 +17,6 @@ function ShowDescription(_props) {
 
     return (
         <div>
-            <Navbar />
             <Drawer>
                 <div className="flex">
                     <div className="w-9/12 min-h-screen p-10">
@@ -108,7 +107,7 @@ function ShowDescription(_props) {
                             })}
                         </div>
                     </div>
-                    <div className="w-3/12 flex-col flex pt-5">
+                    <div className="w-3/12 flex-col flex pt-5 bg-base-200">
                         <div className="pl-4 mb-5 ">
                             <p>
                                 Số câu đã làm:{" "}
@@ -116,7 +115,7 @@ function ShowDescription(_props) {
                                 {listQuestions?.questions.length}
                             </p>
                         </div>
-                        <div className="flex flex-row justify-evenly">
+                        <div className="flex flex-row justify-evenly flex-wrap ">
                             {listQuestions?.questions.map((_, index) => (
                                 <div
                                     key={index}
