@@ -10,7 +10,7 @@ function Navbar() {
     const { handleLogout } = useAuthContext();
     const user = useSelector((state) => state.authSlice.user);
     return (
-        <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full">
+        <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
             <div className="flex-1">
                 <label htmlFor="my-drawer" className="drawer-button lg:hidden">
                     <svg
@@ -27,7 +27,7 @@ function Navbar() {
                         ></path>
                     </svg>
                 </label>
-                <Link className="btn btn-ghost normal-case text-xl" to="/">
+                <Link className="btn btn-ghost normal-case text-xl lg:hidden" to="/">
                     Quizz
                 </Link>
             </div>

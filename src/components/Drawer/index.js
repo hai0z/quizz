@@ -15,16 +15,23 @@ function Drawer({ children }) {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer" className="drawer-overlay"></label>
-                    <ul className="menu p-4 w-80 bg-base-200 text-base-content sticky">
-                        <li>
-                            <Link
-                                to="/test"
-                                className={`${location.pathname === "/test" && "active"} `}
-                            >
-                                Start Quizz
+                    <div className="bg-base-200 w-80">
+                        <div className="hidden lg:flex h-16 p-4 items-center">
+                            <Link to="/" className="btn btn-ghost">
+                                Quizz App
                             </Link>
-                        </li>
-                    </ul>
+                        </div>
+                        <ul className="menu menu-compact p-4 bg-base-200 text-base-content sticky">
+                            <li>
+                                <Link
+                                    to="/test"
+                                    className={`${location.pathname === "/test" && "active"} `}
+                                >
+                                    Start Quizz
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </AuthProvider>

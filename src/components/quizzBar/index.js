@@ -83,7 +83,7 @@ function QuizzBar(_props) {
     return (
         <div>
             <Drawer>
-                <div className="flex">
+                <div className="flex min-h-screen">
                     <div className="w-9/12 p-10">
                         <p>Câu {currentQuestion}:</p>
                         <p className="text-lg ">
@@ -139,7 +139,7 @@ function QuizzBar(_props) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-3/12 flex-col flex pt-5 bg-base-200 min-h-screen">
+                    <div className="w-3/12 flex-col flex pt-5 shadow-md">
                         <div className="pl-4 mb-5 ">
                             <p>
                                 Số câu đã làm:{" "}
