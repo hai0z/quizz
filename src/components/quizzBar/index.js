@@ -80,11 +80,25 @@ function QuizzBar(_props) {
         const examRef = doc(db, "exams", "user1/exam/exam1");
         await setDoc(examRef, l);
     };
+    let [counter, setCounter] = useState(10);
+    useEffect(() => {
+        console.log(1);
+        const countdown = setInterval(() => {
+            if (counter > 0) {
+                setCounter(counter - 1);
+            }
+            document.getElementById("cd").style.setProperty("--value", counter);
+        }, 1000);
+        return () => clearInterval(countdown);
+    }, [counter]);
     return (
         <div>
             <Navbar />
             <Drawer>
                 <div className="flex">
+                    <span className="countdown">
+                        <span id="cd" style={{ "--value": 10 }}></span>
+                    </span>
                     <div className="w-9/12 min-h-screen p-10">
                         <p className="">Câu {currentQuestion}:</p>
                         <p className="text-lg ">
