@@ -2,12 +2,17 @@ import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Drawer from "../../components/Drawer";
 import { db } from "../../firebase";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 function ExamResult() {
     const [examRs, setExamRs] = useState();
+    const user = useSelector((state) => state.authSlice.user);
+    const { id } = useParams();
+
     useEffect(() => {
         const getResult = async () => {
-            const examRef = doc(db, "histories", "user1/exam/exam1");
+            const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
             const docSnap = await getDoc(examRef);
             if (docSnap.exists()) {
                 setExamRs(docSnap.data());
@@ -16,7 +21,7 @@ function ExamResult() {
             }
         };
         getResult();
-    }, []);
+    }, [id, user.uid]);
     return (
         <div>
             <Drawer>
@@ -39,7 +44,7 @@ function ExamResult() {
                                     <td>{examRs?.correctAnswer}</td>
                                     <td>{examRs?.score}</td>
                                     <td>
-                                        <Link to="/descriptions">View</Link>
+                                        <Link to={`/descriptions/${id}`}>View</Link>
                                     </td>
                                 </tr>
                             </tbody>

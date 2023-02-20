@@ -6,8 +6,8 @@ function AdminPage() {
     return (
         <div>
             <Navbar />
-            <div className="container p-8 flex flex-row gap-4 flex-wrap">
-                <div className="card w-96 bg-base-100 shadow-xl">
+            <div className="container p-8 flex flex-row gap-4 flex-wrap justify-center lg:justify-start">
+                <div className="card w-96 bg-base-200 shadow-xl">
                     <div className="card-body">
                         <h2 className="card-title">Thêm câu hỏi</h2>
 
@@ -18,7 +18,7 @@ function AdminPage() {
                         </div>
                     </div>
                 </div>
-                <div className="card w-96 bg-base-100 shadow-xl">
+                <div className="card w-96 bg-base-200 shadow-xl">
                     <div className="card-body">
                         <h2 className="card-title">Tạo đề thi ngẫu nhiên</h2>
 
@@ -29,7 +29,7 @@ function AdminPage() {
                         </div>
                     </div>
                 </div>
-                <div className="card w-96 bg-base-100 shadow-xl">
+                <div className="card w-96 bg-base-200 shadow-xl">
                     <div className="card-body">
                         <h2 className="card-title">Thêm câu hỏi</h2>
 
@@ -38,7 +38,7 @@ function AdminPage() {
                         </div>
                     </div>
                 </div>
-                <div className="card w-96 bg-base-100 shadow-xl">
+                <div className="card w-96 bg-base-200 shadow-xl">
                     <div className="card-body">
                         <h2 className="card-title">Thêm câu hỏi</h2>
 

@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, setDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { db } from "../../firebase";
@@ -14,7 +14,7 @@ function RandomExam() {
             const arr = [];
             const querySnapshot = await getDocs(collection(db, "questions"));
             querySnapshot.forEach((doc) => {
-                arr.push(doc.data());
+                arr.push({ ...doc.data(), id: doc.id });
             });
             await addDoc(examRef, {
                 time,

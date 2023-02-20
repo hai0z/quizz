@@ -3,6 +3,7 @@ import Drawer from "../Drawer";
 import { onSnapshot, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function QuizzBar(_props) {
     const { id } = useParams();
@@ -10,12 +11,14 @@ function QuizzBar(_props) {
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [listQuestions, setListQuestions] = useState();
     const navigate = useNavigate();
+    const user = useSelector((state) => state.authSlice.user);
+
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "exams", id), (doc) => {
+        const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
             setListQuestions({ ...doc.data(), id: doc.id });
         });
         return () => unsub();
-    }, [id]);
+    }, [id, user.uid]);
 
     const chooseAnswer = async (questionId, choice) => {
         const l = {
@@ -25,7 +28,7 @@ function QuizzBar(_props) {
             ),
         };
 
-        const examRef = doc(db, "histories", "user1/exam/exam1");
+        const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(examRef, l);
     };
     const finished = async () => {
@@ -46,10 +49,10 @@ function QuizzBar(_props) {
             }),
         };
 
-        const historyRef = doc(db, "histories", "user1/exam/exam1");
+        const historyRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(historyRef, { ...l, score, correctAnswer });
 
-        navigate("/examResult");
+        navigate("/examResult/" + id);
     };
     const toggleFlag = async (questionId) => {
         const l = {
@@ -58,7 +61,7 @@ function QuizzBar(_props) {
                 q.id === questionId ? { ...q, flag: !q.flag ?? true } : q
             ),
         };
-        const examRef = doc(db, "histories", "user1/exam/exam1");
+        const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(examRef, l);
     };
 

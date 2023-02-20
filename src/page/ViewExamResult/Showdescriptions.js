@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "../../components/Drawer";
-import Navbar from "../../components/Navbar";
 import { onSnapshot, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 function ShowDescription(_props) {
     const [currentQuestion, setCurrentQuestion] = useState(1);
+
     const [listQuestions, setListQuestions] = useState();
 
+    const user = useSelector((state) => state.authSlice.user);
+
+    const { id } = useParams();
+
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "histories", "user1/exam/exam1"), (doc) => {
+        const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
             setListQuestions({ ...doc.data() });
         });
         return () => unsub();
-    }, []);
+    }, [user, id]);
 
     return (
         <div>
