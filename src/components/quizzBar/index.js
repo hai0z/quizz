@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 function QuizzBar(_props) {
     const { id } = useParams();
-    console.log(id);
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [listQuestions, setListQuestions] = useState();
     const navigate = useNavigate();

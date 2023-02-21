@@ -9,6 +9,7 @@ function Navbar() {
     const { handleChangeTheme } = useAppContext();
     const { handleLogout } = useAuthContext();
     const user = useSelector((state) => state.authSlice.user);
+
     return (
         <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-md transition-all duration-150">
             <div className="flex-1">
@@ -92,6 +93,11 @@ function Navbar() {
                                     Bumblebee
                                 </span>
                             </li>
+                            <li onClick={() => handleChangeTheme("wireframe")}>
+                                <span className={`${theme === "wireframe" && "active"}`}>
+                                    Wrireframe
+                                </span>
+                            </li>
                         </div>
                     </ul>
                 </div>
@@ -124,4 +130,4 @@ function Navbar() {
     );
 }
 
-export default Navbar;
+export default React.memo(Navbar);

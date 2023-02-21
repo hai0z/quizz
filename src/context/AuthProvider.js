@@ -8,7 +8,7 @@ import {
     onAuthStateChanged,
 } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { setAuth, setUser } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
@@ -32,6 +32,7 @@ const AuthProvider = ({ children }) => {
                     photoURL,
                     displayName,
                     email,
+                    role: "USER",
                 });
             }
             navigate("/");
@@ -48,18 +49,15 @@ const AuthProvider = ({ children }) => {
             throw error;
         }
     };
-
+    const getUserInfo = async () => {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        const user = await getDoc(userRef);
+        dispatch(setUser({ ...user.data() }));
+    };
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                dispatch(
-                    setUser({
-                        uid: user.uid,
-                        photoURL: user.photoURL,
-                        displayName: user.displayName,
-                        email: user.email,
-                    })
-                );
+                getUserInfo();
                 dispatch(setAuth({ isLogin: true }));
             } else {
                 dispatch(setUser({}));
@@ -67,7 +65,7 @@ const AuthProvider = ({ children }) => {
             }
         });
         return () => unsubscribe();
-    }, [dispatch]);
+    }, []);
 
     const defaultValue = { handleLogin, handleLogout };
 

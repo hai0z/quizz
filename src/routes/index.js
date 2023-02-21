@@ -9,6 +9,7 @@ import App from "../App";
 import AdminPage from "../page/admin";
 import AddQuestion from "../page/AddQuestion";
 import RandomExam from "../page/RandomExam";
+import ExamHistory from "../page/Examhistory";
 
 const AuthLayOut = () => {
     return (
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
                     },
                     { path: "/examResult/:id", element: <ExamResult /> },
                     { path: "/descriptions/:id", element: <ShowDescription /> },
+                    { path: "/history", element: <ExamHistory /> },
                 ],
             },
         ],
