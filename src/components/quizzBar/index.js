@@ -34,6 +34,7 @@ function QuizzBar(_props) {
                 console.log("No such document!");
             }
         };
+        console.log(1);
         getData();
     }, [id, user.uid]);
     const chooseAnswer = async (questionId, choice) => {
@@ -43,7 +44,7 @@ function QuizzBar(_props) {
                 q.id === questionId ? { ...q, yourChoice: choice } : q
             ),
         };
-
+        setFilterQuestion(l);
         const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(examRef, l);
     };
@@ -77,6 +78,7 @@ function QuizzBar(_props) {
                 q.id === questionId ? { ...q, flag: !q.flag ?? true } : q
             ),
         };
+        setFilterQuestion(l);
         const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(examRef, l);
     };
@@ -100,7 +102,7 @@ function QuizzBar(_props) {
                     questions: listQuestions.questions.filter((q) => !!q.yourChoice === false),
                 });
                 setCurrentQuestion(
-                    listQuestions.questions.filter((q) => !!q.yourChoice === false)[0].index
+                    listQuestions.questions.filter((q) => !!q.yourChoice === false)[0]?.index
                 );
                 break;
             case "flag":
@@ -149,7 +151,7 @@ function QuizzBar(_props) {
                         ))}
                     </div>
                     <div className="w-9/12 p-10">
-                        <p>Câu {currentQuestion}:</p>
+                        {filterQuestion.questions?.length >= 0 && <p>Câu {currentQuestion}:</p>}
                         <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1]?.question}
                         </p>
@@ -179,29 +181,33 @@ function QuizzBar(_props) {
                                     </div>
                                 );
                             })}
-                            <div className="flex flex-row">
-                                <span className=" mr-2 ">Phân vân</span>
-                                <svg
-                                    onClick={() =>
-                                        toggleFlag(listQuestions.questions[currentQuestion - 1].id)
-                                    }
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className={`w-6 h-6 ${
-                                        listQuestions?.questions[currentQuestion - 1]?.flag &&
-                                        "text-red-600"
-                                    } cursor-pointer`}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
-                                    />
-                                </svg>
-                            </div>
+                            {filterQuestion.question?.length && (
+                                <div className="flex flex-row">
+                                    <span className=" mr-2 ">Phân vân</span>
+                                    <svg
+                                        onClick={() =>
+                                            toggleFlag(
+                                                listQuestions.questions[currentQuestion - 1].id
+                                            )
+                                        }
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className={`w-6 h-6 ${
+                                            listQuestions?.questions[currentQuestion - 1]?.flag &&
+                                            "text-red-600"
+                                        } cursor-pointer`}
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+                                        />
+                                    </svg>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="w-3/12 flex-col  pt-5 shadow-md hidden md:flex">
@@ -233,9 +239,7 @@ function QuizzBar(_props) {
                                     onClick={() => setCurrentQuestion(item.index)}
                                     className={`${
                                         currentQuestion === Number(item.index) && "btn-primary"
-                                    } ${
-                                        item.yourChoice ? "btn btn-primary" : "btn btn-outline"
-                                    } w-24`}
+                                    }  w-24 btn`}
                                 >
                                     Câu {item.index}{" "}
                                     {item?.flag && (
@@ -245,12 +249,28 @@ function QuizzBar(_props) {
                                             viewBox="0 0 24 24"
                                             strokeWidth={1.5}
                                             stroke="currentColor"
-                                            className="text-red-600 h-4 w-4"
+                                            className="text-red-600 h-4 w-4 ml-1"
                                         >
                                             <path
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
                                                 d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+                                            />
+                                        </svg>
+                                    )}
+                                    {item?.yourChoice && (
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={1.5}
+                                            stroke="currentColor"
+                                            className="w-6 h-6 text-green-600"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                             />
                                         </svg>
                                     )}
