@@ -13,6 +13,7 @@ import ExamHistory from "../page/Examhistory";
 import ListExam from "../components/ListExam";
 import Profile from "../page/profile";
 import ErrorPage from "../page/error";
+import Drawer from "../components/Drawer/AdminDrawer";
 
 const AuthLayOut = () => {
     return (
@@ -29,7 +30,6 @@ const AdminLayout = () => {
     );
 };
 export const router = createBrowserRouter([
-    { path: "*", element: <ErrorPage /> },
     {
         element: <AuthLayOut />,
         children: [
@@ -62,6 +62,7 @@ export const router = createBrowserRouter([
             { path: "/admin", element: <AdminPage /> },
             { path: "/admin/add-question", element: <AddQuestion /> },
             { path: "/admin/make-exam", element: <RandomExam /> },
+            { path: "/admin/account-manager", element: <Drawer /> },
         ],
     },
 ]);
