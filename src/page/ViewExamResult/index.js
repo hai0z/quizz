@@ -25,7 +25,7 @@ function ExamResult() {
     return (
         <div>
             <Drawer>
-                <div className="flex justify-center items-center mt-20">
+                <div className="container p-8">
                     <div className="overflow-x-auto">
                         <table className="table w-full">
                             <thead className="text-center">

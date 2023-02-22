@@ -98,6 +98,9 @@ function Navbar() {
                                     Wrireframe
                                 </span>
                             </li>
+                            <li onClick={() => handleChangeTheme("night")}>
+                                <span className={`${theme === "night" && "active"}`}>Night</span>
+                            </li>
                         </div>
                     </ul>
                 </div>

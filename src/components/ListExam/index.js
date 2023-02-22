@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Drawer from "../Drawer/UserDrawer";
 import { db } from "../../firebase/";
-import { getDoc, collection, doc, getDocs, setDoc, query } from "firebase/firestore";
+import { getDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -15,9 +15,14 @@ function ListExam() {
         try {
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);
             const exam = await getDoc(examRef);
-            //histories
+            //push to history
+            console.log(exam.data());
             const historyRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
-            await setDoc(historyRef, { ...exam.data() });
+            await setDoc(historyRef, {
+                ...exam.data(),
+                id: examId,
+                questions: exam.data()?.questions.map((q, index) => ({ ...q, index: index + 1 })),
+            });
             navigate("/test/" + examId);
         } catch (error) {
             throw error;
@@ -29,7 +34,12 @@ function ListExam() {
             const q = collection(db, `exams/${id}/exam`);
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
-                arr.push({ name: doc.data().examName, time: doc.data().time, id: doc.id });
+                arr.push({
+                    name: doc.data().examName,
+                    time: doc.data().time,
+                    id: doc.id,
+                    numberOfQuestion: doc.data().questions.length,
+                });
             });
             setListExam(arr);
         };
@@ -52,10 +62,11 @@ function ListExam() {
                         </div>
                     )}
                     {listExam?.map((item, index) => (
-                        <div key={index} className="card w-96 lg:w-80 bg-base-200 shadow-xl">
+                        <div key={index} className="card w-96 lg:w-80 bg-base-300 shadow-xl">
                             <div className="card-body">
                                 <h2 className="card-title">{item.name}</h2>
                                 <p>Time: {item.time}p</p>
+                                <p>Số câu hỏi: {item.numberOfQuestion}</p>
                                 <div className="card-actions justify-end">
                                     <button
                                         onClick={() => startExam(item.id)}

@@ -24,7 +24,37 @@ function ShowDescription(_props) {
     return (
         <div>
             <Drawer>
-                <div className="flex">
+                <div className="flex min-h-screen flex-col md:flex-row">
+                    {/* mobile */}
+                    <div className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3  my-2 px-4">
+                        {listQuestions?.questions.map((item, index) => (
+                            <div
+                                key={index}
+                                onClick={() => setCurrentQuestion(index + 1)}
+                                className={`${
+                                    currentQuestion === Number(index + 1) && "btn btn-primary"
+                                } ${item.yourChoice ? "btn btn-primary" : "btn btn-outline"} w-24`}
+                            >
+                                Câu {index + 1}{" "}
+                                {item?.flag && (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="text-red-600 h-4 w-4"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                     <div className="w-9/12 min-h-screen p-10">
                         <p className="">Câu {currentQuestion}:</p>
                         <p className="text-lg ">
@@ -113,7 +143,7 @@ function ShowDescription(_props) {
                             })}
                         </div>
                     </div>
-                    <div className="w-3/12 flex-col flex pt-5 bg-base-200">
+                    <div className="w-3/12 flex-col pt-5 shadow-md  hidden md:flex">
                         <div className="pl-4 mb-5 ">
                             <p>
                                 Số câu đã làm:{" "}
@@ -121,7 +151,7 @@ function ShowDescription(_props) {
                                 {listQuestions?.questions.length}
                             </p>
                         </div>
-                        <div className="flex flex-row justify-evenly flex-wrap ">
+                        <div className="grid grid-flow-row grid-cols-2 gap-3 lg:grid-cols-3 mx-2">
                             {listQuestions?.questions.map((_, index) => (
                                 <div
                                     key={index}
@@ -137,7 +167,9 @@ function ShowDescription(_props) {
                             ))}
                         </div>
                         <div className="text-center mt-5 ">
-                            <Link to="/examResult">Go back</Link>
+                            <Link to="/history" className="btn btn-ghost">
+                                Go back
+                            </Link>
                         </div>
                     </div>
                 </div>

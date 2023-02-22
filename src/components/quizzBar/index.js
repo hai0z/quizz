@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Drawer from "../Drawer/UserDrawer";
-import { onSnapshot, doc, setDoc } from "firebase/firestore";
+import { onSnapshot, doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,7 +8,11 @@ import { useSelector } from "react-redux";
 function QuizzBar(_props) {
     const { id } = useParams();
     const [currentQuestion, setCurrentQuestion] = useState(1);
+
     const [listQuestions, setListQuestions] = useState();
+
+    const [filterQuestion, setFilterQuestion] = useState(listQuestions);
+
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
 
@@ -19,6 +23,21 @@ function QuizzBar(_props) {
         return () => unsub();
     }, [id, user.uid]);
 
+    useEffect(() => {
+        const getData = async () => {
+            const docRef = doc(db, "histories", `${user.uid}/exam/${id}`);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setFilterQuestion({ ...docSnap.data(), id: doc.id });
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        };
+        getData();
+    }, [id, user.uid]);
+    console.log(filterQuestion);
     const chooseAnswer = async (questionId, choice) => {
         const l = {
             ...listQuestions,
@@ -64,10 +83,38 @@ function QuizzBar(_props) {
         await setDoc(examRef, l);
     };
 
+    const handleChangeFilter = (e) => {
+        switch (e) {
+            case "all":
+                setFilterQuestion(listQuestions);
+                break;
+            case "done":
+                setFilterQuestion({
+                    ...filterQuestion,
+                    questions: listQuestions.questions.filter((q) => q.yourChoice),
+                });
+                break;
+            case "undone":
+                setFilterQuestion({
+                    ...filterQuestion,
+                    questions: listQuestions.questions.filter((q) => !!q.yourChoice === false),
+                });
+                break;
+            case "flag":
+                setFilterQuestion({
+                    ...filterQuestion,
+                    questions: listQuestions.questions.filter((q) => !!q.flag),
+                });
+                break;
+            default:
+                break;
+        }
+    };
     return (
         <div>
             <Drawer>
                 <div className="flex min-h-screen flex-col md:flex-row">
+                    {/* mobile */}
                     <div className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3  my-2 px-4">
                         {listQuestions?.questions.map((item, index) => (
                             <div
@@ -100,17 +147,18 @@ function QuizzBar(_props) {
                     <div className="w-9/12 p-10">
                         <p>Câu {currentQuestion}:</p>
                         <p className="text-lg ">
-                            {listQuestions?.questions[currentQuestion - 1].question}
+                            {listQuestions?.questions[currentQuestion - 1]?.question}
                         </p>
 
                         <div className="flex flex-col gap-5 mt-3">
-                            {listQuestions?.questions[currentQuestion - 1].answers.map((q, i) => {
+                            {listQuestions?.questions[currentQuestion - 1]?.answers.map((q, i) => {
                                 return (
                                     <div className="flex flex-row py-3" key={i}>
                                         <input
                                             onChange={(e) =>
                                                 chooseAnswer(
-                                                    listQuestions.questions[currentQuestion - 1].id,
+                                                    listQuestions.questions[currentQuestion - 1]
+                                                        ?.id,
                                                     e.target.value
                                                 )
                                             }
@@ -139,7 +187,7 @@ function QuizzBar(_props) {
                                     strokeWidth={1.5}
                                     stroke="currentColor"
                                     className={`w-6 h-6 ${
-                                        listQuestions?.questions[currentQuestion - 1].flag &&
+                                        listQuestions?.questions[currentQuestion - 1]?.flag &&
                                         "text-red-600"
                                     } cursor-pointer`}
                                 >
@@ -162,23 +210,30 @@ function QuizzBar(_props) {
                         </div>
                         <div className="px-2 py-2">
                             <span className="ml-2">Lọc</span>
-                            <select className="select select-bordered w-full max-w-xs select-sm ml-2">
-                                <option selected>Tất cả</option>
-                                <option>Đã làm</option>
-                                <option>Chưa làm</option>
-                                <option>Gắn cờ</option>
+                            <select
+                                className="select select-bordered w-full max-w-xs select-sm ml-2"
+                                onChange={(e) => handleChangeFilter(e.target.value)}
+                            >
+                                <option selected value={"all"}>
+                                    Tất cả
+                                </option>
+                                <option value={"done"}>Đã làm</option>
+                                <option value={"undone"}>Chưa làm</option>
+                                <option value={"flag"}>Phân vân</option>
                             </select>
                         </div>
-                        <div className="flex flex-row gap-2 flex-wrap justify-center">
-                            {listQuestions?.questions.map((item, index) => (
+                        <div className="grid grid-flow-row grid-cols-2 gap-3 lg:grid-cols-3 mx-2">
+                            {filterQuestion?.questions.map((item) => (
                                 <div
-                                    key={index}
-                                    onClick={() => setCurrentQuestion(index + 1)}
+                                    key={item.index}
+                                    onClick={() => setCurrentQuestion(item.index)}
                                     className={`${
-                                        currentQuestion === Number(index + 1) && "btn btn-primary"
-                                    } ${item.yourChoice ? "btn btn-primary" : "btn btn-outline"}`}
+                                        currentQuestion === Number(item.index) && "btn btn-primary"
+                                    } ${
+                                        item.yourChoice ? "btn btn-primary" : "btn btn-outline"
+                                    } w-24`}
                                 >
-                                    Câu {index + 1}{" "}
+                                    Câu {item.index}{" "}
                                     {item?.flag && (
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
