@@ -36,7 +36,6 @@ function QuizzBar(_props) {
         };
         getData();
     }, [id, user.uid]);
-    console.log(filterQuestion);
     const chooseAnswer = async (questionId, choice) => {
         const l = {
             ...listQuestions,
@@ -86,24 +85,30 @@ function QuizzBar(_props) {
         switch (e) {
             case "all":
                 setFilterQuestion(listQuestions);
+                setCurrentQuestion(listQuestions.questions[0].index);
                 break;
             case "done":
                 setFilterQuestion({
                     ...filterQuestion,
                     questions: listQuestions.questions.filter((q) => q.yourChoice),
                 });
+                setCurrentQuestion(listQuestions.questions.filter((q) => q.yourChoice)[0].index);
                 break;
             case "undone":
                 setFilterQuestion({
                     ...filterQuestion,
                     questions: listQuestions.questions.filter((q) => !!q.yourChoice === false),
                 });
+                setCurrentQuestion(
+                    listQuestions.questions.filter((q) => !!q.yourChoice === false)[0].index
+                );
                 break;
             case "flag":
                 setFilterQuestion({
                     ...filterQuestion,
                     questions: listQuestions.questions.filter((q) => !!q.flag),
                 });
+                setCurrentQuestion(listQuestions.questions.filter((q) => !!q.flag)[0]?.index);
                 break;
             default:
                 break;
@@ -227,7 +232,7 @@ function QuizzBar(_props) {
                                     key={item.index}
                                     onClick={() => setCurrentQuestion(item.index)}
                                     className={`${
-                                        currentQuestion === Number(item.index) && "btn btn-primary"
+                                        currentQuestion === Number(item.index) && "btn-primary"
                                     } ${
                                         item.yourChoice ? "btn btn-primary" : "btn btn-outline"
                                     } w-24`}
