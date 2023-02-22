@@ -68,7 +68,7 @@ function QuizzBar(_props) {
         <div>
             <Drawer>
                 <div className="flex min-h-screen flex-col md:flex-row">
-                    <div className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3">
+                    <div className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3  my-2 px-4">
                         {listQuestions?.questions.map((item, index) => (
                             <div
                                 key={index}
