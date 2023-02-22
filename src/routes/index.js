@@ -31,6 +31,10 @@ const AdminLayout = () => {
 };
 export const router = createBrowserRouter([
     {
+        path: "*",
+        element: <ErrorPage />,
+    },
+    {
         element: <AuthLayOut />,
         children: [
             {

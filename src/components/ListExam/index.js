@@ -16,6 +16,16 @@ function ListExam() {
         try {
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);
             const exam = await getDoc(examRef);
+
+            //check xem da lam chua
+            const docRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                navigate("/test/" + examId);
+                return;
+            }
+
             //push to history
             console.log(exam.data());
             const historyRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
