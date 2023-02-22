@@ -25,8 +25,12 @@ function Profile() {
                 </div>
                 <div className="justify-center items-center flex mt-20">
                     <div className="w-10/12">
-                        <p className="lg:text-3xl text-lg font-bold">{user.displayName}</p>
-                        <p className="text-base md:text-lg mt-10">Email:{user.email}</p>
+                        <p className="lg:text-3xl text-lg font-bold text-primary">
+                            {user.displayName}
+                        </p>
+                        <p className="text-base md:text-lg mt-10 text-secondary">
+                            Email:{user.email}
+                        </p>
                         <button className="mt-10 btn btn-primary" onClick={handleLogout}>
                             Logout
                         </button>

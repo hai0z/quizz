@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Drawer from "../../components/Drawer/UserDrawer";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
+
 function ExamHistory() {
     const user = useSelector((state) => state.authSlice.user);
     const [examHistory, setExamHistory] = useState();
@@ -44,7 +45,7 @@ function ExamHistory() {
                                         <td>{item?.score}</td>
                                         <td>
                                             <Link
-                                                className="btn btn-ghost"
+                                                className="btn btn-ghost text-secondary"
                                                 to={`/descriptions/${item.id}`}
                                             >
                                                 Xem chi tiết

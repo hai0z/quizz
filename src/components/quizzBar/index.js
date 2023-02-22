@@ -30,11 +30,8 @@ function QuizzBar(_props) {
 
             if (docSnap.exists()) {
                 setFilterQuestion({ ...docSnap.data(), id: doc.id });
-            } else {
-                console.log("No such document!");
             }
         };
-        console.log(1);
         getData();
     }, [id, user.uid]);
     const chooseAnswer = async (questionId, choice) => {
