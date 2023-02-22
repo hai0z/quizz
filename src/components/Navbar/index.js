@@ -28,10 +28,7 @@ function Navbar() {
                         ></path>
                     </svg>
                 </label>
-                <Link
-                    className="btn btn-ghost normal-case text-xl transition-all duration-1000 translate-x-0 text-primary font-mono"
-                    to="/"
-                >
+                <Link className="btn btn-ghost normal-case text-xl transition-all duration-1000 translate-x-0 text-primary font-mono ">
                     {getTitle()}
                 </Link>
             </div>
