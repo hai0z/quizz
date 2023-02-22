@@ -70,7 +70,7 @@ function ListExam() {
                     {listExam?.map((item, index) => (
                         <div key={index} className="card w-96 lg:w-80 bg-base-300 shadow-xl">
                             <div className="card-body">
-                                <h2 className="card-title">{item.name}</h2>
+                                <h2 className="card-title text-primary">{item.name}</h2>
                                 <p>Time: {item.time}p</p>
                                 <p>Số câu hỏi: {item.numberOfQuestion}</p>
                                 <div className="card-actions justify-end">

@@ -9,6 +9,7 @@ function Profile() {
     useEffect(() => {
         setTitle("Thông tin cá nhân");
     }, []);
+
     return (
         <UserDrawer>
             <div className="container min-h-screen flex flex-col">

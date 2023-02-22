@@ -40,7 +40,9 @@ function App() {
                                 <img src={item.img} alt="subject" className="h-52" />
                             </figure>
                             <div className="card-body items-center">
-                                <h2 className="card-title text-primary">{item.name}</h2>
+                                <h2 className="card-title text-primary drop-shadow-sm">
+                                    {item.name}
+                                </h2>
                             </div>
                         </Link>
                     ))}
