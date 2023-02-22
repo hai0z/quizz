@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import UserDrawer from "../../components/Drawer/UserDrawer";
 import { useAppContext } from "../../context/AppProvider";
+import { useAuthContext } from "../../context/AuthProvider";
 function Profile() {
     const user = useSelector((state) => state.authSlice.user);
     const { setTitle } = useAppContext();
-
+    const { handleLogout } = useAuthContext();
     useEffect(() => {
         setTitle("Thông tin cá nhân");
     }, []);
@@ -26,7 +27,9 @@ function Profile() {
                     <div className="w-10/12">
                         <p className="lg:text-3xl text-lg font-bold">{user.displayName}</p>
                         <p className="text-base md:text-lg mt-10">Email:{user.email}</p>
-                        <button className="mt-10 btn btn-primary">Logout</button>
+                        <button className="mt-10 btn btn-primary" onClick={handleLogout}>
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>
