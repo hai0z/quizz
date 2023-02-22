@@ -28,10 +28,10 @@ function ExamHistory() {
                         <table className="table w-full table-compact">
                             <thead className="text-center">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Number of questions</th>
-                                    <th>Correct answers</th>
-                                    <th>Score</th>
+                                    <th>Tên bài thi</th>
+                                    <th>Số câu hỏi</th>
+                                    <th>Số câu trả lời đúng</th>
+                                    <th>Điểm</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -47,7 +47,7 @@ function ExamHistory() {
                                                 className="btn btn-ghost"
                                                 to={`/descriptions/${item.id}`}
                                             >
-                                                View
+                                                Xem chi tiết
                                             </Link>
                                         </td>
                                     </tr>

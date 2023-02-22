@@ -11,6 +11,8 @@ import AddQuestion from "../page/AddQuestion";
 import RandomExam from "../page/RandomExam";
 import ExamHistory from "../page/Examhistory";
 import ListExam from "../components/ListExam";
+import Profile from "../page/profile";
+import ErrorPage from "../page/error";
 
 const AuthLayOut = () => {
     return (
@@ -27,6 +29,7 @@ const AdminLayout = () => {
     );
 };
 export const router = createBrowserRouter([
+    { path: "*", element: <ErrorPage /> },
     {
         element: <AuthLayOut />,
         children: [
@@ -39,6 +42,7 @@ export const router = createBrowserRouter([
                 element: <ProtectedRoute />,
                 children: [
                     { path: "/", element: <App /> },
+                    { path: "/profile", element: <Profile /> },
                     { path: "/exam/:id", element: <ListExam /> },
                     {
                         path: "/test/:id",

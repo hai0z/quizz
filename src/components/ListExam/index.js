@@ -4,6 +4,7 @@ import { db } from "../../firebase/";
 import { getDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useAppContext } from "../../context/AppProvider";
 
 function ListExam() {
     const { id } = useParams();
@@ -45,6 +46,11 @@ function ListExam() {
         };
         getListExam();
     }, [id]);
+
+    const { setTitle } = useAppContext();
+    useEffect(() => {
+        setTitle("Danh sách đề thi");
+    }, []);
     return (
         <div>
             <Drawer>
@@ -72,7 +78,7 @@ function ListExam() {
                                         onClick={() => startExam(item.id)}
                                         className="btn btn-primary"
                                     >
-                                        Start test
+                                        Bắt đầu làm
                                     </button>
                                 </div>
                             </div>

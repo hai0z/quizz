@@ -1,6 +1,8 @@
 import "./App.css";
 import Drawer from "./components/Drawer/UserDrawer";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useAppContext } from "./context/AppProvider";
 function App() {
     const listSubject = [
         {
@@ -19,7 +21,11 @@ function App() {
             img: require("./asset/united-kingdom.png"),
         },
     ];
+    const { setTitle } = useAppContext();
 
+    useEffect(() => {
+        setTitle("Trang chủ");
+    }, []);
     return (
         <div>
             <Drawer>

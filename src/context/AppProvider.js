@@ -1,14 +1,19 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { changeTheme } from "../redux/themeSlice";
+
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
     const theme = useSelector((state) => state.themeSlice.theme);
 
+    let navBarTitle = "";
+
     const dispatch = useDispatch();
 
+    const getTitle = () => navBarTitle;
+    const setTitle = (value) => (navBarTitle = value);
     const handleChangeTheme = (themeName) => {
         dispatch(changeTheme(themeName));
         localStorage.setItem("theme", themeName);
@@ -26,7 +31,9 @@ const AppProvider = ({ children }) => {
         html.setAttribute("data-theme", currentTheme);
     }, [theme, dispatch]);
 
-    return <AppContext.Provider value={{ handleChangeTheme }}>{children}</AppContext.Provider>;
+    const defaultValue = { handleChangeTheme, navBarTitle, getTitle, setTitle };
+
+    return <AppContext.Provider value={defaultValue}>{children}</AppContext.Provider>;
 };
 
 const useAppContext = () => {

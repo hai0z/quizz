@@ -30,10 +30,10 @@ function ExamResult() {
                         <table className="table w-full">
                             <thead className="text-center">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Number of questions</th>
-                                    <th>Correct answers</th>
-                                    <th>Score</th>
+                                    <th>Tên bài thi</th>
+                                    <th>Số câu hỏi</th>
+                                    <th>Số câu trả lời đúng</th>
+                                    <th>Điểm</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -44,7 +44,7 @@ function ExamResult() {
                                     <td>{examRs?.correctAnswer}</td>
                                     <td>{examRs?.score}</td>
                                     <td>
-                                        <Link to={`/descriptions/${id}`}>View</Link>
+                                        <Link to={`/descriptions/${id}`}>Xem chi tiết</Link>
                                     </td>
                                 </tr>
                             </tbody>

@@ -6,10 +6,10 @@ import { useAppContext } from "../../context/AppProvider";
 
 function Navbar() {
     const theme = useSelector((state) => state.themeSlice.theme);
-    const { handleChangeTheme } = useAppContext();
+    const { handleChangeTheme, getTitle } = useAppContext();
+    console.log(getTitle());
     const { handleLogout } = useAuthContext();
     const user = useSelector((state) => state.authSlice.user);
-
     return (
         <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-md transition-all duration-150">
             <div className="flex-1">
@@ -29,10 +29,10 @@ function Navbar() {
                     </svg>
                 </label>
                 <Link
-                    className="btn btn-ghost normal-case text-xl lg:-translate-x-96 transition-all duration-1000 translate-x-0 text-primary font-mono"
+                    className="btn btn-ghost normal-case text-xl transition-all duration-1000 translate-x-0 text-primary font-mono"
                     to="/"
                 >
-                    Quizz
+                    {getTitle()}
                 </Link>
             </div>
             <div className="flex-none gap-2">
@@ -75,49 +75,64 @@ function Navbar() {
                     >
                         <div className="grid grid-cols-1 gap-3 p-3">
                             <li onClick={() => handleChangeTheme("light")}>
-                                <span className={`${theme === "light" && "active"}`}>Light</span>
+                                <span className={`${theme === "light" && "active"} lowercase`}>
+                                    Light
+                                </span>
                             </li>
                             <li onClick={() => handleChangeTheme("dark")}>
-                                <span className={`${theme === "dark" && "active"}`}>Dark</span>
+                                <span className={`${theme === "dark" && "active"} lowercase`}>
+                                    Dark
+                                </span>
                             </li>
                             <li onClick={() => handleChangeTheme("valentine")}>
-                                <span className={`${theme === "valentine" && "active"}`}>
+                                <span className={`${theme === "valentine" && "active"} lowercase`}>
                                     Valentine
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("lemonade")}>
-                                <span className={`${theme === "lemonade" && "active"}`}>
+                                <span className={`${theme === "lemonade" && "active"} lowercase`}>
                                     Lemonade
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("lofi")}>
-                                <span className={`${theme === "lofi" && "active"}`}>Lofi</span>
+                            <li onClick={() => handleChangeTheme("fantasy")}>
+                                <span className={`${theme === "fantasy" && "active"} lowercase`}>
+                                    fantasy
+                                </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("synthwave")}>
-                                <span className={`${theme === "synthwave" && "active"}`}>
-                                    Synthwave
+                            <li onClick={() => handleChangeTheme("lofi")}>
+                                <span className={`${theme === "lofi" && "active"} lowercase`}>
+                                    Lofi
+                                </span>
+                            </li>
+                            <li onClick={() => handleChangeTheme("corporate")}>
+                                <span className={`${theme === "corporate" && "active"} lowercase`}>
+                                    Corporate
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("cupcake")}>
-                                <span className={`${theme === "cupcake" && "active"}`}>
+                                <span className={`${theme === "cupcake" && "active"} lowercase`}>
                                     Cupcake
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("bumblebee")}>
-                                <span className={`${theme === "bumblebee" && "active"}`}>
+                                <span className={`${theme === "bumblebee" && "active"} lowercase`}>
                                     Bumblebee
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("wireframe")}>
-                                <span className={`${theme === "wireframe" && "active"}`}>
+                                <span className={`${theme === "wireframe" && "active"} lowercase`}>
                                     Wrireframe
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("night")}>
-                                <span className={`${theme === "night" && "active"}`}>Night</span>
+                                <span className={`${theme === "night" && "active"} lowercase`}>
+                                    Night
+                                </span>
                             </li>
                             <li onClick={() => handleChangeTheme("garden")}>
-                                <span className={`${theme === "garden" && "active"}`}>Gardent</span>
+                                <span className={`${theme === "garden" && "active"} lowercase`}>
+                                    Gardent
+                                </span>
                             </li>
                         </div>
                     </ul>
@@ -133,9 +148,8 @@ function Navbar() {
                         className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
                     >
                         <li>
-                            <Link className="justify-between">
+                            <Link className="justify-between" to="/profile">
                                 Profile
-                                <span className="badge">New</span>
                             </Link>
                         </li>
                         <li>

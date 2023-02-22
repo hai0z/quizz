@@ -31,12 +31,7 @@ function AddQuestion() {
     return (
         <div>
             <Drawer>
-                <div className="alert shadow-lg mt-2 max-w-md mx-8">
-                    <div>
-                        <span>12 unread messages. Tap to see.</span>
-                    </div>
-                </div>
-                <div className="container flex flex-row p-8">
+                <div className="container flex flex-col md:flex-row p-8">
                     <div className="form-control">
                         <label htmlFor="" className="p-2 font-bold">
                             Câu hỏi:{" "}
