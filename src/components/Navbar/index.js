@@ -38,7 +38,22 @@ function Navbar() {
             <div className="flex-none gap-2">
                 <div className="dropdown dropdown-end ">
                     <label tabIndex={0} className="btn m-1 btn-ghost ">
-                        <span className="mr-2">Theme</span>
+                        <svg
+                            width="20"
+                            height="20"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            className="inline-block h-5 w-5 stroke-current md:h-6 md:w-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                            ></path>
+                        </svg>
+                        <span className="mx-2">Theme</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -100,6 +115,9 @@ function Navbar() {
                             </li>
                             <li onClick={() => handleChangeTheme("night")}>
                                 <span className={`${theme === "night" && "active"}`}>Night</span>
+                            </li>
+                            <li onClick={() => handleChangeTheme("garden")}>
+                                <span className={`${theme === "garden" && "active"}`}>Gardent</span>
                             </li>
                         </div>
                     </ul>

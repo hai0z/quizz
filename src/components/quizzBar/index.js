@@ -31,7 +31,6 @@ function QuizzBar(_props) {
             if (docSnap.exists()) {
                 setFilterQuestion({ ...docSnap.data(), id: doc.id });
             } else {
-                // doc.data() will be undefined in this case
                 console.log("No such document!");
             }
         };
