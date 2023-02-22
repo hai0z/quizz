@@ -50,7 +50,7 @@ function ListExam() {
     const { setTitle } = useAppContext();
     useEffect(() => {
         setTitle("Danh sách đề thi");
-    }, []);
+    });
     return (
         <div>
             <Drawer>

@@ -9,7 +9,7 @@ function Profile() {
     const { handleLogout } = useAuthContext();
     useEffect(() => {
         setTitle("Thông tin cá nhân");
-    }, []);
+    });
 
     return (
         <UserDrawer>

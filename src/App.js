@@ -25,7 +25,8 @@ function App() {
 
     useEffect(() => {
         setTitle("Trang chủ");
-    }, []);
+        console.log(1);
+    });
     return (
         <div>
             <Drawer>

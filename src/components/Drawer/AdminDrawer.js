@@ -19,7 +19,7 @@ function Drawer({ children }) {
                     <label htmlFor="my-drawer" className="drawer-overlay"></label>
                     <div className="bg-base-200 w-80 overflow-x-hidden">
                         <div className="hidden lg:flex h-16 p-4 items-center">
-                            <Link to="/" className="btn btn-ghost">
+                            <Link to="/admin" className="btn btn-ghost">
                                 <span className="text-primary font-bold text-2xl capitalize font-mono ">
                                     Quizz{" "}
                                     <span className="text-4xl text-base-content font-serif">
