@@ -3,42 +3,9 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AuthProvider from "../../context/AuthProvider";
 import Navbar from "../Navbar";
-import { useSelector } from "react-redux";
 
-const UserDrawer = ({ location }) => (
-    <ul className="menu menu-compact p-4 bg-base-200 text-base-content sticky">
-        <li>
-            <Link to="/" className={`${location.pathname === "/" && "active"} `}>
-                Trang chủ
-            </Link>
-        </li>
-        <li>
-            <Link to="/history" className={`${location.pathname === "/history" && "active"} `}>
-                Lịch sử làm bài
-            </Link>
-        </li>
-    </ul>
-);
-const AdminDrawer = ({ location }) => (
-    <ul className="menu menu-compact p-4 bg-base-200 text-base-content sticky">
-        <li>
-            <Link to="/admin" className={`${location.pathname === "/admin" && "active"} `}>
-                Trang chủ
-            </Link>
-        </li>
-        <li>
-            <Link
-                to="/account-manager"
-                className={`${location.pathname === "/Quản lý tài khoản" && "active"} `}
-            >
-                Lịch sử làm bài
-            </Link>
-        </li>
-    </ul>
-);
 function Drawer({ children }) {
     const location = useLocation();
-    const user = useSelector((state) => state.authSlice.user);
 
     return (
         <AuthProvider>
@@ -62,11 +29,24 @@ function Drawer({ children }) {
                                 </span>
                             </Link>
                         </div>
-                        {user.role === "ADMIN" ? (
-                            <AdminDrawer location={location} />
-                        ) : (
-                            <UserDrawer location={location} />
-                        )}
+                        <ul className="menu menu-compact p-4 bg-base-200 text-base-content sticky">
+                            <li>
+                                <Link
+                                    to="/"
+                                    className={`${location.pathname === "/" && "active"} `}
+                                >
+                                    Trang chủ
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/history"
+                                    className={`${location.pathname === "/history" && "active"} `}
+                                >
+                                    Lịch sử làm bài
+                                </Link>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

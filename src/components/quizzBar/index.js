@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Drawer from "../Drawer";
+import Drawer from "../Drawer/UserDrawer";
 import { onSnapshot, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
@@ -67,7 +67,8 @@ function QuizzBar(_props) {
     return (
         <div>
             <Drawer>
-                <div className="flex min-h-screen">
+                <div className="flex min-h-screen flex-col md:flex-row">
+                    <div className="flex md:hidden h-16 w-full overflow-x-auto shadow-md"></div>
                     <div className="w-9/12 p-10">
                         <p>Câu {currentQuestion}:</p>
                         <p className="text-lg ">
@@ -123,7 +124,7 @@ function QuizzBar(_props) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-3/12 flex-col flex pt-5 shadow-md">
+                    <div className="w-3/12 flex-col  pt-5 shadow-md hidden md:flex">
                         <div className="pl-4 mb-5 ">
                             <p>
                                 Số câu đã làm:{" "}

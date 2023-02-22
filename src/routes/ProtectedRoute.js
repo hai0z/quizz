@@ -9,6 +9,7 @@ function ProtectedRoute() {
         navigate("/login");
         return;
     }
+
     return <Outlet />;
 }
 

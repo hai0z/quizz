@@ -1,6 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import Drawer from "../../components/Drawer";
+import Drawer from "../../components/Drawer/UserDrawer";
 import { db } from "../../firebase";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";

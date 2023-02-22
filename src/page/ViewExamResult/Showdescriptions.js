@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Drawer from "../../components/Drawer";
+import Drawer from "../../components/Drawer/UserDrawer";
 import { onSnapshot, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";

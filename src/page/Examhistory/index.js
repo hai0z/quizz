@@ -1,5 +1,5 @@
 import React from "react";
-import Drawer from "../../components/Drawer";
+import Drawer from "../../components/Drawer/UserDrawer";
 
 function ExamHistory() {
     return (

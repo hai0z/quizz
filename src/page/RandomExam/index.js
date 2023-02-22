@@ -1,18 +1,23 @@
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, where } from "firebase/firestore";
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar";
+import Drawer from "../../components/Drawer/AdminDrawer";
 import { db } from "../../firebase";
 function RandomExam() {
     const [examName, setExamName] = useState();
     const [numberQuestion, setNumberQuestion] = useState();
     const [time, setTime] = useState();
+    const [subject, setSubject] = useState();
 
-    const examRef = collection(db, "exams");
+    const examRef = collection(db, "exams", `${subject}/exam`);
 
     const makeExam = async () => {
         try {
             const arr = [];
-            const querySnapshot = await getDocs(collection(db, "questions"));
+            const querySnapshot = await getDocs(
+                collection(db, `questions/${subject}/questions`),
+                where("subject", "==", subject)
+            );
+
             querySnapshot.forEach((doc) => {
                 arr.push({ ...doc.data(), id: doc.id });
             });
@@ -27,9 +32,7 @@ function RandomExam() {
     };
 
     return (
-        <div>
-            <Navbar />
-
+        <Drawer>
             <div className="container flex flex-col  p-8">
                 <div className="form-control">
                     <label htmlFor="" className="p-2 font-bold">
@@ -54,6 +57,20 @@ function RandomExam() {
                             onChange={(e) => setNumberQuestion(e.target.value)}
                         />
                     </div>
+                    <div className="form-control py-2">
+                        <select
+                            defaultValue={"DEFAULT"}
+                            className="select w-full max-w-xs select-primary"
+                            onChange={(e) => setSubject(e.target.value)}
+                        >
+                            <option disabled selected value="DEFAULT">
+                                Chọn môn học
+                            </option>
+                            <option value={"math"}>Toán</option>
+                            <option value={"physic"}>Lý</option>
+                            <option value={"english"}>Anh</option>
+                        </select>
+                    </div>
                     <div className="form-control">
                         <label htmlFor="" className="p-2 font-bold">
                             Thời gian
@@ -72,7 +89,7 @@ function RandomExam() {
                     add
                 </button>
             </div>
-        </div>
+        </Drawer>
     );
 }
 

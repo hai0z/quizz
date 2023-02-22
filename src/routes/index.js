@@ -10,6 +10,7 @@ import AdminPage from "../page/admin";
 import AddQuestion from "../page/AddQuestion";
 import RandomExam from "../page/RandomExam";
 import ExamHistory from "../page/Examhistory";
+import ListExam from "../components/ListExam";
 
 const AuthLayOut = () => {
     return (
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
                 element: <ProtectedRoute />,
                 children: [
                     { path: "/", element: <App /> },
+                    { path: "/exam/:id", element: <ListExam /> },
                     {
                         path: "/test/:id",
                         element: <QuizzBar />,
@@ -51,14 +53,11 @@ export const router = createBrowserRouter([
     },
     {
         element: <AdminLayout />,
-        children: [{ path: "/admin", element: <AdminPage /> }],
-    },
-    {
-        element: <AdminLayout />,
-        children: [{ path: "/admin/add-question", element: <AddQuestion /> }],
-    },
-    {
-        element: <AdminLayout />,
-        children: [{ path: "/admin/make-exam", element: <RandomExam /> }],
+        path: "/admin",
+        children: [
+            { path: "/admin", element: <AdminPage /> },
+            { path: "/admin/add-question", element: <AddQuestion /> },
+            { path: "/admin/make-exam", element: <RandomExam /> },
+        ],
     },
 ]);
