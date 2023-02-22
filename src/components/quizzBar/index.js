@@ -151,7 +151,7 @@ function QuizzBar(_props) {
                         ))}
                     </div>
                     <div className="w-9/12 p-10">
-                        {filterQuestion.questions?.length >= 0 && <p>Câu {currentQuestion}:</p>}
+                        {filterQuestion.questions?.length > 0 && <p>Câu {currentQuestion}:</p>}
                         <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1]?.question}
                         </p>
@@ -218,10 +218,10 @@ function QuizzBar(_props) {
                                 {listQuestions?.questions.length}
                             </p>
                         </div>
-                        <div className="px-2 py-2">
-                            <span className="ml-2">Lọc</span>
+                        <div className="px-2">
+                            <span className="ml-2 block mb-2">Lọc</span>
                             <select
-                                className="select select-bordered w-full max-w-xs select-sm ml-2"
+                                className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
                                 onChange={(e) => handleChangeFilter(e.target.value)}
                             >
                                 <option selected value={"all"}>
