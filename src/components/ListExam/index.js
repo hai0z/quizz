@@ -34,11 +34,23 @@ function ListExam() {
             setListExam(arr);
         };
         getListExam();
-    }, []);
+    }, [id]);
     return (
         <div>
             <Drawer>
                 <div className="container p-8 flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
+                    {listExam?.length <= 0 && (
+                        <div className="items-center justify-center flex flex-col container">
+                            <img
+                                src={require("../../asset/page.png")}
+                                alt="empty"
+                                className="h-40"
+                            />
+                            <h2 className="font-mono text-primary text-2xl text-center">
+                                Chưa có bài thi nào
+                            </h2>
+                        </div>
+                    )}
                     {listExam?.map((item, index) => (
                         <div key={index} className="card w-96 lg:w-80 bg-base-200 shadow-xl">
                             <div className="card-body">
