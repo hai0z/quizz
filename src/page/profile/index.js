@@ -17,7 +17,7 @@ function Profile() {
                 <div className="flex items-center justify-center mt-4 flex-col">
                     <div className="w-10/12 bg-gradient-to-r from-primary to-secondary h-56 rounded-md relative">
                         <div className="avatar absolute -bottom-14 left-6">
-                            <div className="w-36 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <div className="w-36 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2">
                                 <img src={user.photoURL} alt="user_img" />
                             </div>
                         </div>

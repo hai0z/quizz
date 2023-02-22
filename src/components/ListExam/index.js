@@ -11,7 +11,20 @@ function ListExam() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
     const [listExam, setListExam] = useState();
+    // const [isDoing, setIsDoing] = useState(false);
 
+    // useEffect(()=>{
+    //     const check = async ()=>{
+    //         const docRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
+    //         const docSnap = await getDoc(docRef);
+
+    //         if (docSnap.exists()) {
+    //             setIsDoing(true);
+
+    //         }
+    //     }
+    //    chec
+    // },[])
     const startExam = async (examId) => {
         try {
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);

@@ -186,7 +186,7 @@ function QuizzBar(_props) {
                                             );
                                         }
                                     )}
-                                    {filterQuestion?.question?.length && (
+                                    {!!filterQuestion?.question >= 0 && (
                                         <div className="flex flex-row">
                                             <span className=" mr-2 ">Phân vân</span>
                                             <svg
