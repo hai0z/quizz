@@ -151,7 +151,7 @@ function QuizzBar(_props) {
                         ))}
                     </div>
                     <div className="w-9/12 p-10">
-                        {filterQuestion.questions?.length > 0 && <p>Câu {currentQuestion}:</p>}
+                        {filterQuestion?.questions?.length > 0 && <p>Câu {currentQuestion}:</p>}
                         <p className="text-lg ">
                             {listQuestions?.questions[currentQuestion - 1]?.question}
                         </p>
@@ -181,7 +181,7 @@ function QuizzBar(_props) {
                                     </div>
                                 );
                             })}
-                            {filterQuestion.question?.length && (
+                            {filterQuestion?.question?.length && (
                                 <div className="flex flex-row">
                                     <span className=" mr-2 ">Phân vân</span>
                                     <svg
