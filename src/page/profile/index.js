@@ -24,7 +24,7 @@ function Profile() {
                 <div className="justify-center items-center flex mt-20">
                     <div className="w-10/12">
                         <p className="lg:text-3xl text-lg font-bold">{user.displayName}</p>
-                        <p className="text-xl mt-10">Email:{user.email}</p>
+                        <p className="text-base md:text-lg mt-10">Email:{user.email}</p>
                         <button className="mt-10 btn btn-primary">Logout</button>
                     </div>
                 </div>

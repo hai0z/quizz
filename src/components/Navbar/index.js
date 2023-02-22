@@ -7,7 +7,6 @@ import { useAppContext } from "../../context/AppProvider";
 function Navbar() {
     const theme = useSelector((state) => state.themeSlice.theme);
     const { handleChangeTheme, getTitle } = useAppContext();
-    console.log(getTitle());
     const { handleLogout } = useAuthContext();
     const user = useSelector((state) => state.authSlice.user);
     return (
@@ -28,7 +27,7 @@ function Navbar() {
                         ></path>
                     </svg>
                 </label>
-                <Link className="btn btn-ghost normal-case text-xl transition-all duration-1000 translate-x-0 text-primary font-mono ">
+                <Link className="btn btn-ghost normal-case text-xs md:text-xl transition-all duration-1000 translate-x-0 text-primary font-mono ">
                     {getTitle()}
                 </Link>
             </div>
