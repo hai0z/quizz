@@ -8,12 +8,13 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
     const theme = useSelector((state) => state.themeSlice.theme);
 
-    let navBarTitle = "";
+    const [navBarTitle, setNavBarTile] = useState("");
 
     const dispatch = useDispatch();
 
     const getTitle = () => navBarTitle;
-    const setTitle = (value) => (navBarTitle = value);
+    const setTitle = (value) => setNavBarTile(value);
+
     const handleChangeTheme = (themeName) => {
         dispatch(changeTheme(themeName));
         localStorage.setItem("theme", themeName);

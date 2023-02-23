@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AuthProvider from "../../context/AuthProvider";
+import Footer from "../footer";
 import Navbar from "../Navbar";
 
 function Drawer({ children }) {
@@ -12,8 +13,11 @@ function Drawer({ children }) {
             <div className="drawer drawer-mobile">
                 <input id="my-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
-                    <Navbar />
-                    {children}
+                    <div className="min-h-screen">
+                        <Navbar />
+                        {children}
+                    </div>
+                    <Footer />
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer" className="drawer-overlay"></label>

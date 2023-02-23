@@ -9,6 +9,16 @@ function ExamHistory() {
     const user = useSelector((state) => state.authSlice.user);
     const [examHistory, setExamHistory] = useState();
 
+    function timestampToDate(timestamp) {
+        const date = new Date(timestamp);
+        const day = `0${date.getDate()}`.slice(-2);
+        const month = `0${date.getMonth() + 1}`.slice(-2);
+        const year = date.getFullYear();
+        const hour = `0${date.getHours()}`.slice(-2);
+        const minute = `0${date.getMinutes()}`.slice(-2);
+        return `${day}/${month}/${year} ${hour}:${minute}`;
+    }
+
     useEffect(() => {
         const getData = async () => {
             const arr = [];
@@ -30,9 +40,11 @@ function ExamHistory() {
                             <thead className="text-center">
                                 <tr>
                                     <th>Tên bài thi</th>
+                                    <th>Thời gian</th>
                                     <th>Số câu hỏi</th>
                                     <th>Số câu trả lời đúng</th>
                                     <th>Điểm</th>
+                                    <th>Ngày</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -40,12 +52,14 @@ function ExamHistory() {
                                 {examHistory?.map((item) => (
                                     <tr key={item.id}>
                                         <th className="text-left">{item.examName}</th>
+                                        <th>{item.time} phút</th>
                                         <td>{item?.questions.length}</td>
                                         <td>{item?.correctAnswer}</td>
                                         <td>{item?.score}</td>
+                                        <td>{timestampToDate(item.startAt * 1000)}</td>
                                         <td>
                                             <Link
-                                                className="btn btn-ghost text-secondary"
+                                                className="btn btn-ghost text-primary"
                                                 to={`/descriptions/${item.id}`}
                                             >
                                                 Xem chi tiết

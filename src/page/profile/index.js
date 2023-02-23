@@ -28,7 +28,7 @@ function Profile() {
                         <p className="lg:text-3xl text-lg font-bold text-primary">
                             {user.displayName}
                         </p>
-                        <p className="text-base md:text-lg mt-10 text-secondary">
+                        <p className="text-base md:text-lg mt-10 text-secondary-focus">
                             Email:{user.email}
                         </p>
                         <button className="mt-10 btn btn-primary" onClick={handleLogout}>

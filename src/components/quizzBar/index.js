@@ -4,7 +4,8 @@ import { onSnapshot, doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import Countdown from "../countdown";
+import { useAppContext } from "../../context/AppProvider";
 function QuizzBar(_props) {
     const { id } = useParams();
     const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -15,6 +16,8 @@ function QuizzBar(_props) {
 
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
+
+    const { setTitle } = useAppContext();
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
@@ -30,10 +33,12 @@ function QuizzBar(_props) {
 
             if (docSnap.exists()) {
                 setFilterQuestion({ ...docSnap.data(), id: doc.id });
+                setTitle(docSnap.data().examName);
             }
         };
         getData();
     }, [id, user.uid]);
+
     const chooseAnswer = async (questionId, choice) => {
         const l = {
             ...listQuestions,
@@ -47,24 +52,16 @@ function QuizzBar(_props) {
     };
     const finished = async () => {
         const pointPerQuestion = 10 / listQuestions.questions.length;
+
         const score = (
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
             pointPerQuestion
         ).toFixed(2);
-        const correctAnswer =
-            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length +
-            "/" +
-            listQuestions.questions.length;
-        const l = {
-            ...listQuestions,
-            questions: listQuestions.questions.map((q) => {
-                const { flag, ...rest } = q;
-                return rest;
-            }),
-        };
 
+        const correctAnswer =
+            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length ?? 0;
         const historyRef = doc(db, "histories", `${user.uid}/exam/${id}`);
-        await setDoc(historyRef, { ...l, score, correctAnswer });
+        await setDoc(historyRef, { ...listQuestions, score, correctAnswer });
 
         navigate("/examResult/" + id);
     };
@@ -91,7 +88,7 @@ function QuizzBar(_props) {
                     ...filterQuestion,
                     questions: listQuestions.questions.filter((q) => q.yourChoice),
                 });
-                setCurrentQuestion(listQuestions.questions.filter((q) => q.yourChoice)[0].index);
+                setCurrentQuestion(listQuestions.questions.filter((q) => q.yourChoice)[0]?.index);
                 break;
             case "undone":
                 setFilterQuestion({
@@ -147,7 +144,14 @@ function QuizzBar(_props) {
                             </div>
                         ))}
                     </div>
-                    <div className="w-9/12 p-10">
+                    <div className=" w-full md:w-9/12 p-10">
+                        {listQuestions?.time && (
+                            <Countdown
+                                minutes={listQuestions?.time}
+                                seconds={0}
+                                finished={finished}
+                            />
+                        )}
                         {!!filterQuestion?.questions?.length && (
                             <div>
                                 <p>Câu {currentQuestion}:</p>
@@ -237,14 +241,14 @@ function QuizzBar(_props) {
                                 <option value={"flag"}>Phân vân</option>
                             </select>
                         </div>
-                        <div className="grid grid-flow-row grid-cols-2 gap-3 lg:grid-cols-3 mx-2">
+                        <div className="grid grid-flow-row grid-cols-2 gap-3 xl:grid-cols-3 mx-2">
                             {filterQuestion?.questions.map((item) => (
                                 <div
                                     key={item.index}
                                     onClick={() => setCurrentQuestion(item.index)}
                                     className={`${
                                         currentQuestion === Number(item.index) && "btn-primary"
-                                    }  w-24 btn`}
+                                    }  w-24 lg:w-20 btn`}
                                 >
                                     Câu {item.index}{" "}
                                     {item?.flag && (

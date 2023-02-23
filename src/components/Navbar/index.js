@@ -6,13 +6,19 @@ import { useAppContext } from "../../context/AppProvider";
 
 function Navbar() {
     const theme = useSelector((state) => state.themeSlice.theme);
-    const { handleChangeTheme, getTitle } = useAppContext();
+
+    const { handleChangeTheme, navBarTitle } = useAppContext();
+
     const { handleLogout } = useAuthContext();
+
     const user = useSelector((state) => state.authSlice.user);
     return (
-        <div className="navbar bg-base-100 sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-md transition-all duration-150">
+        <div className="navbar bg-primary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-md transition-all duration-150">
             <div className="flex-1">
-                <label htmlFor="my-drawer" className="lg:hidden p-4 btn btn-ghost">
+                <label
+                    htmlFor="my-drawer"
+                    className="lg:hidden p-4 btn btn-ghost text-primary-content"
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -27,8 +33,8 @@ function Navbar() {
                         ></path>
                     </svg>
                 </label>
-                <Link className="btn btn-ghost btn-sm normal-case text-xs md:text-xl transition-all duration-1000 translate-x-0 text-primary font-mono ">
-                    {getTitle()}
+                <Link className="btn btn-ghost btn-sm normal-case text-xs md:text-xl transition-all duration-1000 translate-x-0 text-primary-content font-mono ">
+                    {navBarTitle}
                 </Link>
             </div>
             <div className="flex-none gap-2">
@@ -40,7 +46,7 @@ function Navbar() {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            className="inline-block h-5 w-5 stroke-current md:h-6 md:w-6"
+                            className="inline-block h-5 w-5 stroke-current md:h-6 md:w-6 text-primary-content"
                         >
                             <path
                                 strokeLinecap="round"
@@ -49,14 +55,14 @@ function Navbar() {
                                 d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
                             ></path>
                         </svg>
-                        <span className="mx-2">Theme</span>
+                        <span className="mx-2 text-primary-content">Theme</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-6 h-6"
+                            className="w-6 h-6 text-primary-content"
                         >
                             <path
                                 strokeLinecap="round"

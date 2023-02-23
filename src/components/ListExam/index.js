@@ -11,22 +11,17 @@ function ListExam() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
     const [listExam, setListExam] = useState();
-    // const [isDoing, setIsDoing] = useState(false);
 
-    // useEffect(()=>{
-    //     const check = async ()=>{
-    //         const docRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
-    //         const docSnap = await getDoc(docRef);
+    function expire(currentTime, minutes) {
+        // Tính toán timestamp của thời điểm hết hạn
+        const expirationTime = currentTime + minutes * 60 * 1000;
 
-    //         if (docSnap.exists()) {
-    //             setIsDoing(true);
-
-    //         }
-    //     }
-    //    chec
-    // },[])
+        // Trả về timestamp của thời điểm hết hạn
+        return expirationTime;
+    }
     const startExam = async (examId) => {
         try {
+            const now = new Date().getTime();
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);
             const exam = await getDoc(examRef);
 
@@ -34,10 +29,10 @@ function ListExam() {
             const docRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
             const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                navigate("/test/" + examId);
-                return;
-            }
+            // if (docSnap.exists()) {
+            //     navigate("/test/" + examId);
+            //     return;
+            // }
 
             //push to history
             console.log(exam.data());
@@ -45,6 +40,8 @@ function ListExam() {
             await setDoc(historyRef, {
                 ...exam.data(),
                 id: examId,
+                startAt: now / 1000,
+                expire: expire(now, +exam.data().time) / 1000,
                 questions: exam.data()?.questions.map((q, index) => ({ ...q, index: index + 1 })),
             });
             navigate("/test/" + examId);
