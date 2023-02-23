@@ -13,7 +13,7 @@ function Navbar() {
 
     const user = useSelector((state) => state.authSlice.user);
     return (
-        <div className="navbar bg-primary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-md transition-all duration-150">
+        <div className="navbar bg-primary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
             <div className="flex-1">
                 <label
                     htmlFor="my-drawer"

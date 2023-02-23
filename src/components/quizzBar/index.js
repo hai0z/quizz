@@ -144,7 +144,7 @@ function QuizzBar(_props) {
                             </div>
                         ))}
                     </div>
-                    <div className=" w-full md:w-9/12 p-10">
+                    <div className=" w-full md:w-9/12 px-10 py-2 ">
                         {listQuestions?.time && (
                             <Countdown
                                 minutes={listQuestions?.time}
