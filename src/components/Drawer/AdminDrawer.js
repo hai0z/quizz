@@ -43,9 +43,9 @@ function Drawer() {
                             </li>
                             <li>
                                 <Link
-                                    to="/admin/account-manager"
+                                    to="/admin/manager"
                                     className={`${
-                                        location.pathname === "/admin/account-manager" && "active"
+                                        location.pathname === "/admin/manager" && "active"
                                     } `}
                                 >
                                     Quản Lý

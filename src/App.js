@@ -50,7 +50,7 @@ function App() {
                         className="card card-compact w-96 md:w-80 bg-base-200 shadow-xl cursor-pointer p-2"
                     >
                         <figure>
-                            <img src={item.img} alt="subject" className="h-52" />
+                            <img src={item.img} alt="subject" className="h-52 p-4" />
                         </figure>
                         <div className="card-body items-center">
                             <h2 className="card-title text-primary drop-shadow-sm">{item.name}</h2>

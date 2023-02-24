@@ -80,7 +80,7 @@ export const router = createBrowserRouter([
             { path: "/admin", element: <AdminPage /> },
             { path: "/admin/add-question", element: <AddQuestion /> },
             { path: "/admin/make-exam", element: <RandomExam /> },
-            { path: "/admin/account-manager", element: <></> },
+            { path: "/admin/manager", element: <></> },
         ],
     },
 ]);
