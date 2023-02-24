@@ -42,7 +42,7 @@ function Drawer({ children }) {
                                 <Link
                                     to="/admin/account-manager"
                                     className={`${
-                                        location.pathname === "/Quản lý tài khoản" && "active"
+                                        location.pathname === "/admin/account-manager" && "active"
                                     } `}
                                 >
                                     Quản Lý

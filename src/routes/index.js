@@ -13,12 +13,12 @@ import ExamHistory from "../page/Examhistory";
 import ListExam from "../components/ListExam";
 import Profile from "../page/profile";
 import ErrorPage from "../page/error";
-import Drawer from "../components/Drawer/AdminDrawer";
+import Drawer from "../components/Drawer/UserDrawer";
 
 const AuthLayOut = () => {
     return (
         <AuthProvider>
-            <Outlet />
+            <Drawer />
         </AuthProvider>
     );
 };

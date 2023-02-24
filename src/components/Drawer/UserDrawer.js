@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AuthProvider from "../../context/AuthProvider";
 import Footer from "../footer";
@@ -15,7 +15,7 @@ function Drawer({ children }) {
                 <div className="drawer-content">
                     <div className="min-h-screen">
                         <Navbar />
-                        {children}
+                        <Outlet />
                     </div>
                     <Footer />
                 </div>

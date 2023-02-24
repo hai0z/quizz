@@ -7,8 +7,8 @@ import {
     signOut,
     onAuthStateChanged,
 } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { setAuth, setUser } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
@@ -16,11 +16,14 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const user = useSelector((state) => state.authSlice.user);
+
+    console.log(user);
     const handleLogin = async () => {
         const googleProvider = new GoogleAuthProvider();
         try {
             const userCredential = await signInWithPopup(auth, googleProvider);
-
+            console.log(userCredential);
             const {
                 user: { uid, photoURL, displayName, email },
             } = userCredential;
@@ -54,17 +57,30 @@ const AuthProvider = ({ children }) => {
         const user = await getDoc(userRef);
         dispatch(setUser({ ...user.data() }));
     };
+    const updateUserStatus = async (status, userUid) => {
+        const userRef = doc(db, "users", user && user.uid);
+        await updateDoc(userRef, { status });
+    };
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
+        const unsubscribe = onAuthStateChanged(auth, (isUser) => {
+            if (isUser) {
+                dispatch(setUser({ ...isUser }));
                 getUserInfo();
+                updateUserStatus("online");
                 dispatch(setAuth({ isLogin: true }));
             } else {
-                dispatch(setUser({}));
+                updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
             }
         });
         return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener("beforeunload", () => updateUserStatus("offline"));
+        return () => {
+            window.removeEventListener("beforeunload", updateUserStatus("offline"));
+        };
     }, []);
 
     const defaultValue = { handleLogin, handleLogout };
