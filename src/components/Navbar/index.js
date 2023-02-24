@@ -106,9 +106,9 @@ function Navbar() {
                                     Lofi
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("corporate")}>
-                                <span className={`${theme === "corporate" && "active"} lowercase`}>
-                                    Corporate
+                            <li onClick={() => handleChangeTheme("retro")}>
+                                <span className={`${theme === "retro" && "active"} lowercase`}>
+                                    retro
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("cupcake")}>

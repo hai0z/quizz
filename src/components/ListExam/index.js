@@ -78,11 +78,13 @@ function ListExam() {
                     </div>
                 )}
                 {listExam?.map((item, index) => (
-                    <div key={index} className="card w-96 lg:w-80 bg-base-300 shadow-xl">
+                    <div key={index} className="card w-96 lg:w-80 bg-secondary shadow-xl">
                         <div className="card-body">
-                            <h2 className="card-title text-primary">{item.name}</h2>
-                            <p>Time: {item.time}p</p>
-                            <p>Số câu hỏi: {item.numberOfQuestion}</p>
+                            <h2 className="card-title text-secondary-content">{item.name}</h2>
+                            <p className="text-secondary-content">Time: {item.time}p</p>
+                            <p className="text-secondary-content">
+                                Số câu hỏi: {item.numberOfQuestion}
+                            </p>
                             <div className="card-actions justify-end">
                                 <button
                                     onClick={() => startExam(item.id)}
