@@ -68,7 +68,7 @@ function ListExam() {
     });
     return (
         <div>
-            <div className="container p-8 flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
+            <div className="container p-8 flex flex-row flex-wrap gap-8 justify-center md:justify-around">
                 {listExam?.length <= 0 && (
                     <div className="items-center justify-center flex flex-col container">
                         <img src={require("../../asset/page.png")} alt="empty" className="h-40" />
@@ -78,17 +78,21 @@ function ListExam() {
                     </div>
                 )}
                 {listExam?.map((item, index) => (
-                    <div key={index} className="card w-96 lg:w-80 bg-secondary shadow-xl">
+                    <div className="card card-side bg-base-200 shadow-xl" key={index}>
+                        <figure>
+                            <img
+                                src={require("../../asset/exam.png")}
+                                alt="exam"
+                                className="h-52"
+                            />
+                        </figure>
                         <div className="card-body">
-                            <h2 className="card-title text-secondary-content">{item.name}</h2>
-                            <p className="text-secondary-content">Time: {item.time}p</p>
-                            <p className="text-secondary-content">
-                                Số câu hỏi: {item.numberOfQuestion}
-                            </p>
+                            <h2 className="card-title">{item.name}</h2>
+                            <p>Thời gian: {item.time} phút</p>
                             <div className="card-actions justify-end">
                                 <button
-                                    onClick={() => startExam(item.id)}
                                     className="btn btn-primary"
+                                    onClick={() => startExam(item.id)}
                                 >
                                     Bắt đầu làm
                                 </button>

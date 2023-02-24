@@ -126,14 +126,14 @@ function Navbar() {
                                     Wrireframe
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("night")}>
-                                <span className={`${theme === "night" && "active"} lowercase`}>
-                                    Night
+                            <li onClick={() => handleChangeTheme("autumn")}>
+                                <span className={`${theme === "autumn" && "active"} lowercase`}>
+                                    autumn
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("garden")}>
-                                <span className={`${theme === "garden" && "active"} lowercase`}>
-                                    Gardent
+                            <li onClick={() => handleChangeTheme("cmyk")}>
+                                <span className={`${theme === "cmyk" && "active"} lowercase`}>
+                                    cmyk
                                 </span>
                             </li>
                         </div>

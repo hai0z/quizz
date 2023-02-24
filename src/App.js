@@ -39,7 +39,6 @@ function App() {
 
     useEffect(() => {
         setTitle("Trang chủ");
-        console.log(1);
     });
     return (
         <div className="flex justify-center items-center flex-col container">
@@ -48,15 +47,13 @@ function App() {
                     <Link
                         to={`/exam/${item.id}`}
                         key={item.id}
-                        className="card card-compact w-96 md:w-80 bg-secondary shadow-xl cursor-pointer p-2"
+                        className="card card-compact w-96 md:w-80 bg-base-200 shadow-xl cursor-pointer p-2"
                     >
                         <figure>
                             <img src={item.img} alt="subject" className="h-52" />
                         </figure>
                         <div className="card-body items-center">
-                            <h2 className="card-title text-secondary-content drop-shadow-sm">
-                                {item.name}
-                            </h2>
+                            <h2 className="card-title text-primary drop-shadow-sm">{item.name}</h2>
                         </div>
                     </Link>
                 ))}
