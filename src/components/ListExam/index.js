@@ -49,7 +49,6 @@ function ListExam() {
             // }
 
             //push to history
-            console.log(exam.data());
             const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
             await setDoc(historyRef, {
                 ...exam.data(),
@@ -68,7 +67,7 @@ function ListExam() {
     });
     return (
         <div>
-            <div className="container p-8 flex flex-row flex-wrap gap-8 justify-center md:justify-around">
+            <div className="container p-8 flex flex-row flex-wrap gap-8 justify-center md:justify-start">
                 {listExam?.length <= 0 && (
                     <div className="items-center justify-center flex flex-col container">
                         <img src={require("../../asset/page.png")} alt="empty" className="h-40" />
@@ -89,6 +88,7 @@ function ListExam() {
                         <div className="card-body">
                             <h2 className="card-title">{item.name}</h2>
                             <p>Thời gian: {item.time} phút</p>
+                            <p>Số câu hỏi: {item.numberOfQuestion}</p>
                             <div className="card-actions justify-end">
                                 <button
                                     className="btn btn-primary"

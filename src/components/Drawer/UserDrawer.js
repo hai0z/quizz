@@ -1,11 +1,10 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import AuthProvider from "../../context/AuthProvider";
 import Footer from "../footer";
 import Navbar from "../Navbar";
 
-function Drawer({ children }) {
+function Drawer() {
     const location = useLocation();
 
     return (
@@ -25,7 +24,10 @@ function Drawer({ children }) {
                         <Link to="/" className="btn btn-ghost">
                             <span className="text-primary font-bold text-2xl capitalize font-mono ">
                                 Quizz{" "}
-                                <span className="text-4xl text-base-content font-serif"> App</span>
+                                <span className="text-4xl text-secondary drop-shadow-sm font-serif">
+                                    {" "}
+                                    App
+                                </span>
                             </span>
                         </Link>
                     </div>

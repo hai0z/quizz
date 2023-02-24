@@ -45,9 +45,9 @@ function AddQuestion() {
                     />
                 </div>
 
-                <div className="flex flex-row ml-4 flex-wrap max-w-md gap-2">
+                <div className="flex flex-row md:ml-4 flex-wrap max-w-md gap-2">
                     <div className="form-control">
-                        <label htmlFor="" className="p-2 font-bold">
+                        <label htmlFor="" className="md:p-2 font-bold">
                             Đáp án 1
                         </label>
                         <input
@@ -59,7 +59,7 @@ function AddQuestion() {
                     </div>
 
                     <div className="form-control">
-                        <label htmlFor="" className="p-2 font-bold">
+                        <label htmlFor="" className="md:p-2 font-bold">
                             Đáp án 2
                         </label>
                         <input
@@ -71,7 +71,7 @@ function AddQuestion() {
                     </div>
 
                     <div className="form-control">
-                        <label htmlFor="" className="p-2 font-bold">
+                        <label htmlFor="" className="md:p-2 font-bold">
                             Đáp án 3
                         </label>
                         <input
@@ -83,7 +83,7 @@ function AddQuestion() {
                     </div>
 
                     <div className="form-control">
-                        <label htmlFor="" className="p-2 font-bold">
+                        <label htmlFor="" className="md:p-2 font-bold">
                             Đáp án 4
                         </label>
                         <input
@@ -118,7 +118,7 @@ function AddQuestion() {
                         <option value={"hard"}>Khó</option>
                     </select>
                     <div className="form-control">
-                        <label htmlFor="" className="p-2 font-bold">
+                        <label htmlFor="" className="md:p-2 font-bold">
                             Đáp án đúng
                         </label>
                         <input
@@ -128,12 +128,12 @@ function AddQuestion() {
                             onChange={(e) => setCorrectAnswer(e.target.value)}
                         />
                     </div>
+                    <div className="container">
+                        <button className="btn btn-primary w-36" onClick={addQuestion}>
+                            add
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div className="container px-8">
-                <button className="btn btn-primary w-36" onClick={addQuestion}>
-                    add
-                </button>
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ function Navbar() {
 
     const user = useSelector((state) => state.authSlice.user);
     return (
-        <div className="navbar bg-primary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
+        <div className="navbar bg-secondary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
             <div className="flex-1">
                 <label
                     htmlFor="my-drawer"
@@ -33,7 +33,7 @@ function Navbar() {
                         ></path>
                     </svg>
                 </label>
-                <Link className="btn btn-ghost btn-sm normal-case text-xs md:text-xl transition-all duration-1000 translate-x-0 text-primary-content font-mono ">
+                <Link className="btn btn-ghost btn-sm normal-case text-xs md:text-xl transition-all duration-1000 translate-x-0 text-secondary-content font-mono ">
                     {navBarTitle}
                 </Link>
             </div>
@@ -46,7 +46,7 @@ function Navbar() {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            className="inline-block h-5 w-5 stroke-current md:h-6 md:w-6 text-primary-content"
+                            className="inline-block h-5 w-5 stroke-current md:h-6 md:w-6 text-secondary-content"
                         >
                             <path
                                 strokeLinecap="round"
@@ -55,14 +55,14 @@ function Navbar() {
                                 d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
                             ></path>
                         </svg>
-                        <span className="mx-2 text-primary-content">Theme</span>
+                        <span className="mx-2 text-secondary-content">Theme</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-6 h-6 text-primary-content"
+                            className="w-6 h-6 text-secondary-content"
                         >
                             <path
                                 strokeLinecap="round"
@@ -142,7 +142,7 @@ function Navbar() {
                 <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img src={user.photoURL} alt="heheh" />
+                            <img src={user.photoURL} alt="user-img" />
                         </div>
                     </label>
                     <ul
