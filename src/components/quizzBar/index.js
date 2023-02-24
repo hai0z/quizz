@@ -244,8 +244,10 @@ function QuizzBar(_props) {
                                 key={item.index}
                                 onClick={() => setCurrentQuestion(item.index)}
                                 className={`${
-                                    currentQuestion === Number(item.index) && "btn-primary"
-                                }  w-24 lg:w-20 btn`}
+                                    currentQuestion === Number(item.index)
+                                        ? "btn-primary"
+                                        : "btn-secondary"
+                                }  w-24 lg:w-20 btn `}
                             >
                                 Câu {item.index}{" "}
                                 {item?.flag && (
@@ -255,7 +257,7 @@ function QuizzBar(_props) {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="text-red-600 h-4 w-4 ml-1"
+                                        className="text-error h-4 w-4 ml-1"
                                     >
                                         <path
                                             strokeLinecap="round"
@@ -271,7 +273,7 @@ function QuizzBar(_props) {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="w-6 h-6 text-secondary"
+                                        className="w-6 h-6 text-secondary-content"
                                     >
                                         <path
                                             strokeLinecap="round"

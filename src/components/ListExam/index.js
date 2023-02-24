@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import Drawer from "../Drawer/UserDrawer";
 import { auth, db } from "../../firebase/";
 import { getDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useAppContext } from "../../context/AppProvider";
 
 export const listExamLoader = async (id) => {
@@ -21,6 +19,7 @@ export const listExamLoader = async (id) => {
     return arr;
 };
 function ListExam() {
+    const [loading, setLoading] = useState();
     const { id } = useParams();
     const navigate = useNavigate();
     const listExam = useLoaderData();
@@ -35,6 +34,7 @@ function ListExam() {
     }
     const startExam = async (examId) => {
         try {
+            setLoading(examId);
             const now = new Date().getTime();
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);
             const exam = await getDoc(examRef);
@@ -91,10 +91,12 @@ function ListExam() {
                             <p>Số câu hỏi: {item.numberOfQuestion}</p>
                             <div className="card-actions justify-end">
                                 <button
-                                    className="btn btn-primary"
+                                    className={`btn btn-primary ${
+                                        loading === item.id && "loading"
+                                    }`}
                                     onClick={() => startExam(item.id)}
                                 >
-                                    Bắt đầu làm
+                                    {loading === item.id ? "Đang bắt đầu" : "Bắt đầu làm"}
                                 </button>
                             </div>
                         </div>
