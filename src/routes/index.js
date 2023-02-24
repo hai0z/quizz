@@ -1,7 +1,7 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import QuizzBar from "../components/quizzBar";
 import ExamResult from "../page/ViewExamResult";
-import ShowDescription from "../page/ViewExamResult/Showdescriptions";
+import ShowDescription, { examResultLoader } from "../page/ViewExamResult/Showdescriptions";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthProvider from "../context/AuthProvider";
 import Login from "../page/login";
@@ -9,11 +9,12 @@ import App from "../App";
 import AdminPage from "../page/admin";
 import AddQuestion from "../page/AddQuestion";
 import RandomExam from "../page/RandomExam";
-import ExamHistory from "../page/Examhistory";
-import ListExam from "../components/ListExam";
+import ExamHistory, { historyLoader } from "../page/Examhistory";
+import ListExam, { listExamLoader } from "../components/ListExam";
 import Profile from "../page/profile";
 import ErrorPage from "../page/error";
 import Drawer from "../components/Drawer/UserDrawer";
+import AdminDrawer from "../components/Drawer/AdminDrawer";
 
 const AuthLayOut = () => {
     return (
@@ -25,36 +26,49 @@ const AuthLayOut = () => {
 const AdminLayout = () => {
     return (
         <AuthProvider>
-            <Outlet />
+            <AdminDrawer />
         </AuthProvider>
     );
 };
 export const router = createBrowserRouter([
     {
         path: "*",
-        element: <ErrorPage />,
+        element: <AuthLayOut />,
+        children: [{ path: "*", element: <ErrorPage /> }],
+    },
+    {
+        path: "/login",
+        element: (
+            <AuthProvider>
+                <Login />
+            </AuthProvider>
+        ),
     },
     {
         element: <AuthLayOut />,
         children: [
-            {
-                path: "/login",
-                element: <Login />,
-            },
             {
                 path: "/",
                 element: <ProtectedRoute />,
                 children: [
                     { path: "/", element: <App /> },
                     { path: "/profile", element: <Profile /> },
-                    { path: "/exam/:id", element: <ListExam /> },
+                    {
+                        path: "/exam/:id",
+                        element: <ListExam />,
+                        loader: ({ params }) => listExamLoader(params.id),
+                    },
                     {
                         path: "/test/:id",
                         element: <QuizzBar />,
                     },
                     { path: "/examResult/:id", element: <ExamResult /> },
-                    { path: "/descriptions/:id", element: <ShowDescription /> },
-                    { path: "/history", element: <ExamHistory /> },
+                    {
+                        path: "/descriptions/:id",
+                        element: <ShowDescription />,
+                        loader: ({ params }) => examResultLoader(params.id),
+                    },
+                    { path: "/history", element: <ExamHistory />, loader: historyLoader },
                 ],
             },
         ],
@@ -66,7 +80,7 @@ export const router = createBrowserRouter([
             { path: "/admin", element: <AdminPage /> },
             { path: "/admin/add-question", element: <AddQuestion /> },
             { path: "/admin/make-exam", element: <RandomExam /> },
-            { path: "/admin/account-manager", element: <Drawer /> },
+            { path: "/admin/account-manager", element: <></> },
         ],
     },
 ]);

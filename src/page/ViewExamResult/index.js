@@ -24,7 +24,7 @@ function ExamResult() {
     }, [id, user.uid]);
     return (
         <div>
-            <Drawer>
+           
                 <div className="container p-8">
                     <div className="overflow-x-auto">
                         <table className="table w-full">
@@ -51,7 +51,7 @@ function ExamResult() {
                         </table>
                     </div>
                 </div>
-            </Drawer>
+           
         </div>
     );
 }

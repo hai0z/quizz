@@ -1,16 +1,30 @@
 import { useEffect, useState } from "react";
 import Drawer from "../Drawer/UserDrawer";
-import { db } from "../../firebase/";
+import { auth, db } from "../../firebase/";
 import { getDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAppContext } from "../../context/AppProvider";
 
+export const listExamLoader = async (id) => {
+    const arr = [];
+    const q = collection(db, `exams/${id}/exam`);
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        arr.push({
+            name: doc.data().examName,
+            time: doc.data().time,
+            id: doc.id,
+            numberOfQuestion: doc.data().questions.length,
+        });
+    });
+    return arr;
+};
 function ListExam() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const user = useSelector((state) => state.authSlice.user);
-    const [listExam, setListExam] = useState();
+    const listExam = useLoaderData();
+    const { setTitle } = useAppContext();
 
     function expire(currentTime, minutes) {
         // Tính toán timestamp của thời điểm hết hạn
@@ -26,7 +40,7 @@ function ListExam() {
             const exam = await getDoc(examRef);
 
             //check xem da lam chua
-            const docRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
+            const docRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
             const docSnap = await getDoc(docRef);
 
             // if (docSnap.exists()) {
@@ -36,7 +50,7 @@ function ListExam() {
 
             //push to history
             console.log(exam.data());
-            const historyRef = doc(db, "histories", `${user.uid}/exam/${examId}`);
+            const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
             await setDoc(historyRef, {
                 ...exam.data(),
                 id: examId,
@@ -49,25 +63,6 @@ function ListExam() {
             throw error;
         }
     };
-    useEffect(() => {
-        const arr = [];
-        const getListExam = async () => {
-            const q = collection(db, `exams/${id}/exam`);
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                arr.push({
-                    name: doc.data().examName,
-                    time: doc.data().time,
-                    id: doc.id,
-                    numberOfQuestion: doc.data().questions.length,
-                });
-            });
-            setListExam(arr);
-        };
-        getListExam();
-    }, [id]);
-
-    const { setTitle } = useAppContext();
     useEffect(() => {
         setTitle("Danh sách đề thi");
     });

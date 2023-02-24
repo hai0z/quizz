@@ -57,14 +57,16 @@ const AuthProvider = ({ children }) => {
         const user = await getDoc(userRef);
         dispatch(setUser({ ...user.data() }));
     };
-    const updateUserStatus = async (status, userUid) => {
-        const userRef = doc(db, "users", user && user.uid);
-        await updateDoc(userRef, { status });
+    const updateUserStatus = async (status) => {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { status }).catch((err) => {
+            throw err;
+        });
     };
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (isUser) => {
             if (isUser) {
-                dispatch(setUser({ ...isUser }));
+                dispatch(setUser({ ...user, uid: isUser.uid }));
                 getUserInfo();
                 updateUserStatus("online");
                 dispatch(setAuth({ isLogin: true }));

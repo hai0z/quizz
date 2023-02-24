@@ -32,7 +32,7 @@ function RandomExam() {
     };
 
     return (
-        <Drawer>
+        <div>
             <div className="container flex flex-col  p-8">
                 <div className="form-control">
                     <label htmlFor="" className="p-2 font-bold">
@@ -89,7 +89,7 @@ function RandomExam() {
                     add
                 </button>
             </div>
-        </Drawer>
+        </div>
     );
 }
 

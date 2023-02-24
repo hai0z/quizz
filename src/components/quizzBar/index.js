@@ -21,7 +21,11 @@ function QuizzBar(_props) {
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
-            setListQuestions({ ...doc.data(), id: doc.id });
+            if (doc.exists()) {
+                setListQuestions({ ...doc.data(), id: doc.id });
+            } else {
+                navigate("/");
+            }
         });
         return () => unsub();
     }, [id, user.uid]);

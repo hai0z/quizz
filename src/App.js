@@ -28,12 +28,12 @@ function App() {
     });
     return (
         <div>
-            <div className="container p-8 flex flex-row flex-wrap gap-4 justify-center lg:justify-start">
+            <div className="container p-8 flex flex-row flex-wrap gap-4 justify-center md:justify-start">
                 {listSubject?.map((item) => (
                     <Link
                         to={`/exam/${item.id}`}
                         key={item.id}
-                        className="card card-compact w-96 lg:w-80 bg-base-300 shadow-xl cursor-pointer p-2"
+                        className="card card-compact w-96 md:w-80 bg-base-300 shadow-xl cursor-pointer p-2"
                     >
                         <figure>
                             <img src={item.img} alt="subject" className="h-52" />

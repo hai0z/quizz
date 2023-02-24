@@ -1,14 +1,22 @@
 import { getDocs, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Drawer from "../../components/Drawer/UserDrawer";
-import { db } from "../../firebase";
-import { Link } from "react-router-dom";
+import { auth, db } from "../../firebase";
+import { Link, useLoaderData } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 
+export const historyLoader = async () => {
+    const arr = [];
+    const querySnapshot = await getDocs(collection(db, `histories/${auth.currentUser.uid}/exam`));
+    querySnapshot.forEach((doc) => {
+        arr.push(doc.data());
+    });
+    return arr;
+};
+
 function ExamHistory() {
-    const user = useSelector((state) => state.authSlice.user);
-    const [examHistory, setExamHistory] = useState();
+    const examHistory = useLoaderData();
+
     const { setTitle } = useAppContext();
 
     useEffect(() => {
@@ -24,17 +32,17 @@ function ExamHistory() {
         return `${day}/${month}/${year} ${hour}:${minute}`;
     }
 
-    useEffect(() => {
-        const getData = async () => {
-            const arr = [];
-            const querySnapshot = await getDocs(collection(db, `histories/${user.uid}/exam`));
-            querySnapshot.forEach((doc) => {
-                arr.push(doc.data());
-            });
-            setExamHistory(arr);
-        };
-        getData();
-    }, [user.uid]);
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         const arr = [];
+    //         const querySnapshot = await getDocs(collection(db, `histories/${user.uid}/exam`));
+    //         querySnapshot.forEach((doc) => {
+    //             arr.push(doc.data());
+    //         });
+    //         setExamHistory(arr);
+    //     };
+    //     getData();
+    // }, [user.uid]);
 
     return (
         <div>
