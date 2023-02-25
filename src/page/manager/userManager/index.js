@@ -42,6 +42,7 @@ function UserManager() {
             });
             setListUser(userArr);
         });
+        console.log(listUser);
         return () => unsubscribe();
     }, []);
 

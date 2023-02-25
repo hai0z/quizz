@@ -21,11 +21,15 @@ function UserInfoModal({ user }) {
                                 <p className="text-lg font-bold text-base-content">
                                     {user?.displayName}
                                 </p>
-                                <p className="text-base md:text-lg mt-10 text-base-content">
+                                <p className="text-lg text-base-content mt-2">UID: {user?.uid}</p>
+                                <p className="text-lg text-base-content mt-2">
                                     Email:{user?.email}
                                 </p>
-                                <p className="text-base md:text-lg mt-10 text-base-content">
+                                <p className="text-lg text-base-content mt-2">
                                     Chức vụ: {user?.role}
+                                </p>
+                                <p className="text-lg text-base-content mt-2">
+                                    Ngày tham gia: 01/01/1970
                                 </p>
                             </div>
                         </div>

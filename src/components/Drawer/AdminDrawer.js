@@ -45,7 +45,7 @@ function Drawer() {
                                 <Link
                                     to="/admin/manager"
                                     className={`${
-                                        location.pathname === "/admin/manager" && "active"
+                                        location.pathname.includes("/admin/manager") && "active"
                                     } `}
                                 >
                                     Quản Lý
