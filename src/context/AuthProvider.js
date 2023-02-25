@@ -18,16 +18,14 @@ const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
 
-    console.log(user);
     const handleLogin = async () => {
         const googleProvider = new GoogleAuthProvider();
         try {
             const userCredential = await signInWithPopup(auth, googleProvider);
-            console.log(userCredential);
             const {
                 user: { uid, photoURL, displayName, email },
             } = userCredential;
-
+            console.log(userCredential);
             if (getAdditionalUserInfo(userCredential).isNewUser) {
                 const userRef = doc(db, "users", uid);
                 await setDoc(userRef, {

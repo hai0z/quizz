@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import QuizzBar from "../components/quizzBar";
 import ExamResult from "../page/ViewExamResult";
 import ShowDescription, { examResultLoader } from "../page/ViewExamResult/Showdescriptions";
@@ -15,6 +15,8 @@ import Profile from "../page/profile";
 import ErrorPage from "../page/error";
 import Drawer from "../components/Drawer/UserDrawer";
 import AdminDrawer from "../components/Drawer/AdminDrawer";
+import ManagerPage from "../page/manager";
+import UserManager from "../page/manager/userManager/index";
 
 const AuthLayOut = () => {
     return (
@@ -80,7 +82,8 @@ export const router = createBrowserRouter([
             { path: "/admin", element: <AdminPage /> },
             { path: "/admin/add-question", element: <AddQuestion /> },
             { path: "/admin/make-exam", element: <RandomExam /> },
-            { path: "/admin/manager", element: <></> },
+            { path: "/admin/manager", element: <ManagerPage /> },
+            { path: "/admin/manager/user", element: <UserManager /> },
         ],
     },
 ]);

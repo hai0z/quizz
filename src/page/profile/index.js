@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import UserDrawer from "../../components/Drawer/UserDrawer";
 import { useAppContext } from "../../context/AppProvider";
 import { useAuthContext } from "../../context/AuthProvider";
 function Profile() {
