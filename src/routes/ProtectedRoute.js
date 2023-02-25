@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 
-function ProtectedRoute() {
+export function ProtectedRoute() {
     const navigate = useNavigate();
     const auth = useSelector((state) => state.authSlice.auth);
     if (!auth.isLogin) {
@@ -13,4 +13,13 @@ function ProtectedRoute() {
     return <Outlet />;
 }
 
-export default ProtectedRoute;
+export function AdminProtectedRoute() {
+    const navigate = useNavigate();
+    const auth = useSelector((state) => state.authSlice.auth);
+    if (!auth.isLogin || auth.role !== "ADMIN") {
+        navigate("/login");
+        return;
+    }
+
+    return <Outlet />;
+}

@@ -17,7 +17,7 @@ function Navbar() {
             <div className="flex-1">
                 <label
                     htmlFor="my-drawer"
-                    className="lg:hidden p-4 btn btn-ghost text-primary-content"
+                    className="lg:hidden p-4 btn btn-ghost text-secondary-content"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

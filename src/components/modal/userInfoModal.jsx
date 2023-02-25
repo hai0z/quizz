@@ -1,5 +1,24 @@
 import React from "react";
 
+function convertDateFormat(inputDate) {
+    // Tạo đối tượng Date từ chuỗi thời gian đầu vào
+    var date = new Date(inputDate);
+
+    // Lấy giá trị ngày, tháng, năm
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    // Định dạng lại chuỗi thời gian
+    var outputDate =
+        day.toString().padStart(2, "0") +
+        "/" +
+        month.toString().padStart(2, "0") +
+        "/" +
+        year.toString();
+
+    return outputDate;
+}
 function UserInfoModal({ user }) {
     return (
         <div>
@@ -29,7 +48,8 @@ function UserInfoModal({ user }) {
                                     Chức vụ: {user?.role}
                                 </p>
                                 <p className="text-lg text-base-content mt-2">
-                                    Ngày tham gia: 01/01/1970
+                                    Ngày tham gia:{" "}
+                                    {convertDateFormat(user?.createdAt ?? "01/01/1970")}
                                 </p>
                             </div>
                         </div>

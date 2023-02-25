@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import QuizzBar from "../components/quizzBar";
 import ExamResult from "../page/ViewExamResult";
 import ShowDescription, { examResultLoader } from "../page/ViewExamResult/Showdescriptions";
-import ProtectedRoute from "./ProtectedRoute";
+import { ProtectedRoute, AdminProtectedRoute } from "./ProtectedRoute";
 import AuthProvider from "../context/AuthProvider";
 import Login from "../page/login";
 import App from "../App";
@@ -77,13 +77,17 @@ export const router = createBrowserRouter([
     },
     {
         element: <AdminLayout />,
-        path: "/admin",
         children: [
-            { path: "/admin", element: <AdminPage /> },
-            { path: "/admin/add-question", element: <AddQuestion /> },
-            { path: "/admin/make-exam", element: <RandomExam /> },
-            { path: "/admin/manager", element: <ManagerPage /> },
-            { path: "/admin/manager/user", element: <UserManager /> },
+            {
+                element: <AdminProtectedRoute />,
+                children: [
+                    { path: "/admin", element: <AdminPage /> },
+                    { path: "/admin/add-question", element: <AddQuestion /> },
+                    { path: "/admin/make-exam", element: <RandomExam /> },
+                    { path: "/admin/manager", element: <ManagerPage /> },
+                    { path: "/admin/manager/user", element: <UserManager /> },
+                ],
+            },
         ],
     },
 ]);

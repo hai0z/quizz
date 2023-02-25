@@ -63,15 +63,17 @@ function UserManager() {
                         <tbody className="text-left">
                             {listUser?.map((item) => (
                                 <tr key={item?.uid}>
-                                    <th className="text-left flex items-center">
-                                        <div className={`avatar `}>
-                                            <img
-                                                src={item.photoURL}
-                                                alt="user_img"
-                                                className="rounded-full"
-                                            />
+                                    <th className="text-left ">
+                                        <div className={`flex flex-row items-center`}>
+                                            <div className="avatar hidden md:block">
+                                                <img
+                                                    src={item.photoURL}
+                                                    alt="user_img"
+                                                    className="rounded-full"
+                                                />
+                                            </div>
+                                            <span className="ml-2">{item?.displayName}</span>
                                         </div>
-                                        <span className="ml-2">{item?.displayName}</span>
                                     </th>
                                     <th>{item?.email}</th>
                                     <td>
