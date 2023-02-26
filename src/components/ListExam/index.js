@@ -82,7 +82,7 @@ function ListExam() {
                             <img
                                 src={require("../../asset/exam.png")}
                                 alt="exam"
-                                className="h-52 p-4"
+                                className="h-36 lg:h52 p-4"
                             />
                         </figure>
                         <div className="card-body">
