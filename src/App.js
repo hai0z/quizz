@@ -40,6 +40,7 @@ function App() {
     useEffect(() => {
         setTitle("Trang chủ");
     });
+
     return (
         <div className="flex justify-center items-center flex-col container">
             <div className="container  flex flex-row flex-wrap gap-8 justify-center md:justify-around p-8">

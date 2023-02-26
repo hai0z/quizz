@@ -60,18 +60,16 @@ const AuthProvider = ({ children }) => {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const user = await getDoc(userRef);
         dispatch(setUser({ ...user.data() }));
-        setLoading(false);
+        await updateUserStatus("online");
     };
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (isUser) => {
+        const unsubscribe = onAuthStateChanged(auth, (isUser) => {
             if (isUser) {
-                await getUserInfo();
-                updateUserStatus("online");
+                getUserInfo();
                 dispatch(setAuth({ isLogin: true }));
             } else {
                 updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
-                setLoading(false);
             }
         });
         return () => unsubscribe();
@@ -85,8 +83,6 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const defaultValue = { handleLogin, handleLogout };
-
-    if (loading) return null;
     return <AuthContext.Provider value={defaultValue}>{children}</AuthContext.Provider>;
 };
 
