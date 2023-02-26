@@ -16,7 +16,9 @@ export function ProtectedRoute() {
 export function AdminProtectedRoute() {
     const navigate = useNavigate();
     const auth = useSelector((state) => state.authSlice.auth);
-    if (!auth.isLogin || auth.role !== "ADMIN") {
+    const user = useSelector((state) => state.authSlice.user);
+    console.log(auth);
+    if (!auth.isLogin || user.role !== "ADMIN") {
         navigate("/login");
         return;
     }

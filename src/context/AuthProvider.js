@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/";
 import {
     signInWithPopup,
@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
-
+    const [loading, setLoading] = useState(true);
     const handleLogin = async () => {
         const googleProvider = new GoogleAuthProvider();
         try {
@@ -50,27 +50,28 @@ const AuthProvider = ({ children }) => {
             throw error;
         }
     };
-    const getUserInfo = async () => {
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        const user = await getDoc(userRef);
-        dispatch(setUser({ ...user.data() }));
-    };
     const updateUserStatus = async (status) => {
-        const userRef = doc(db, "users", user.uid);
+        const userRef = doc(db, "users", auth.currentUser.uid);
         await updateDoc(userRef, { status }).catch((err) => {
             throw err;
         });
     };
+    const getUserInfo = async () => {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        const user = await getDoc(userRef);
+        await updateUserStatus("online");
+        dispatch(setUser({ ...user.data() }));
+    };
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (isUser) => {
             if (isUser) {
-                dispatch(setUser({ ...user, uid: isUser.uid }));
                 getUserInfo();
-                updateUserStatus("online");
                 dispatch(setAuth({ isLogin: true }));
+                setLoading(false);
             } else {
                 updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
+                setLoading(false);
             }
         });
         return () => unsubscribe();
@@ -85,6 +86,7 @@ const AuthProvider = ({ children }) => {
 
     const defaultValue = { handleLogin, handleLogout };
 
+    if (loading) return null;
     return <AuthContext.Provider value={defaultValue}>{children}</AuthContext.Provider>;
 };
 

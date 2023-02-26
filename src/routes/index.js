@@ -81,7 +81,10 @@ export const router = createBrowserRouter([
             {
                 element: <AdminProtectedRoute />,
                 children: [
-                    { path: "/admin", element: <AdminPage /> },
+                    {
+                        element: <AdminPage />,
+                        path: "/admin",
+                    },
                     { path: "/admin/add-question", element: <AddQuestion /> },
                     { path: "/admin/make-exam", element: <RandomExam /> },
                     { path: "/admin/manager", element: <ManagerPage /> },
