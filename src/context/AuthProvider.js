@@ -67,9 +67,11 @@ const AuthProvider = ({ children }) => {
             if (isUser) {
                 getUserInfo();
                 dispatch(setAuth({ isLogin: true }));
+                setLoading(false);
             } else {
                 updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
+                setLoading(false);
             }
         });
         return () => unsubscribe();
