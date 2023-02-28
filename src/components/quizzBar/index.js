@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { onSnapshot, doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, unstable_usePrompt } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Countdown from "../countdown";
 import { useAppContext } from "../../context/AppProvider";
@@ -13,11 +13,13 @@ function QuizzBar(_props) {
     const [listQuestions, setListQuestions] = useState();
 
     const [filterQuestion, setFilterQuestion] = useState(listQuestions);
-
+    const [isDirty, setIsDirty] = useState(true);
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
 
     const { setTitle } = useAppContext();
+
+    unstable_usePrompt({ when: isDirty, message: "Đang làm bài, bạn có muốn rời đi không ?" });
 
     const [loading, setLoading] = useState(false);
     useEffect(() => {
@@ -57,6 +59,7 @@ function QuizzBar(_props) {
 
     const finished = async () => {
         setLoading(true);
+        setIsDirty(false);
         const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
@@ -147,6 +150,18 @@ function QuizzBar(_props) {
             setCurrentQuestion(currentQuestion - 1);
         }
     };
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <div>
