@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
+import CardLoading from "../components/Sketon/CardLoading";
 import { useAuthContext } from "../context/AuthProvider";
 
 export function ProtectedRoute() {
@@ -21,7 +22,13 @@ export function AdminProtectedRoute() {
     const user = useSelector((state) => state.authSlice.user);
 
     if (loading) {
-        return <progress className="progress w-56"></progress>;
+        return (
+            <div className="container p-8 flex flex-row gap-8 flex-wrap justify-center md:justify-start">
+                {Array.from({ length: 2 }).map((_, index) => (
+                    <CardLoading key={index} />
+                ))}
+            </div>
+        );
     } else {
         if (!auth.isLogin || user.role !== "ADMIN") {
             navigate("/login");
