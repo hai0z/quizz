@@ -17,7 +17,9 @@ const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
+
     const [loading, setLoading] = useState(true);
+
     const handleLogin = async () => {
         const googleProvider = new GoogleAuthProvider();
         try {
@@ -60,14 +62,14 @@ const AuthProvider = ({ children }) => {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const user = await getDoc(userRef);
         dispatch(setUser({ ...user.data() }));
-        await updateUserStatus("online");
+        setLoading(false);
     };
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (isUser) => {
             if (isUser) {
                 getUserInfo();
+                updateUserStatus("online");
                 dispatch(setAuth({ isLogin: true }));
-                setLoading(false);
             } else {
                 updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
@@ -84,7 +86,7 @@ const AuthProvider = ({ children }) => {
         };
     }, []);
 
-    const defaultValue = { handleLogin, handleLogout };
+    const defaultValue = { handleLogin, handleLogout, loading };
     return <AuthContext.Provider value={defaultValue}>{children}</AuthContext.Provider>;
 };
 

@@ -1,6 +1,5 @@
 import { getDocs, collection } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { auth, db } from "../../firebase";
 import { Link, useLoaderData } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
@@ -31,18 +30,6 @@ function ExamHistory() {
         const minute = `0${date.getMinutes()}`.slice(-2);
         return `${day}/${month}/${year} ${hour}:${minute}`;
     }
-
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         const arr = [];
-    //         const querySnapshot = await getDocs(collection(db, `histories/${user.uid}/exam`));
-    //         querySnapshot.forEach((doc) => {
-    //             arr.push(doc.data());
-    //         });
-    //         setExamHistory(arr);
-    //     };
-    //     getData();
-    // }, [user.uid]);
 
     return (
         <div>

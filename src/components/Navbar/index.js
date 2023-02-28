@@ -1,12 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthProvider";
 import { useAppContext } from "../../context/AppProvider";
 
 function Navbar() {
     const theme = useSelector((state) => state.themeSlice.theme);
-
+    const location = useLocation();
     const { handleChangeTheme, navBarTitle } = useAppContext();
 
     const { handleLogout } = useAuthContext();
@@ -150,7 +150,14 @@ function Navbar() {
                         className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
                     >
                         <li>
-                            <Link className="justify-between" to="/profile">
+                            <Link
+                                className="justify-between"
+                                to={
+                                    location.pathname.includes("/admin")
+                                        ? "/admin/profile"
+                                        : "/profile"
+                                }
+                            >
                                 Profile
                             </Link>
                         </li>

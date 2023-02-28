@@ -89,6 +89,7 @@ export const router = createBrowserRouter([
                     { path: "/admin/make-exam", element: <RandomExam /> },
                     { path: "/admin/manager", element: <ManagerPage /> },
                     { path: "/admin/manager/user", element: <UserManager /> },
+                    { path: "/admin/profile", element: <Profile /> },
                 ],
             },
         ],
