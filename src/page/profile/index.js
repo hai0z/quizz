@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 import { useAuthContext } from "../../context/AuthProvider";
 function Profile() {
@@ -30,6 +31,9 @@ function Profile() {
                     <p className="text-base md:text-lg mt-10 text-secondary-focus">
                         Chức vụ: {user.role}
                     </p>
+                    <Link className="mt-10 btn btn-primary mr-3" to="/admin">
+                        Go to admin page
+                    </Link>
                     <button className="mt-10 btn btn-primary" onClick={handleLogout}>
                         Logout
                     </button>
