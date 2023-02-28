@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Countdown from "../countdown";
 import { useAppContext } from "../../context/AppProvider";
+import FinishedExamModal from "../modal/finishedExamModal";
 function QuizzBar(_props) {
     const { id } = useParams();
     const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -18,6 +19,7 @@ function QuizzBar(_props) {
 
     const { setTitle } = useAppContext();
 
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
             if (doc.exists()) {
@@ -52,9 +54,10 @@ function QuizzBar(_props) {
         const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(examRef, l);
     };
-    const finished = async () => {
-        const pointPerQuestion = 10 / listQuestions.questions.length;
 
+    const finished = async () => {
+        setLoading(true);
+        const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
             pointPerQuestion
@@ -67,6 +70,7 @@ function QuizzBar(_props) {
 
         navigate("/examResult/" + id);
     };
+
     const toggleFlag = async (questionId) => {
         const l = {
             ...listQuestions,
@@ -171,7 +175,7 @@ function QuizzBar(_props) {
                         </div>
                     </div>
                     <div
-                        className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3 px-4"
+                        className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3 px-4 my-1 pb-1"
                         ref={containerRef}
                     >
                         {filterQuestion?.questions.map((item, index) => (
@@ -308,9 +312,9 @@ function QuizzBar(_props) {
                                     />
                                 </svg>
 
-                                <button className="block md:hidden btn" onClick={finished}>
+                                <label className="btn btn-success md:hidden" htmlFor="my-modal">
                                     Nộp bài
-                                </button>
+                                </label>
 
                                 <svg
                                     onClick={() => handleNextQuestion(currentQuestion)}
@@ -404,12 +408,13 @@ function QuizzBar(_props) {
                         ))}
                     </div>
                     <div className="text-center mt-14 ">
-                        <button className="btn" onClick={finished}>
+                        <label className="btn btn-success" htmlFor="my-modal">
                             Nộp bài
-                        </button>
+                        </label>
                     </div>
                 </div>
             </div>
+            <FinishedExamModal finished={finished} loading={loading} />
         </div>
     );
 }

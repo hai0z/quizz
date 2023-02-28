@@ -6,8 +6,18 @@ import { useAuthContext } from "../context/AuthProvider";
 
 export function ProtectedRoute() {
     const navigate = useNavigate();
+    const { loading } = useAuthContext();
     const auth = useSelector((state) => state.authSlice.auth);
-    if (!auth.isLogin) {
+
+    if (loading) {
+        return (
+            <div className="container  flex flex-row flex-wrap gap-8 justify-center md:justify-around p-8">
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <CardLoading key={index} />
+                ))}
+            </div>
+        );
+    } else if (!auth.isLogin) {
         navigate("/login");
         return;
     }
