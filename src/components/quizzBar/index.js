@@ -154,6 +154,7 @@ function QuizzBar(_props) {
     useEffect(() => {
         const handleBeforeUnload = (event) => {
             event.preventDefault();
+            event.returnValue = "";
         };
 
         window.addEventListener("beforeunload", handleBeforeUnload);
