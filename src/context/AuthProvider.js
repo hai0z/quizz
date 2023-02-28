@@ -62,13 +62,13 @@ const AuthProvider = ({ children }) => {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const user = await getDoc(userRef);
         dispatch(setUser({ ...user.data() }));
+        updateUserStatus("online");
         setLoading(false);
     };
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (isUser) => {
             if (isUser) {
                 getUserInfo();
-                updateUserStatus("online");
                 dispatch(setAuth({ isLogin: true }));
             } else {
                 updateUserStatus("offline");

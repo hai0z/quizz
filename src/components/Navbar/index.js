@@ -106,9 +106,9 @@ function Navbar() {
                                     Lofi
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("retro")}>
-                                <span className={`${theme === "retro" && "active"} lowercase`}>
-                                    retro
+                            <li onClick={() => handleChangeTheme("dracula")}>
+                                <span className={`${theme === "dracula" && "active"} lowercase`}>
+                                    dracula
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("cupcake")}>
@@ -121,9 +121,9 @@ function Navbar() {
                                     Bumblebee
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("wireframe")}>
-                                <span className={`${theme === "wireframe" && "active"} lowercase`}>
-                                    Wrireframe
+                            <li onClick={() => handleChangeTheme("winter")}>
+                                <span className={`${theme === "winter" && "active"} lowercase`}>
+                                    winter
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("autumn")}>
