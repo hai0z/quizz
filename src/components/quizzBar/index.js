@@ -1,27 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { onSnapshot, doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { onSnapshot, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../../firebase";
 import { useNavigate, useParams, unstable_usePrompt } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Countdown from "../countdown";
 import { useAppContext } from "../../context/AppProvider";
 import FinishedExamModal from "../modal/finishedExamModal";
+import { setUser } from "../../redux/authSlice";
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return { minutes, remainingSeconds };
+}
+
 function QuizzBar(_props) {
     const { id } = useParams();
     const [currentQuestion, setCurrentQuestion] = useState(1);
 
     const [listQuestions, setListQuestions] = useState();
-
+    const dispatch = useDispatch();
     const [filterQuestion, setFilterQuestion] = useState(listQuestions);
     const [isDirty, setIsDirty] = useState(true);
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
+
+    useEffect(() => {
+        const unsubscribe1 = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+            dispatch(setUser({ ...doc.data() }));
+        });
+        return () => unsubscribe1();
+    }, []);
 
     const { setTitle } = useAppContext();
 
     unstable_usePrompt({ when: isDirty, message: "Đang làm bài, bạn có muốn rời đi không ?" });
 
     const [loading, setLoading] = useState(false);
+
+    const now = new Date().getTime();
+    const distance = user?.isTakingATest?.expire * 1000 - now;
+    const distanceInSeconds = Math.floor(distance / 1000);
+
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
             if (doc.exists()) {
@@ -60,6 +80,7 @@ function QuizzBar(_props) {
     const finished = async () => {
         setLoading(true);
         setIsDirty(false);
+        const userRef = doc(db, "users", auth.currentUser.uid);
         const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
@@ -69,8 +90,8 @@ function QuizzBar(_props) {
         const correctAnswer =
             listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length ?? 0;
         const historyRef = doc(db, "histories", `${user.uid}/exam/${id}`);
-        await setDoc(historyRef, { ...listQuestions, score, correctAnswer });
-
+        await setDoc(historyRef, { ...listQuestions, score, correctAnswer, isDone: true });
+        await updateDoc(userRef, { isTakingATest: {} });
         navigate("/examResult/" + id);
     };
 
@@ -245,7 +266,13 @@ function QuizzBar(_props) {
 
                 <div className=" w-full md:w-9/12 px-10 py-2 ">
                     {listQuestions?.time && (
-                        <Countdown minutes={listQuestions?.time} seconds={0} finished={finished} />
+                        <div className="flex md:justify-end items-center">
+                            <Countdown
+                                minutes={formatTime(distanceInSeconds).minutes}
+                                seconds={formatTime(distanceInSeconds).remainingSeconds}
+                                finished={finished}
+                            />
+                        </div>
                     )}
                     {!!filterQuestion?.questions?.length && (
                         <div>

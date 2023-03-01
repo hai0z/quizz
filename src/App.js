@@ -1,7 +1,19 @@
 import "./App.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAppContext } from "./context/AppProvider";
+import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from "./firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./redux/authSlice";
+import { useState } from "react";
+import Countdown from "./components/countdown";
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return { minutes, remainingSeconds };
+}
 function App() {
     const listSubject = [
         {
@@ -35,11 +47,54 @@ function App() {
             img: require("./asset/globe.png"),
         },
     ];
+    const [listQuestions, setListQuestions] = useState();
     const { setTitle } = useAppContext();
-
+    const navigate = useNavigate();
     useEffect(() => {
         setTitle("Trang chủ");
     });
+    const user = useSelector((state) => state.authSlice.user);
+
+    const dispatch = useDispatch();
+
+    const now = new Date().getTime();
+    const distance = user?.isTakingATest?.expire * 1000 - now;
+    const distanceInSeconds = Math.floor(distance / 1000);
+
+    const finished = async (listQuestions) => {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        const pointPerQuestion = 10 / listQuestions.questions.length;
+        const score = (
+            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
+            pointPerQuestion
+        ).toFixed(2);
+
+        const correctAnswer =
+            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length ?? 0;
+        const historyRef = doc(db, "histories", `${user.uid}/exam/${user?.isTakingATest?.examId}`);
+        await setDoc(historyRef, { ...listQuestions, score, correctAnswer, isDone: true });
+        await updateDoc(userRef, { isTakingATest: {} });
+    };
+    useEffect(() => {
+        const unsub = onSnapshot(
+            doc(db, "histories", `${user.uid}/exam/${user?.isTakingATest?.examId}`),
+            (doc) => {
+                if (doc.exists()) {
+                    setListQuestions({ ...doc.data(), id: doc.id });
+                } else {
+                    navigate("/");
+                }
+            }
+        );
+        return () => unsub();
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe1 = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+            dispatch(setUser({ ...doc.data() }));
+        });
+        return () => unsubscribe1();
+    }, []);
 
     return (
         <div className="flex justify-center items-center flex-col container">
@@ -61,6 +116,44 @@ function App() {
                     </Link>
                 ))}
             </div>
+            {user?.isTakingATest?.status && (
+                <div className="toast toast-top toast-end mt-16">
+                    <div className="alert shadow-lg alert-warning">
+                        <div>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                className="stroke-info flex-shrink-0 w-6 h-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                            <div>
+                                {user?.isTakingATest?.examName}
+                                <div className="font-bold"></div>
+                                <Countdown
+                                    minutes={formatTime(distanceInSeconds).minutes}
+                                    seconds={formatTime(distanceInSeconds).remainingSeconds}
+                                    finished={() => finished(listQuestions)}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex-none">
+                            <button
+                                className="btn btn-sm btn-primary"
+                                onClick={() => navigate("/test/" + user?.isTakingATest?.examId)}
+                            >
+                                Tiếp tục làm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

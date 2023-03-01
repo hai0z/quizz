@@ -25,13 +25,10 @@ function Countdown({ minutes, seconds, finished }) {
         finished();
     }
     return (
-        <div className="flex md:justify-end items-center">
-            <div className="text-lg font-bold ">
-                <span className="text-primary cursor-pointer">
-                    <span className="text-base"> Thời gian</span> {formattedMinutes}:
-                    {formattedSeconds}
-                </span>
-            </div>
+        <div className="text-lg font-bold ">
+            <span className="text-base-content cursor-pointer">
+                <span className="text-base">Thời gian</span> {formattedMinutes}:{formattedSeconds}
+            </span>
         </div>
     );
 }

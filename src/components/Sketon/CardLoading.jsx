@@ -4,9 +4,9 @@ function CardLoading() {
     return (
         <div className="card  w-96 lg:w-80 bg-base-200 shadow-xl animate-pulse">
             <figure>
-                <div class="flex items-center justify-center h-48 w-full mb-4 bg-base-300 rounded">
+                <div className="flex items-center justify-center h-48 w-full mb-4 bg-base-300 rounded">
                     <svg
-                        class="w-12 h-12 text-gray-200 dark:text-gray-600"
+                        className="w-12 h-12 text-gray-200 dark:text-gray-600"
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
                         fill="currentColor"

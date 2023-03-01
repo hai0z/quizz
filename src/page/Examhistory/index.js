@@ -10,7 +10,7 @@ export const historyLoader = async () => {
     querySnapshot.forEach((doc) => {
         arr.push(doc.data());
     });
-    return arr;
+    return arr.filter((exam) => exam.isDone !== false);
 };
 
 function ExamHistory() {

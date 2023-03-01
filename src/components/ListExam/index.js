@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { auth, db } from "../../firebase/";
-import { getDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+    getDoc,
+    collection,
+    doc,
+    getDocs,
+    setDoc,
+    updateDoc,
+    onSnapshot,
+    query,
+} from "firebase/firestore";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 
@@ -25,6 +34,20 @@ function ListExam() {
     const listExam = useLoaderData();
     const { setTitle } = useAppContext();
 
+    const [userHistory, setUserHistory] = useState([]);
+
+    useEffect(() => {
+        const q = query(collection(db, `histories/${auth.currentUser.uid}/exam`));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const exams = [];
+            querySnapshot.forEach((doc) => {
+                exams.push({ examId: doc.id, ...doc.data() });
+            });
+            setUserHistory(exams);
+        });
+        return () => unsubscribe();
+    }, []);
+    console.log(userHistory);
     function expire(currentTime, minutes) {
         // Tính toán timestamp của thời điểm hết hạn
         const expirationTime = currentTime + minutes * 60 * 1000;
@@ -37,27 +60,40 @@ function ListExam() {
             setLoading(examId);
             const now = new Date().getTime();
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);
+            const userRef = doc(db, "users", auth.currentUser.uid);
             const exam = await getDoc(examRef);
-
             //check xem da lam chua
             const docRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
             const docSnap = await getDoc(docRef);
 
-            // if (docSnap.exists()) {
-            //     navigate("/test/" + examId);
-            //     return;
-            // }
-
-            //push to history
-            const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
-            await setDoc(historyRef, {
-                ...exam.data(),
-                id: examId,
-                startAt: now / 1000,
-                expire: expire(now, +exam.data().time) / 1000,
-                questions: exam.data()?.questions.map((q, index) => ({ ...q, index: index + 1 })),
-            });
-            navigate("/test/" + examId);
+            if (docSnap.exists() && docSnap.data().isDone === false) {
+                //neu dang lam va chua lam xong thi chuyen den
+                navigate("/test/" + examId);
+                return;
+            } else {
+                //neu ko thi them vao lich su lam bai
+                const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
+                await setDoc(historyRef, {
+                    ...exam.data(),
+                    isDone: false,
+                    id: examId,
+                    startAt: now / 1000,
+                    expire: expire(now, +exam.data().time) / 1000,
+                    questions: exam
+                        .data()
+                        ?.questions.map((q, index) => ({ ...q, index: index + 1 })),
+                });
+                await updateDoc(userRef, {
+                    isTakingATest: {
+                        status: true,
+                        examName: exam.data().examName,
+                        examId,
+                        startAt: now / 1000,
+                        expire: expire(now, +exam.data().time) / 1000,
+                    },
+                });
+                navigate("/test/" + examId);
+            }
         } catch (error) {
             throw error;
         }

@@ -65,6 +65,7 @@ const AuthProvider = ({ children }) => {
         updateUserStatus("online");
         setLoading(false);
     };
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (isUser) => {
             if (isUser) {
@@ -76,7 +77,9 @@ const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
         });
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
     useEffect(() => {
