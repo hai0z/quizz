@@ -13,7 +13,6 @@ function Countdown({ minutes, seconds, finished }) {
                 return newTimeLeft;
             });
         }, 1000);
-        if (timeLeft === 0) clearInterval(intervalId);
         return () => clearInterval(intervalId);
     }, []);
 
@@ -21,7 +20,7 @@ function Countdown({ minutes, seconds, finished }) {
         .toString()
         .padStart(2, "0");
     const formattedSeconds = (timeLeft % 60).toString().padStart(2, "0");
-    if (formattedMinutes === "00" && formattedSeconds === "00") {
+    if (+formattedMinutes <= 0 && +formattedSeconds <= 0) {
         finished();
     }
     return (

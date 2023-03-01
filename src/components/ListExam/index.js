@@ -68,11 +68,14 @@ function ListExam() {
 
             if (docSnap.exists() && docSnap.data().isDone === false) {
                 //neu dang lam va chua lam xong thi chuyen den
+                console.log(1);
                 navigate("/test/" + examId);
                 return;
             } else {
+                console.log(2);
                 //neu ko thi them vao lich su lam bai
                 const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
+
                 await setDoc(historyRef, {
                     ...exam.data(),
                     isDone: false,
