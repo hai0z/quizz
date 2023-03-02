@@ -106,9 +106,9 @@ function Navbar() {
                                     Lofi
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("dracula")}>
-                                <span className={`${theme === "dracula" && "active"} lowercase`}>
-                                    dracula
+                            <li onClick={() => handleChangeTheme("emerald")}>
+                                <span className={`${theme === "emerald" && "active"} lowercase`}>
+                                    emerald
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("cupcake")}>

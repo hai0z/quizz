@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
-
+import { useSelector } from "react-redux";
 export const listExamLoader = async (id) => {
     const arr = [];
     const q = collection(db, `exams/${id}/exam`);
@@ -35,6 +35,7 @@ function ListExam() {
     const { setTitle } = useAppContext();
 
     const [userHistory, setUserHistory] = useState([]);
+    const user = useSelector((state) => state.authSlice.user);
 
     useEffect(() => {
         const q = query(collection(db, `histories/${auth.currentUser.uid}/exam`));
@@ -45,7 +46,12 @@ function ListExam() {
             });
             setUserHistory(exams);
         });
+
         return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
     }, []);
     console.log(userHistory);
     function expire(currentTime, minutes) {
@@ -73,7 +79,7 @@ function ListExam() {
                 return;
             } else {
                 console.log(2);
-                //neu ko thi them vao lich su lam bai
+                //neu ko thi them vao lich su lam bai(lam lai hoac lam moi')
                 const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
 
                 await setDoc(historyRef, {
@@ -131,11 +137,17 @@ function ListExam() {
                             <div className="card-actions justify-end">
                                 <button
                                     className={`btn btn-primary ${
-                                        loading === item.id && "loading"
-                                    }`}
+                                        user?.isTakingATest.status &&
+                                        user?.isTakingATest?.examId !== item.id &&
+                                        "btn-disabled"
+                                    } ${loading === item.id && "loading"}`}
                                     onClick={() => startExam(item.id)}
                                 >
-                                    {loading === item.id ? "Đang bắt đầu" : "Bắt đầu làm"}
+                                    {user?.isTakingATest?.examId === item.id
+                                        ? "tiếp tục làm"
+                                        : loading === item.id
+                                        ? "Đang bắt đầu"
+                                        : "bắt dầu làm"}
                                 </button>
                             </div>
                         </div>

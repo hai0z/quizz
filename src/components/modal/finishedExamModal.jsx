@@ -16,7 +16,7 @@ function FinishedExamModal({ finished, loading }) {
                             className={`btn btn-success ${loading && "loading"}`}
                             onClick={finished}
                         >
-                            Nộp bài
+                            {loading ? "Đang nộp bài " : "Nộp bài"}
                         </label>
                     </div>
                 </div>
