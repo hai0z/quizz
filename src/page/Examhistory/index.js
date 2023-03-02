@@ -48,24 +48,26 @@ function ExamHistory() {
                             </tr>
                         </thead>
                         <tbody className="text-center">
-                            {examHistory?.map((item) => (
-                                <tr key={item.id}>
-                                    <th className="text-left">{item.examName}</th>
-                                    <th>{item.time} phút</th>
-                                    <td>{item?.questions.length}</td>
-                                    <td>{item?.correctAnswer}</td>
-                                    <td>{item?.score}</td>
-                                    <td>{timestampToDate(item.startAt * 1000)}</td>
-                                    <td>
-                                        <Link
-                                            className="btn btn-ghost text-primary"
-                                            to={`/descriptions/${item.id}`}
-                                        >
-                                            Xem chi tiết
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
+                            {examHistory
+                                .sort((a, b) => b.startAt - a.startAt)
+                                ?.map((item) => (
+                                    <tr key={item.id}>
+                                        <th className="text-left">{item.examName}</th>
+                                        <th>{item.time} phút</th>
+                                        <td>{item?.questions.length}</td>
+                                        <td>{item?.correctAnswer}</td>
+                                        <td>{item?.score}</td>
+                                        <td>{timestampToDate(item.startAt * 1000)}</td>
+                                        <td>
+                                            <Link
+                                                className="btn btn-ghost text-primary"
+                                                to={`/descriptions/${item.id}`}
+                                            >
+                                                Xem chi tiết
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                 </div>

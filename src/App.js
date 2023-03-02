@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -79,11 +80,7 @@ function App() {
         const unsub = onSnapshot(
             doc(db, "histories", `${user.uid}/exam/${user?.isTakingATest?.examId}`),
             (doc) => {
-                if (doc.exists()) {
-                    setListQuestions({ ...doc.data(), id: doc.id });
-                } else {
-                    navigate("/");
-                }
+                setListQuestions({ ...doc.data(), id: doc.id });
             }
         );
         return () => unsub();
@@ -124,7 +121,7 @@ function App() {
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                className="stroke-info flex-shrink-0 w-6 h-6"
+                                className="stroke-error flex-shrink-0 w-6 h-6"
                             >
                                 <path
                                     strokeLinecap="round"
