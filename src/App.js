@@ -135,7 +135,6 @@ function App() {
                             </svg>
                             <div>
                                 {user?.isTakingATest?.examName}
-                                <div className="font-bold"></div>
                                 <Countdown
                                     minutes={formatTime(distanceInSeconds).minutes}
                                     seconds={formatTime(distanceInSeconds).remainingSeconds}

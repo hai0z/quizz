@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../../firebase/";
 import {
     getDoc,
@@ -13,6 +14,8 @@ import {
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 import { useSelector } from "react-redux";
+import InAExamModal from "../modal/InAExamModal";
+import React from "react";
 export const listExamLoader = async (id) => {
     const arr = [];
     const q = collection(db, `exams/${id}/exam`);
@@ -36,19 +39,7 @@ function ListExam() {
 
     const [userHistory, setUserHistory] = useState([]);
     const user = useSelector((state) => state.authSlice.user);
-
-    useEffect(() => {
-        const q = query(collection(db, `histories/${auth.currentUser.uid}/exam`));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const exams = [];
-            querySnapshot.forEach((doc) => {
-                exams.push({ examId: doc.id, ...doc.data() });
-            });
-            setUserHistory(exams);
-        });
-
-        return () => unsubscribe();
-    }, []);
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -64,6 +55,13 @@ function ListExam() {
     const startExam = async (examId) => {
         try {
             setLoading(examId);
+            if (user?.isTakingATest?.status === true && user?.isTakingATest?.examId !== examId) {
+                console.log(123);
+                setIsOpenModal(true);
+                setLoading("");
+
+                return;
+            }
             const now = new Date().getTime();
             const examRef = doc(db, "exams", `${id}/exam/${examId}`);
             const userRef = doc(db, "users", auth.currentUser.uid);
@@ -109,7 +107,10 @@ function ListExam() {
     };
     useEffect(() => {
         setTitle("Danh sách đề thi");
-    });
+    }, []);
+
+    const closeModal = useCallback(() => setIsOpenModal(false), []);
+
     return (
         <div>
             <div className="container p-8 flex flex-row flex-wrap gap-8 justify-center md:justify-start">
@@ -136,11 +137,9 @@ function ListExam() {
                             <p>Số câu hỏi: {item.numberOfQuestion}</p>
                             <div className="card-actions justify-end">
                                 <button
-                                    className={`btn btn-primary ${
-                                        user?.isTakingATest.status &&
-                                        user?.isTakingATest?.examId !== item.id &&
-                                        "btn-disabled"
-                                    } ${loading === item.id && "loading"}`}
+                                    className={`btn btn-primary  ${
+                                        loading === item.id && "loading"
+                                    }`}
                                     onClick={() => startExam(item.id)}
                                 >
                                     {user?.isTakingATest?.examId === item.id
@@ -154,6 +153,8 @@ function ListExam() {
                     </div>
                 ))}
             </div>
+
+            <InAExamModal isOpen={isOpenModal} closeModal={closeModal} />
         </div>
     );
 }
