@@ -96,9 +96,9 @@ function Navbar() {
                                     Lemonade
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("halloween")}>
-                                <span className={`${theme === "halloween" && "active"} lowercase`}>
-                                    halloween
+                            <li onClick={() => handleChangeTheme("garden")}>
+                                <span className={`${theme === "garden" && "active"} lowercase`}>
+                                    garden
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("lofi")}>

@@ -12,7 +12,7 @@ const InAExamModal = ({ isOpen, closeModal }) => {
                         mới
                     </p>
                     <div className="modal-action">
-                        <button className="btn" onClick={closeModal}>
+                        <button className="btn btn-primary" onClick={closeModal}>
                             OK
                         </button>
                     </div>

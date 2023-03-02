@@ -37,14 +37,12 @@ function ListExam() {
     const listExam = useLoaderData();
     const { setTitle } = useAppContext();
 
-    const [userHistory, setUserHistory] = useState([]);
     const user = useSelector((state) => state.authSlice.user);
     const [isOpenModal, setIsOpenModal] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    console.log(userHistory);
     function expire(currentTime, minutes) {
         // Tính toán timestamp của thời điểm hết hạn
         const expirationTime = currentTime + minutes * 60 * 1000;
