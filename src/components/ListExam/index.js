@@ -1,21 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../../firebase/";
-import {
-    getDoc,
-    collection,
-    doc,
-    getDocs,
-    setDoc,
-    updateDoc,
-    onSnapshot,
-    query,
-} from "firebase/firestore";
+import { getDoc, collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 import { useSelector } from "react-redux";
 import InAExamModal from "../modal/InAExamModal";
 import React from "react";
+
 export const listExamLoader = async (id) => {
     const arr = [];
     const q = collection(db, `exams/${id}/exam`);
@@ -57,7 +49,6 @@ function ListExam() {
                 console.log(123);
                 setIsOpenModal(true);
                 setLoading("");
-
                 return;
             }
             const now = new Date().getTime();
