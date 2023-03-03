@@ -6,10 +6,9 @@ import { useAppContext } from "./context/AppProvider";
 import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { setPageLoading, setUser } from "./redux/authSlice";
+import { setUser } from "./redux/authSlice";
 import { useState } from "react";
 import Countdown from "./components/countdown";
-import LoadingBar from "react-top-loading-bar";
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -87,11 +86,9 @@ function App() {
     }, []);
 
     useEffect(() => {
-        dispatch(setPageLoading(20));
         const unsubscribe1 = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
             dispatch(setUser({ ...doc.data() }));
         });
-        dispatch(setPageLoading(100));
         return () => unsubscribe1();
     }, []);
 

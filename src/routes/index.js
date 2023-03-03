@@ -27,7 +27,8 @@ const AuthLayOut = () => {
     return (
         <AuthProvider>
             <LoadingBar
-                color="mediumseagreen"
+                color="crimson"
+                shadow={false}
                 height={3}
                 progress={loading}
                 waitingTime={750}
