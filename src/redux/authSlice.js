@@ -8,6 +8,7 @@ const initialState = {
         photoURL: null,
         email: null,
     },
+    loading: 0,
 };
 const authSlice = createSlice({
     name: "authSlice",
@@ -19,8 +20,11 @@ const authSlice = createSlice({
         setUser: (state, action) => {
             state.user = action.payload;
         },
+        setPageLoading: (state, action) => {
+            state.loading = action.payload;
+        },
     },
 });
 
-export const { setAuth, setUser } = authSlice.actions;
+export const { setAuth, setUser, setPageLoading } = authSlice.actions;
 export default authSlice.reducer;

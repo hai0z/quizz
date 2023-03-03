@@ -9,7 +9,7 @@ import App from "../App";
 import AdminPage from "../page/admin";
 import AddQuestion from "../page/AddQuestion";
 import RandomExam from "../page/RandomExam";
-import ExamHistory, { historyLoader } from "../page/Examhistory";
+import ExamHistory from "../page/Examhistory";
 import ListExam, { listExamLoader } from "../components/ListExam";
 import Profile from "../page/profile";
 import ErrorPage from "../page/error";
@@ -17,10 +17,22 @@ import Drawer from "../components/Drawer/UserDrawer";
 import AdminDrawer from "../components/Drawer/AdminDrawer";
 import ManagerPage from "../page/manager";
 import UserManager from "../page/manager/userManager/index";
+import LoadingBar from "react-top-loading-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { setPageLoading } from "../redux/authSlice";
 
 const AuthLayOut = () => {
+    const loading = useSelector((state) => state.authSlice.loading);
+    const dispatch = useDispatch();
     return (
         <AuthProvider>
+            <LoadingBar
+                color="indigo"
+                height={3}
+                progress={loading}
+                waitingTime={750}
+                onLoaderFinished={() => dispatch(setPageLoading(0))}
+            />
             <Drawer />
         </AuthProvider>
     );
@@ -58,7 +70,6 @@ export const router = createBrowserRouter([
                     {
                         path: "/exam/:id",
                         element: <ListExam />,
-                        loader: ({ params }) => listExamLoader(params.id),
                     },
                     {
                         path: "/test/:id",
@@ -70,7 +81,7 @@ export const router = createBrowserRouter([
                         element: <ShowDescription />,
                         loader: ({ params }) => examResultLoader(params.id),
                     },
-                    { path: "/history", element: <ExamHistory />, loader: historyLoader },
+                    { path: "/history", element: <ExamHistory /> },
                 ],
             },
         ],

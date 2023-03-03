@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Countdown from "../countdown";
 import { useAppContext } from "../../context/AppProvider";
 import FinishedExamModal from "../modal/finishedExamModal";
-import { setUser } from "../../redux/authSlice";
+import { setPageLoading, setUser } from "../../redux/authSlice";
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -18,7 +18,6 @@ function formatTime(seconds) {
 function QuizzBar(_props) {
     const { id } = useParams();
     const [currentQuestion, setCurrentQuestion] = useState(1);
-
     const [listQuestions, setListQuestions] = useState();
     const dispatch = useDispatch();
     const [filterQuestion, setFilterQuestion] = useState(listQuestions);
@@ -55,12 +54,16 @@ function QuizzBar(_props) {
     }, []);
 
     useEffect(() => {
+        dispatch(setPageLoading(35));
+
         const getData = async () => {
             const docRef = doc(db, "histories", `${user.uid}/exam/${id}`);
             const docSnap = await getDoc(docRef);
+            dispatch(setPageLoading(40));
             if (docSnap.exists()) {
                 setFilterQuestion({ ...docSnap.data(), id: doc.id });
                 setTitle(docSnap.data().examName);
+                dispatch(setPageLoading(100));
             }
         };
         getData();
@@ -180,7 +183,6 @@ function QuizzBar(_props) {
         };
 
         window.addEventListener("beforeunload", handleBeforeUnload);
-
         return () => {
             window.removeEventListener("beforeunload", handleBeforeUnload);
         };

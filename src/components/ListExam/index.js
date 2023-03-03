@@ -2,38 +2,43 @@
 import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../../firebase/";
 import { getDoc, collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InAExamModal from "../modal/InAExamModal";
 import React from "react";
+import { setPageLoading } from "../../redux/authSlice";
 
-export const listExamLoader = async (id) => {
-    const arr = [];
-    const q = collection(db, `exams/${id}/exam`);
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-        arr.push({
-            name: doc.data().examName,
-            time: doc.data().time,
-            id: doc.id,
-            numberOfQuestion: doc.data().questions.length,
-        });
-    });
-    return arr;
-};
 function ListExam() {
     const [loading, setLoading] = useState();
     const { id } = useParams();
     const navigate = useNavigate();
-    const listExam = useLoaderData();
+    const [listExam, setListExam] = useState(null);
     const { setTitle } = useAppContext();
-
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.authSlice.user);
     const [isOpenModal, setIsOpenModal] = useState(false);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        const listExamLoader = async () => {
+            dispatch(setPageLoading(10));
+            const arr = [];
+            const q = collection(db, `exams/${id}/exam`);
+            dispatch(setPageLoading(30));
+            const querySnapshot = await getDocs(q);
+            dispatch(setPageLoading(70));
+            querySnapshot.forEach((doc) => {
+                arr.push({
+                    name: doc.data().examName,
+                    time: doc.data().time,
+                    id: doc.id,
+                    numberOfQuestion: doc.data().questions.length,
+                });
+            });
+            setListExam(arr);
+            dispatch(setPageLoading(100));
+        };
+        listExamLoader();
     }, []);
     function expire(currentTime, minutes) {
         // Tính toán timestamp của thời điểm hết hạn
@@ -103,7 +108,7 @@ function ListExam() {
     return (
         <div>
             <div className="container p-8 flex flex-row flex-wrap gap-8 justify-center md:justify-start">
-                {listExam?.length <= 0 && (
+                {listExam?.length === 0 && (
                     <div className="items-center justify-center flex flex-col container">
                         <img src={require("../../asset/page.png")} alt="empty" className="h-40" />
                         <h2 className="font-mono text-primary text-2xl text-center">

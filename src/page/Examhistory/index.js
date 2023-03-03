@@ -1,20 +1,13 @@
 import { getDocs, collection } from "firebase/firestore";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
-
-export const historyLoader = async () => {
-    const arr = [];
-    const querySnapshot = await getDocs(collection(db, `histories/${auth.currentUser.uid}/exam`));
-    querySnapshot.forEach((doc) => {
-        arr.push(doc.data());
-    });
-    return arr.filter((exam) => exam.isDone !== false);
-};
+import { useDispatch } from "react-redux";
+import { setPageLoading } from "../../redux/authSlice";
 
 function ExamHistory() {
-    const examHistory = useLoaderData();
+    const [examHistory, setExamHistory] = useState([]);
 
     const { setTitle } = useAppContext();
 
@@ -30,7 +23,24 @@ function ExamHistory() {
         const minute = `0${date.getMinutes()}`.slice(-2);
         return `${day}/${month}/${year} ${hour}:${minute}`;
     }
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setPageLoading(10));
+        const historyLoader = async () => {
+            const arr = [];
+            const querySnapshot = await getDocs(
+                collection(db, `histories/${auth.currentUser.uid}/exam`)
+            );
+            dispatch(setPageLoading(50));
+            querySnapshot.forEach((doc) => {
+                arr.push(doc.data());
+            });
+            setExamHistory(arr.filter((exam) => exam.isDone !== false));
+            dispatch(setPageLoading(100));
+        };
 
+        historyLoader();
+    }, []);
     return (
         <div>
             <div className="container p-8">

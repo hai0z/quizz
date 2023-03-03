@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { setAuth, setUser } from "../redux/authSlice";
+import { setAuth, setPageLoading, setUser } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
@@ -59,10 +59,14 @@ const AuthProvider = ({ children }) => {
         });
     };
     const getUserInfo = async () => {
+        dispatch(setPageLoading(10));
         const userRef = doc(db, "users", auth.currentUser.uid);
         const user = await getDoc(userRef);
+        dispatch(setPageLoading(40));
         dispatch(setUser({ ...user.data() }));
         updateUserStatus("online");
+        dispatch(setPageLoading(60));
+        dispatch(setPageLoading(100));
         setLoading(false);
     };
 
