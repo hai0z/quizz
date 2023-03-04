@@ -40,7 +40,7 @@ function QuizzBar(_props) {
     const distanceInSeconds = Math.floor(distance / 1000);
 
     useEffect(() => {
-        if (user?.isTakingATest?.status !== true) {
+        if (user?.isTakingATest?.examId !== id) {
             navigate("/");
         }
     }, []);
