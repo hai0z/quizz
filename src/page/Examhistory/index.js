@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { getDocs, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
@@ -5,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 import { useDispatch } from "react-redux";
 import { setPageLoading } from "../../redux/authSlice";
-
 function ExamHistory() {
     const [examHistory, setExamHistory] = useState([]);
 
