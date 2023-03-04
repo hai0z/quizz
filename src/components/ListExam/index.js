@@ -51,7 +51,6 @@ function ListExam() {
         try {
             setLoading(examId);
             if (user?.isTakingATest?.status === true && user?.isTakingATest?.examId !== examId) {
-                console.log(123);
                 setIsOpenModal(true);
                 setLoading("");
                 return;

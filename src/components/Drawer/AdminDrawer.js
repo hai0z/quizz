@@ -6,7 +6,6 @@ import Navbar from "../Navbar";
 import Footer from "../footer";
 function Drawer() {
     const location = useLocation();
-
     return (
         <AuthProvider>
             <div className="drawer drawer-mobile">

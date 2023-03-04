@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Footer from "../footer";
 import Navbar from "../Navbar";
-function Drawer() {
+const Drawer = () => {
     const location = useLocation();
 
     return (
@@ -77,6 +77,6 @@ function Drawer() {
             </div>
         </div>
     );
-}
+};
 
 export default Drawer;
