@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { onSnapshot, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../firebase";
-import { useNavigate, useParams, unstable_usePrompt } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Countdown from "../countdown";
 import { useAppContext } from "../../context/AppProvider";
@@ -21,7 +21,6 @@ function QuizzBar(_props) {
     const [listQuestions, setListQuestions] = useState();
     const dispatch = useDispatch();
     const [filterQuestion, setFilterQuestion] = useState(listQuestions);
-    const [isDirty, setIsDirty] = useState(true);
     const navigate = useNavigate();
     const user = useSelector((state) => state.authSlice.user);
 
@@ -34,13 +33,17 @@ function QuizzBar(_props) {
 
     const { setTitle } = useAppContext();
 
-    unstable_usePrompt({ when: isDirty, message: "Đang làm bài, bạn có muốn rời đi không ?" });
-
     const [loading, setLoading] = useState(false);
 
     const now = new Date().getTime();
     const distance = user?.isTakingATest?.expire * 1000 - now;
     const distanceInSeconds = Math.floor(distance / 1000);
+
+    useEffect(() => {
+        if (user?.isTakingATest?.status !== true) {
+            navigate("/");
+        }
+    }, []);
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
@@ -82,7 +85,6 @@ function QuizzBar(_props) {
 
     const finished = async () => {
         setLoading(true);
-        setIsDirty(false);
         const userRef = doc(db, "users", auth.currentUser.uid);
         const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (

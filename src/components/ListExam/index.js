@@ -7,7 +7,7 @@ import { useAppContext } from "../../context/AppProvider";
 import { useDispatch, useSelector } from "react-redux";
 import InAExamModal from "../modal/InAExamModal";
 import React from "react";
-import { setPageLoading } from "../../redux/authSlice";
+import { setPageLoading, setUser } from "../../redux/authSlice";
 
 function ListExam() {
     const [loading, setLoading] = useState();
@@ -66,11 +66,9 @@ function ListExam() {
 
             if (docSnap.exists() && docSnap.data().isDone === false) {
                 //neu dang lam va chua lam xong thi chuyen den
-                console.log(1);
                 navigate("/test/" + examId);
                 return;
             } else {
-                console.log(2);
                 //neu ko thi them vao lich su lam bai(lam lai hoac lam moi')
                 const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
 
@@ -93,6 +91,18 @@ function ListExam() {
                         expire: expire(now, +exam.data().time) / 1000,
                     },
                 });
+                dispatch(
+                    setUser({
+                        ...user,
+                        isTakingATest: {
+                            status: true,
+                            examName: exam.data().examName,
+                            examId,
+                            startAt: now / 1000,
+                            expire: expire(now, +exam.data().time) / 1000,
+                        },
+                    })
+                );
                 navigate("/test/" + examId);
             }
         } catch (error) {
