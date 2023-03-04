@@ -10,7 +10,7 @@ import AdminPage from "../page/admin";
 import AddQuestion from "../page/AddQuestion";
 import RandomExam from "../page/RandomExam";
 import ExamHistory from "../page/Examhistory";
-import ListExam, { listExamLoader } from "../components/ListExam";
+import ListExam from "../components/ListExam";
 import Profile from "../page/profile";
 import ErrorPage from "../page/error";
 import Drawer from "../components/Drawer/UserDrawer";

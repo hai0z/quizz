@@ -55,7 +55,6 @@ function QuizzBar(_props) {
 
     useEffect(() => {
         dispatch(setPageLoading(35));
-
         const getData = async () => {
             const docRef = doc(db, "histories", `${user.uid}/exam/${id}`);
             const docSnap = await getDoc(docRef);
