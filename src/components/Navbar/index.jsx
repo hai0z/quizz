@@ -86,9 +86,9 @@ function Navbar() {
                                     Dark
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("acid")}>
-                                <span className={`${theme === "acid" && "active"} lowercase`}>
-                                    acid
+                            <li onClick={() => handleChangeTheme("valentine")}>
+                                <span className={`${theme === "valentine" && "active"} lowercase`}>
+                                    valentine
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("lemonade")}>
@@ -106,9 +106,9 @@ function Navbar() {
                                     Lofi
                                 </span>
                             </li>
-                            <li onClick={() => handleChangeTheme("emerald")}>
-                                <span className={`${theme === "emerald" && "active"} lowercase`}>
-                                    emerald
+                            <li onClick={() => handleChangeTheme("forest")}>
+                                <span className={`${theme === "forest" && "active"} lowercase`}>
+                                    forest
                                 </span>
                             </li>
                             <li onClick={() => handleChangeTheme("cupcake")}>

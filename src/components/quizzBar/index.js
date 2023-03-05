@@ -193,7 +193,6 @@ function QuizzBar(_props) {
         <div>
             <div className="flex min-h-screen flex-col md:flex-row">
                 {/* mobile */}
-
                 <div className="flex flex-col md:hidden mt-1">
                     <div className="flex flex-row justify-between">
                         <p className="ml-4 text-base">
