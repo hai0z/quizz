@@ -31,7 +31,11 @@ export function ProtectedRoute() {
         return (
             <div className="hero min-h-screen">
                 {showGif && (
-                    <img src={cry} className="h-8/12 w-8/12" alt="crying man" />
+                    <img
+                        src={cry}
+                        className="md:h-8/12 md:w-8/12 h-full w-full"
+                        alt="crying man"
+                    />
                 )}
                 <div className="hero-content text-center">
                     <div className="max-w-md">

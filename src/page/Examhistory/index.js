@@ -38,7 +38,7 @@ function ExamHistory() {
             querySnapshot.forEach((doc) => {
                 arr.push(doc.data());
             });
-            setExamHistory(arr.filter((exam) => exam.isDone !== false));
+            setExamHistory(arr);
             dispatch(setPageLoading(100));
         };
 
@@ -78,12 +78,18 @@ function ExamHistory() {
                                             )}
                                         </td>
                                         <td>
-                                            <Link
-                                                className="btn btn-ghost text-primary"
-                                                to={`/descriptions/${item.id}`}
-                                            >
-                                                Xem chi tiết
-                                            </Link>
+                                            {!item.isDone ? (
+                                                <p className="badge badge-secondary">
+                                                    Đang làm
+                                                </p>
+                                            ) : (
+                                                <Link
+                                                    className="btn btn-ghost text-primary"
+                                                    to={`/descriptions/${item.id}`}
+                                                >
+                                                    Xem chi tiết
+                                                </Link>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

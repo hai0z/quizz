@@ -456,7 +456,7 @@ const QuizzBar = () => {
                         <span className="ml-2 block mb-2">Lọc</span>
                         <select
                             defaultValue={"all"}
-                            className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
+                            className="select select-bordered w-full max-w-md select-sm mb-2"
                             onChange={(e) => handleChangeFilter(e.target.value)}
                         >
                             <option value={"all"}>Tất cả</option>

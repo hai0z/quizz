@@ -29,10 +29,10 @@ const AuthLayOut = () => {
     return (
         <AuthProvider>
             <LoadingBar
-                color="crimson"
-                height={3}
+                color="mediumseagreen"
+                height={5}
                 progress={loading}
-                waitingTime={750}
+                waitingTime={1000}
                 onLoaderFinished={() => dispatch(setPageLoading(0))}
             />
             <Drawer />

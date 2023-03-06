@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 import { Link, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPageLoading } from "../../redux/authSlice";
 
-const Questions = ({ item, index, elementRefs, onClick, currentQuestion }) => {
+const Questions = ({ item, onClick, currentQuestion }) => {
     return (
         <div
-            ref={(ref) => (elementRefs.current[index] = ref)}
             onClick={() => onClick(item.index)}
             className={`${
                 currentQuestion === item.index
@@ -69,7 +70,7 @@ const Filter = ({ handleChangeFilter }) => {
     return (
         <select
             defaultValue={"all"}
-            className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
+            className="select select-bordered w-full max-w-md select-sm mb-2"
             onChange={(e) => handleChangeFilter(e.target.value)}
         >
             <option value={"all"}>Tất cả</option>
@@ -138,11 +139,11 @@ function ShowDescription(_props) {
         }
     };
     const { id } = useParams();
-
+    const dispatch = useDispatch();
     const containerRef = React.useRef(null);
-    const elementRefs = React.useRef([]);
 
     useEffect(() => {
+        dispatch(setPageLoading(10));
         const examResultLoader = async () => {
             const examRef = doc(
                 db,
@@ -150,10 +151,12 @@ function ShowDescription(_props) {
                 `${auth?.currentUser?.uid}/exam/${id}`
             );
             const docSnap = await getDoc(examRef);
+            dispatch(setPageLoading(60));
             if (docSnap.exists()) {
                 setListQuestions({ ...docSnap.data() });
                 setFilterQuestion({ ...docSnap.data() });
             }
+            dispatch(setPageLoading(100));
         };
         examResultLoader();
     }, []);
@@ -208,8 +211,6 @@ function ShowDescription(_props) {
                             <Questions
                                 key={index}
                                 item={item}
-                                index={index}
-                                elementRefs={elementRefs}
                                 currentQuestion={currentQuestion}
                                 onClick={(questionIndex) =>
                                     setCurrentQuestion(questionIndex)
@@ -398,8 +399,6 @@ function ShowDescription(_props) {
                             <Questions
                                 key={index}
                                 item={item}
-                                index={index}
-                                elementRefs={elementRefs}
                                 currentQuestion={currentQuestion}
                                 onClick={(questionIndex) =>
                                     setCurrentQuestion(questionIndex)
