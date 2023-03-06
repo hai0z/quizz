@@ -35,10 +35,18 @@ export function ProtectedRoute() {
                 )}
                 <div className="hero-content text-center">
                     <div className="max-w-md">
-                        <h1 className="text-5xl font-bold">
+                        <h1
+                            className="text-5xl font-bold"
+                            style={{
+                                color: showGif && "white",
+                            }}
+                        >
                             Dự án đã dừng hoạt động
                         </h1>
-                        <p className="py-6">
+                        <p
+                            className="py-6"
+                            style={{ color: showGif && "white" }}
+                        >
                             Tôi hiểu rằng việc dừng hoạt động của dự án này sẽ
                             là một cú sốc lớn đối với mọi người. Tôi mong rằng
                             chúng ta sẽ tiếp tục học hỏi và phát triển từ kinh
