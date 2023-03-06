@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useAppContext } from "./context/AppProvider";
 import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "./firebase";
@@ -115,79 +115,83 @@ function App() {
     }, []);
 
     return (
-        <div className="flex justify-center items-center flex-col container">
-            <div className="container  flex flex-row flex-wrap gap-8 justify-center md:justify-around p-8">
-                {listSubject?.map((item) => (
-                    <Link
-                        to={`/exam/${item.id}`}
-                        key={item.id}
-                        className="card card-compact w-96 md:w-80 bg-base-200 shadow-xl cursor-pointer p-2"
-                    >
-                        <figure>
-                            <img
-                                src={item.img}
-                                alt="subject"
-                                className="h-52 p-4"
-                            />
-                        </figure>
-                        <div className="card-body items-center">
-                            <h2 className="card-title text-base-content drop-shadow-sm">
-                                {item.name}
-                            </h2>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-            {user?.isTakingATest?.status && (
-                <div
-                    className={`toast toast-top toast-end mt-16 overflow-hidden`}
-                    onClick={() => setShowAlert(!showAlert)}
-                >
-                    <div className="alert shadow-lg alert-warning bg-opacity-90 backdrop-blur-md">
-                        <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                className="stroke-error flex-shrink-0 w-6 h-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path>
-                            </svg>
-                            <div>
-                                {user?.isTakingATest?.examName}
-                                <Countdown
-                                    minutes={
-                                        formatTime(distanceInSeconds).minutes
-                                    }
-                                    seconds={
-                                        formatTime(distanceInSeconds)
-                                            .remainingSeconds
-                                    }
-                                    finished={() => finished(listQuestions)}
+        <Fragment>
+            <div className="flex items-center flex-col  min-h-screen">
+                <div className="container flex flex-row flex-wrap gap-8 justify-center p-8 xl:justify-items-start">
+                    {listSubject?.map((item) => (
+                        <Link
+                            to={`/exam/${item.id}`}
+                            key={item.id}
+                            className="card card-compact w-96 md:w-80 bg-base-200 shadow-xl cursor-pointer p-2"
+                        >
+                            <figure>
+                                <img
+                                    src={item.img}
+                                    alt="subject"
+                                    className="h-52 p-4"
                                 />
+                            </figure>
+                            <div className="card-body items-center">
+                                <h2 className="card-title text-base-content drop-shadow-sm">
+                                    {item.name}
+                                </h2>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+                {user?.isTakingATest?.status && (
+                    <div
+                        className={`toast toast-top toast-end mt-16 overflow-hidden`}
+                        onClick={() => setShowAlert(!showAlert)}
+                    >
+                        <div className="alert shadow-lg alert-warning bg-opacity-90 backdrop-blur-md">
+                            <div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    className="stroke-error flex-shrink-0 w-6 h-6"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    ></path>
+                                </svg>
+                                <div>
+                                    {user?.isTakingATest?.examName}
+                                    <Countdown
+                                        minutes={
+                                            formatTime(distanceInSeconds)
+                                                .minutes
+                                        }
+                                        seconds={
+                                            formatTime(distanceInSeconds)
+                                                .remainingSeconds
+                                        }
+                                        finished={() => finished(listQuestions)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex-none">
+                                <button
+                                    className="btn btn-sm btn-primary"
+                                    onClick={() =>
+                                        navigate(
+                                            "/test/" +
+                                                user?.isTakingATest?.examId
+                                        )
+                                    }
+                                >
+                                    Tiếp tục làm
+                                </button>
                             </div>
                         </div>
-                        <div className="flex-none">
-                            <button
-                                className="btn btn-sm btn-primary"
-                                onClick={() =>
-                                    navigate(
-                                        "/test/" + user?.isTakingATest?.examId
-                                    )
-                                }
-                            >
-                                Tiếp tục làm
-                            </button>
-                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </Fragment>
     );
 }
 

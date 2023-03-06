@@ -24,13 +24,27 @@ function Profile() {
             </div>
             <div className="justify-center items-center flex mt-20">
                 <div className="w-10/12">
-                    <p className="lg:text-3xl text-lg font-bold text-primary">{user.displayName}</p>
-                    <p className="text-base md:text-lg mt-10">Email:{user.email}</p>
-                    <p className="text-base md:text-lg mt-10">Chức vụ: {user.role}</p>
-                    <Link className="mt-10 btn btn-primary mr-3" to="/admin">
-                        Go to admin page
-                    </Link>
-                    <button className="mt-10 btn btn-primary" onClick={handleLogout}>
+                    <p className="lg:text-3xl text-lg font-bold text-primary">
+                        {user.displayName}
+                    </p>
+                    <p className="text-base md:text-lg mt-10">
+                        Email:{user.email}
+                    </p>
+                    <p className="text-base md:text-lg mt-10">
+                        Chức vụ: {user.role}
+                    </p>
+                    {user.role === "ADMIN" && (
+                        <Link
+                            className="mt-10 btn btn-primary mr-3"
+                            to="/admin"
+                        >
+                            Go to admin page
+                        </Link>
+                    )}
+                    <button
+                        className="mt-10 btn btn-primary"
+                        onClick={handleLogout}
+                    >
                         Logout
                     </button>
                 </div>

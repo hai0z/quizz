@@ -46,7 +46,7 @@ function ExamHistory() {
     }, []);
     return (
         <div>
-            <div className="container p-8">
+            <div className="p-8 flex flex-row justify-center">
                 <div className="overflow-x-auto">
                     <table className="table w-full table-compact">
                         <thead className="text-center">

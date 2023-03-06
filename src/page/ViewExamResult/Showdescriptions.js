@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
@@ -204,66 +205,16 @@ function ShowDescription(_props) {
                         ref={containerRef}
                     >
                         {filterQuestion?.questions.map((item, index) => (
-                            <div
+                            <Questions
                                 key={index}
-                                ref={(ref) =>
-                                    (elementRefs.current[index] = ref)
+                                item={item}
+                                index={index}
+                                elementRefs={elementRefs}
+                                currentQuestion={currentQuestion}
+                                onClick={(questionIndex) =>
+                                    setCurrentQuestion(questionIndex)
                                 }
-                                onClick={() => setCurrentQuestion(item.index)}
-                                className={`${
-                                    currentQuestion === item.index
-                                        ? "btn btn-primary"
-                                        : "btn btn-secondary"
-                                }  w-24 lg:w-20 md:w-18`}
-                            >
-                                Câu {item.index}
-                                {item.correctAnswer === item.yourChoice ? (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-secondary-content"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                ) : !!item.yourChoice === false ? (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="1.5"
-                                        stroke="currentColor"
-                                        className="w-6 h-6"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                ) : (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-success-content"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                )}
-                            </div>
+                            />
                         ))}
                     </div>
                 </div>
@@ -442,7 +393,7 @@ function ShowDescription(_props) {
                     <div className="px-2">
                         <Filter handleChangeFilter={handleChangeFilter} />
                     </div>
-                    <div className="grid grid-flow-row grid-cols-2 gap-3 xl:grid-cols-3 mx-2">
+                    <div className="flex flex-row flex-wrap gap-4 justify-center">
                         {filterQuestion?.questions.map((item, index) => (
                             <Questions
                                 key={index}

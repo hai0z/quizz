@@ -344,7 +344,7 @@ const QuizzBar = () => {
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"
                                                 value={q}
-                                                defaultChecked={
+                                                checked={
                                                     listQuestions.questions[
                                                         currentQuestion - 1
                                                     ].yourChoice === q
@@ -465,7 +465,7 @@ const QuizzBar = () => {
                             <option value={"flag"}>Phân vân</option>
                         </select>
                     </div>
-                    <div className="grid grid-flow-row grid-cols-2 gap-3 xl:grid-cols-3 mx-2">
+                    <div className="flex flex-row flex-wrap gap-4 justify-center">
                         {filterQuestion?.questions.map((item) => (
                             <div
                                 key={item.index}
