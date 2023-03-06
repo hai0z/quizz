@@ -56,6 +56,7 @@ function App() {
         setTitle("Trang chủ");
     });
     const user = useSelector((state) => state.authSlice.user);
+    const [showAlert, setShowAlert] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -138,8 +139,11 @@ function App() {
                 ))}
             </div>
             {user?.isTakingATest?.status && (
-                <div className="toast toast-top toast-end mt-16">
-                    <div className="alert shadow-lg alert-warning">
+                <div
+                    className={`toast toast-top toast-end mt-16 overflow-hidden`}
+                    onClick={() => setShowAlert(!showAlert)}
+                >
+                    <div className="alert shadow-lg alert-warning bg-opacity-90 backdrop-blur-md">
                         <div>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

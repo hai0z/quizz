@@ -231,14 +231,13 @@ const QuizzBar = () => {
                         </p>
                         <div className="px-2">
                             <select
+                                defaultValue={"all"}
                                 className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
                                 onChange={(e) =>
                                     handleChangeFilter(e.target.value)
                                 }
                             >
-                                <option selected value={"all"}>
-                                    Tất cả
-                                </option>
+                                <option value={"all"}>Tất cả</option>
                                 <option value={"done"}>Đã làm</option>
                                 <option value={"undone"}>Chưa làm</option>
                                 <option value={"flag"}>Phân vân</option>
@@ -299,7 +298,7 @@ const QuizzBar = () => {
                         ))}
                     </div>
                 </div>
-
+                {/* main */}
                 <div className=" w-full md:w-9/12 px-10 py-2 ">
                     {listQuestions?.time && (
                         <div className="flex md:justify-end items-center">
@@ -345,7 +344,7 @@ const QuizzBar = () => {
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"
                                                 value={q}
-                                                checked={
+                                                defaultChecked={
                                                     listQuestions.questions[
                                                         currentQuestion - 1
                                                     ].yourChoice === q
@@ -441,7 +440,7 @@ const QuizzBar = () => {
                     )}
                 </div>
                 {/* right side bar */}
-                <div className="w-3/12 flex-col  pt-5 shadow-md hidden md:flex">
+                <div className="w-3/12 flex-col pt-5 shadow-md hidden md:flex">
                     <div className="pl-4 mb-5 ">
                         <p>
                             Số câu đã làm:{" "}
@@ -456,12 +455,11 @@ const QuizzBar = () => {
                     <div className="px-2">
                         <span className="ml-2 block mb-2">Lọc</span>
                         <select
+                            defaultValue={"all"}
                             className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
                             onChange={(e) => handleChangeFilter(e.target.value)}
                         >
-                            <option selected value={"all"}>
-                                Tất cả
-                            </option>
+                            <option value={"all"}>Tất cả</option>
                             <option value={"done"}>Đã làm</option>
                             <option value={"undone"}>Chưa làm</option>
                             <option value={"flag"}>Phân vân</option>

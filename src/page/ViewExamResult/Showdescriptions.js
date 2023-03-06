@@ -1,27 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-import { Link, useLoaderData } from "react-router-dom";
-
-export const examResultLoader = async (id) => {
-    const examRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${id}`);
-    const docSnap = await getDoc(examRef);
-    if (docSnap.exists()) {
-        return { ...docSnap.data() };
-    }
-};
+import { Link, useParams } from "react-router-dom";
 
 const Questions = ({ item, index, elementRefs, onClick, currentQuestion }) => {
     return (
         <div
-            key={index}
             ref={(ref) => (elementRefs.current[index] = ref)}
             onClick={() => onClick(item.index)}
             className={`${
                 currentQuestion === item.index
                     ? "btn btn-primary"
                     : "btn btn-secondary"
-            }  w-24`}
+            }  w-24 lg:w-20 md:w-18`}
         >
             Câu {item.index}
             {item.correctAnswer === item.yourChoice ? (
@@ -44,13 +35,13 @@ const Questions = ({ item, index, elementRefs, onClick, currentQuestion }) => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    className="w-6 h-6"
                 >
                     <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>
@@ -76,12 +67,11 @@ const Questions = ({ item, index, elementRefs, onClick, currentQuestion }) => {
 const Filter = ({ handleChangeFilter }) => {
     return (
         <select
+            defaultValue={"all"}
             className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
             onChange={(e) => handleChangeFilter(e.target.value)}
         >
-            <option selected value={"all"}>
-                Tất cả
-            </option>
+            <option value={"all"}>Tất cả</option>
             <option value={"correct"}>Đúng</option>
             <option value={"incorrect"}>Sai</option>
             <option value={"uncompleted"}>Chưa làm</option>
@@ -91,9 +81,9 @@ const Filter = ({ handleChangeFilter }) => {
 function ShowDescription(_props) {
     const [currentQuestion, setCurrentQuestion] = useState(1);
 
-    const listQuestions = useLoaderData();
+    const [listQuestions, setListQuestions] = useState();
 
-    const [filterQuestion, setFilterQuestion] = useState(listQuestions);
+    const [filterQuestion, setFilterQuestion] = useState();
 
     const handleChangeFilter = (filterCase) => {
         switch (filterCase) {
@@ -146,18 +136,33 @@ function ShowDescription(_props) {
                 break;
         }
     };
+    const { id } = useParams();
+
     const containerRef = React.useRef(null);
     const elementRefs = React.useRef([]);
+
+    useEffect(() => {
+        const examResultLoader = async () => {
+            const examRef = doc(
+                db,
+                "histories",
+                `${auth?.currentUser?.uid}/exam/${id}`
+            );
+            const docSnap = await getDoc(examRef);
+            if (docSnap.exists()) {
+                setListQuestions({ ...docSnap.data() });
+                setFilterQuestion({ ...docSnap.data() });
+            }
+        };
+        examResultLoader();
+    }, []);
+
     const handleNextQuestion = (currentQuestion) => {
         if (currentQuestion >= listQuestions?.questions.length) {
             return;
         } else {
-            const currentElement = elementRefs.current[currentQuestion];
             containerRef.current.scrollTo({
-                left:
-                    currentElement.offsetLeft -
-                    containerRef.current.offsetLeft +
-                    containerRef.current.scrollLeft,
+                left: 90 + currentQuestion * 28,
                 behavior: "smooth",
             });
             setCurrentQuestion(currentQuestion + 1);
@@ -168,15 +173,13 @@ function ShowDescription(_props) {
             return;
         } else {
             containerRef.current.scrollTo({
-                left:
-                    currentQuestion.offsetLeft -
-                    containerRef.current.offsetLeft +
-                    containerRef.current.scrollLeft,
+                left: -90 + currentQuestion * 28,
                 behavior: "smooth",
             });
             setCurrentQuestion(currentQuestion - 1);
         }
     };
+
     return (
         <div>
             <div className="flex min-h-screen flex-col md:flex-row">
@@ -201,15 +204,66 @@ function ShowDescription(_props) {
                         ref={containerRef}
                     >
                         {filterQuestion?.questions.map((item, index) => (
-                            <Questions
-                                item={item}
-                                index={index}
-                                elementRefs={elementRefs}
-                                currentQuestion={currentQuestion}
-                                onClick={(questionIndex) =>
-                                    setCurrentQuestion(questionIndex)
+                            <div
+                                key={index}
+                                ref={(ref) =>
+                                    (elementRefs.current[index] = ref)
                                 }
-                            />
+                                onClick={() => setCurrentQuestion(item.index)}
+                                className={`${
+                                    currentQuestion === item.index
+                                        ? "btn btn-primary"
+                                        : "btn btn-secondary"
+                                }  w-24 lg:w-20 md:w-18`}
+                            >
+                                Câu {item.index}
+                                {item.correctAnswer === item.yourChoice ? (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="w-6 h-6 text-secondary-content"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                ) : !!item.yourChoice === false ? (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="w-6 h-6"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="w-6 h-6 text-success-content"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                        />
+                                    </svg>
+                                )}
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -240,7 +294,7 @@ function ShowDescription(_props) {
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"
                                                 value={q}
-                                                checked={
+                                                defaultChecked={
                                                     listQuestions.questions[
                                                         currentQuestion - 1
                                                     ].yourChoice === q
@@ -373,7 +427,7 @@ function ShowDescription(_props) {
                     )}
                 </div>
                 {/* right sidebar */}
-                <div className="w-3/12 flex-col  pt-5 shadow-md hidden md:flex">
+                <div className="w-3/12 flex-col pt-5 shadow-md hidden md:flex">
                     <div className="pl-4 mb-5 ">
                         <p>
                             Số câu đã làm:{" "}
@@ -391,6 +445,7 @@ function ShowDescription(_props) {
                     <div className="grid grid-flow-row grid-cols-2 gap-3 xl:grid-cols-3 mx-2">
                         {filterQuestion?.questions.map((item, index) => (
                             <Questions
+                                key={index}
                                 item={item}
                                 index={index}
                                 elementRefs={elementRefs}

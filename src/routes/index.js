@@ -81,7 +81,6 @@ export const router = createBrowserRouter([
                     {
                         path: "/descriptions/:id",
                         element: <ShowDescription />,
-                        loader: ({ params: { id } }) => examResultLoader(id),
                     },
                     { path: "/history", element: <ExamHistory /> },
                 ],

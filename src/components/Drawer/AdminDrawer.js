@@ -9,7 +9,11 @@ function Drawer() {
     return (
         <AuthProvider>
             <div className="drawer drawer-mobile">
-                <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+                <input
+                    id="my-drawer"
+                    type="checkbox"
+                    className="drawer-toggle"
+                />
                 <div className="drawer-content">
                     <div className="min-h-screen">
                         <Navbar />
@@ -18,12 +22,15 @@ function Drawer() {
                     <Footer />
                 </div>
                 <div className="drawer-side">
-                    <label htmlFor="my-drawer" className="drawer-overlay"></label>
+                    <label
+                        htmlFor="my-drawer"
+                        className="drawer-overlay"
+                    ></label>
                     <div className="bg-base-200 w-80 overflow-x-hidden">
                         <div className="hidden lg:flex h-16 p-4 items-center">
                             <Link to="/admin" className="btn btn-ghost">
                                 <span className="text-primary font-bold text-2xl capitalize font-mono ">
-                                    Quizz{" "}
+                                    Quizzes{" "}
                                     <span className="text-4xl text-base-content font-serif">
                                         {" "}
                                         App
@@ -35,7 +42,10 @@ function Drawer() {
                             <li>
                                 <Link
                                     to="/admin"
-                                    className={`${location.pathname === "/admin" && "active"} `}
+                                    className={`${
+                                        location.pathname === "/admin" &&
+                                        "active"
+                                    } `}
                                 >
                                     Trang chủ
                                 </Link>
@@ -45,7 +55,9 @@ function Drawer() {
                                 <Link
                                     to="/admin/manager"
                                     className={`${
-                                        location.pathname.includes("/admin/manager") && "active"
+                                        location.pathname.includes(
+                                            "/admin/manager"
+                                        ) && "active"
                                     } `}
                                 >
                                     Quản Lý
