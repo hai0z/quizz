@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import QuizzBar from "../components/quizzBar";
 import ExamResult from "../page/ViewExamResult";
-import ShowDescription, { examResultLoader } from "../page/ViewExamResult/Showdescriptions";
+import ShowDescription, {
+    examResultLoader,
+} from "../page/ViewExamResult/Showdescriptions";
 import { ProtectedRoute, AdminProtectedRoute } from "./ProtectedRoute";
 import AuthProvider from "../context/AuthProvider";
 import Login from "../page/login";
@@ -28,7 +30,6 @@ const AuthLayOut = () => {
         <AuthProvider>
             <LoadingBar
                 color="crimson"
-                shadow={false}
                 height={3}
                 progress={loading}
                 waitingTime={750}
@@ -80,7 +81,7 @@ export const router = createBrowserRouter([
                     {
                         path: "/descriptions/:id",
                         element: <ShowDescription />,
-                        loader: ({ params }) => examResultLoader(params.id),
+                        loader: ({ params: { id } }) => examResultLoader(id),
                     },
                     { path: "/history", element: <ExamHistory /> },
                 ],

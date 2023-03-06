@@ -15,7 +15,7 @@ function formatTime(seconds) {
     return { minutes, remainingSeconds };
 }
 
-function QuizzBar(_props) {
+const QuizzBar = () => {
     const { id } = useParams();
     const [currentQuestion, setCurrentQuestion] = useState(1);
     const [listQuestions, setListQuestions] = useState();
@@ -25,9 +25,12 @@ function QuizzBar(_props) {
     const user = useSelector((state) => state.authSlice.user);
 
     useEffect(() => {
-        const unsubscribe1 = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
-            dispatch(setUser({ ...doc.data() }));
-        });
+        const unsubscribe1 = onSnapshot(
+            doc(db, "users", auth.currentUser.uid),
+            (doc) => {
+                dispatch(setUser({ ...doc.data() }));
+            }
+        );
         return () => unsubscribe1();
     }, []);
 
@@ -46,18 +49,21 @@ function QuizzBar(_props) {
     }, []);
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
-            if (doc.exists()) {
-                setListQuestions({ ...doc.data(), id: doc.id });
-            } else {
-                navigate("/");
+        const unsub = onSnapshot(
+            doc(db, "histories", `${user.uid}/exam/${id}`),
+            (doc) => {
+                if (doc.exists()) {
+                    setListQuestions({ ...doc.data(), id: doc.id });
+                } else {
+                    navigate("/");
+                }
             }
-        });
+        );
         return () => unsub();
     }, []);
 
     useEffect(() => {
-        dispatch(setPageLoading(35));
+        dispatch(setPageLoading(15));
         const getData = async () => {
             const docRef = doc(db, "histories", `${user.uid}/exam/${id}`);
             const docSnap = await getDoc(docRef);
@@ -88,14 +94,22 @@ function QuizzBar(_props) {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (
-            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length *
-            pointPerQuestion
+            listQuestions.questions.filter(
+                (q) => q.correctAnswer === q.yourChoice
+            ).length * pointPerQuestion
         ).toFixed(2);
 
         const correctAnswer =
-            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length ?? 0;
+            listQuestions.questions.filter(
+                (q) => q.correctAnswer === q.yourChoice
+            ).length ?? 0;
         const historyRef = doc(db, "histories", `${user.uid}/exam/${id}`);
-        await setDoc(historyRef, { ...listQuestions, score, correctAnswer, isDone: true });
+        await setDoc(historyRef, {
+            ...listQuestions,
+            score,
+            correctAnswer,
+            isDone: true,
+        });
         await updateDoc(userRef, { isTakingATest: {} });
         navigate("/examResult/" + id);
     };
@@ -121,17 +135,26 @@ function QuizzBar(_props) {
             case "done":
                 setFilterQuestion({
                     ...filterQuestion,
-                    questions: listQuestions.questions.filter((q) => q.yourChoice),
+                    questions: listQuestions.questions.filter(
+                        (q) => q.yourChoice
+                    ),
                 });
-                setCurrentQuestion(listQuestions.questions.filter((q) => q.yourChoice)[0]?.index);
+                setCurrentQuestion(
+                    listQuestions.questions.filter((q) => q.yourChoice)[0]
+                        ?.index
+                );
                 break;
             case "undone":
                 setFilterQuestion({
                     ...filterQuestion,
-                    questions: listQuestions.questions.filter((q) => !!q.yourChoice === false),
+                    questions: listQuestions.questions.filter(
+                        (q) => !!q.yourChoice === false
+                    ),
                 });
                 setCurrentQuestion(
-                    listQuestions.questions.filter((q) => !!q.yourChoice === false)[0]?.index
+                    listQuestions.questions.filter(
+                        (q) => !!q.yourChoice === false
+                    )[0]?.index
                 );
                 break;
             case "flag":
@@ -139,7 +162,9 @@ function QuizzBar(_props) {
                     ...filterQuestion,
                     questions: listQuestions.questions.filter((q) => !!q.flag),
                 });
-                setCurrentQuestion(listQuestions.questions.filter((q) => !!q.flag)[0]?.index);
+                setCurrentQuestion(
+                    listQuestions.questions.filter((q) => !!q.flag)[0]?.index
+                );
                 break;
             default:
                 break;
@@ -197,13 +222,19 @@ function QuizzBar(_props) {
                     <div className="flex flex-row justify-between">
                         <p className="ml-4 text-base">
                             Số câu đã làm:{" "}
-                            {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
-                            {listQuestions?.questions.length}
+                            {
+                                listQuestions?.questions.filter(
+                                    (q) => !!q.yourChoice
+                                ).length
+                            }
+                            / {listQuestions?.questions.length}
                         </p>
                         <div className="px-2">
                             <select
                                 className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
-                                onChange={(e) => handleChangeFilter(e.target.value)}
+                                onChange={(e) =>
+                                    handleChangeFilter(e.target.value)
+                                }
                             >
                                 <option selected value={"all"}>
                                     Tất cả
@@ -221,7 +252,9 @@ function QuizzBar(_props) {
                         {filterQuestion?.questions.map((item, index) => (
                             <div
                                 key={index}
-                                ref={(ref) => (elementRefs.current[index] = ref)}
+                                ref={(ref) =>
+                                    (elementRefs.current[index] = ref)
+                                }
                                 onClick={() => setCurrentQuestion(item.index)}
                                 className={`${
                                     currentQuestion === item.index
@@ -272,7 +305,10 @@ function QuizzBar(_props) {
                         <div className="flex md:justify-end items-center">
                             <Countdown
                                 minutes={formatTime(distanceInSeconds).minutes}
-                                seconds={formatTime(distanceInSeconds).remainingSeconds}
+                                seconds={
+                                    formatTime(distanceInSeconds)
+                                        .remainingSeconds
+                                }
                                 finished={finished}
                             />
                         </div>
@@ -281,43 +317,53 @@ function QuizzBar(_props) {
                         <div>
                             <p>Câu {currentQuestion}:</p>
                             <p className="text-lg ">
-                                {listQuestions?.questions[currentQuestion - 1]?.question}
+                                {
+                                    listQuestions?.questions[
+                                        currentQuestion - 1
+                                    ]?.question
+                                }
                             </p>
                             <div className="flex flex-col gap-5 mt-3">
-                                {listQuestions?.questions[currentQuestion - 1]?.answers.map(
-                                    (q, i) => {
-                                        return (
-                                            <div className="flex flex-row py-3" key={i}>
-                                                <input
-                                                    onChange={(e) =>
-                                                        chooseAnswer(
-                                                            listQuestions.questions[
-                                                                currentQuestion - 1
-                                                            ]?.id,
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                    type="radio"
-                                                    name="radio-10"
-                                                    className="radio radio-primary mr-4"
-                                                    value={q}
-                                                    checked={
-                                                        listQuestions.questions[currentQuestion - 1]
-                                                            .yourChoice === q
-                                                    }
-                                                />
-                                                <span className="">{q}</span>
-                                            </div>
-                                        );
-                                    }
-                                )}
+                                {listQuestions?.questions[
+                                    currentQuestion - 1
+                                ]?.answers.map((q, i) => {
+                                    return (
+                                        <div
+                                            className="flex flex-row py-3"
+                                            key={i}
+                                        >
+                                            <input
+                                                onChange={(e) =>
+                                                    chooseAnswer(
+                                                        listQuestions.questions[
+                                                            currentQuestion - 1
+                                                        ]?.id,
+                                                        e.target.value
+                                                    )
+                                                }
+                                                type="radio"
+                                                name="radio-10"
+                                                className="radio radio-primary mr-4"
+                                                value={q}
+                                                checked={
+                                                    listQuestions.questions[
+                                                        currentQuestion - 1
+                                                    ].yourChoice === q
+                                                }
+                                            />
+                                            <span className="">{q}</span>
+                                        </div>
+                                    );
+                                })}
                                 {!!filterQuestion?.question >= 0 && (
                                     <div className="flex flex-row">
                                         <span className=" mr-2 ">Phân vân</span>
                                         <svg
                                             onClick={() =>
                                                 toggleFlag(
-                                                    listQuestions.questions[currentQuestion - 1].id
+                                                    listQuestions.questions[
+                                                        currentQuestion - 1
+                                                    ].id
                                                 )
                                             }
                                             xmlns="http://www.w3.org/2000/svg"
@@ -326,8 +372,9 @@ function QuizzBar(_props) {
                                             strokeWidth={1.5}
                                             stroke="currentColor"
                                             className={`w-6 h-6 ${
-                                                listQuestions?.questions[currentQuestion - 1]
-                                                    ?.flag && "text-red-600"
+                                                listQuestions?.questions[
+                                                    currentQuestion - 1
+                                                ]?.flag && "text-red-600"
                                             } cursor-pointer`}
                                         >
                                             <path
@@ -339,9 +386,12 @@ function QuizzBar(_props) {
                                     </div>
                                 )}
                             </div>
+                            {/* next and prev btn */}
                             <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
                                 <svg
-                                    onClick={() => handlePrevQuestion(currentQuestion)}
+                                    onClick={() =>
+                                        handlePrevQuestion(currentQuestion)
+                                    }
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -358,19 +408,25 @@ function QuizzBar(_props) {
                                     />
                                 </svg>
 
-                                <label className="btn btn-success md:hidden" htmlFor="my-modal">
+                                <label
+                                    className="btn btn-success md:hidden"
+                                    htmlFor="my-modal"
+                                >
                                     Nộp bài
                                 </label>
 
                                 <svg
-                                    onClick={() => handleNextQuestion(currentQuestion)}
+                                    onClick={() =>
+                                        handleNextQuestion(currentQuestion)
+                                    }
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
                                     className={`btn btn-primary ${
-                                        currentQuestion >= listQuestions.questions.length &&
+                                        currentQuestion >=
+                                            listQuestions.questions.length &&
                                         "btn-disabled"
                                     }`}
                                 >
@@ -384,12 +440,17 @@ function QuizzBar(_props) {
                         </div>
                     )}
                 </div>
+                {/* right side bar */}
                 <div className="w-3/12 flex-col  pt-5 shadow-md hidden md:flex">
                     <div className="pl-4 mb-5 ">
                         <p>
                             Số câu đã làm:{" "}
-                            {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
-                            {listQuestions?.questions.length}
+                            {
+                                listQuestions?.questions.filter(
+                                    (q) => !!q.yourChoice
+                                ).length
+                            }
+                            / {listQuestions?.questions.length}
                         </p>
                     </div>
                     <div className="px-2">
@@ -434,6 +495,7 @@ function QuizzBar(_props) {
                                         />
                                     </svg>
                                 )}
+                                <div></div>
                                 {item?.yourChoice && (
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -463,6 +525,6 @@ function QuizzBar(_props) {
             <FinishedExamModal finished={finished} loading={loading} />
         </div>
     );
-}
+};
 
 export default QuizzBar;

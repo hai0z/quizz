@@ -10,189 +10,400 @@ export const examResultLoader = async (id) => {
         return { ...docSnap.data() };
     }
 };
+
+const Questions = ({ item, index, elementRefs, onClick, currentQuestion }) => {
+    return (
+        <div
+            key={index}
+            ref={(ref) => (elementRefs.current[index] = ref)}
+            onClick={() => onClick(item.index)}
+            className={`${
+                currentQuestion === item.index
+                    ? "btn btn-primary"
+                    : "btn btn-secondary"
+            }  w-24`}
+        >
+            Câu {item.index}
+            {item.correctAnswer === item.yourChoice ? (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6 text-secondary-content"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+            ) : !!item.yourChoice === false ? (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+            ) : (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6 text-success-content"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+            )}
+        </div>
+    );
+};
+const Filter = ({ handleChangeFilter }) => {
+    return (
+        <select
+            className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
+            onChange={(e) => handleChangeFilter(e.target.value)}
+        >
+            <option selected value={"all"}>
+                Tất cả
+            </option>
+            <option value={"correct"}>Đúng</option>
+            <option value={"incorrect"}>Sai</option>
+            <option value={"uncompleted"}>Chưa làm</option>
+        </select>
+    );
+};
 function ShowDescription(_props) {
     const [currentQuestion, setCurrentQuestion] = useState(1);
 
     const listQuestions = useLoaderData();
 
+    const [filterQuestion, setFilterQuestion] = useState(listQuestions);
+
+    const handleChangeFilter = (filterCase) => {
+        switch (filterCase) {
+            case "all":
+                setFilterQuestion(listQuestions);
+                setCurrentQuestion(listQuestions.questions[0].index);
+                break;
+            case "correct":
+                setFilterQuestion({
+                    ...filterQuestion,
+                    questions: listQuestions.questions.filter(
+                        (q) => q.yourChoice === q.correctAnswer
+                    ),
+                });
+                setCurrentQuestion(
+                    listQuestions.questions.filter(
+                        (q) => q.yourChoice === q.correctAnswer
+                    )[0]?.index
+                );
+                break;
+            case "incorrect":
+                setFilterQuestion({
+                    ...filterQuestion,
+                    questions: listQuestions.questions.filter(
+                        (q) =>
+                            q.yourChoice !== q.correctAnswer && !!q.yourChoice
+                    ),
+                });
+                setCurrentQuestion(
+                    listQuestions.questions.filter(
+                        (q) =>
+                            q.yourChoice !== q.correctAnswer && !!q.yourChoice
+                    )[0]?.index
+                );
+                break;
+            case "uncompleted":
+                setFilterQuestion({
+                    ...filterQuestion,
+                    questions: listQuestions.questions.filter(
+                        (q) => !!q.yourChoice === false
+                    ),
+                });
+                setCurrentQuestion(
+                    listQuestions.questions.filter(
+                        (q) => !!q.yourChoice === false
+                    )[0]?.index
+                );
+                break;
+            default:
+                break;
+        }
+    };
+    const containerRef = React.useRef(null);
+    const elementRefs = React.useRef([]);
+    const handleNextQuestion = (currentQuestion) => {
+        if (currentQuestion >= listQuestions?.questions.length) {
+            return;
+        } else {
+            const currentElement = elementRefs.current[currentQuestion];
+            containerRef.current.scrollTo({
+                left:
+                    currentElement.offsetLeft -
+                    containerRef.current.offsetLeft +
+                    containerRef.current.scrollLeft,
+                behavior: "smooth",
+            });
+            setCurrentQuestion(currentQuestion + 1);
+        }
+    };
+    const handlePrevQuestion = (currentQuestion) => {
+        if (currentQuestion <= 1) {
+            return;
+        } else {
+            containerRef.current.scrollTo({
+                left:
+                    currentQuestion.offsetLeft -
+                    containerRef.current.offsetLeft +
+                    containerRef.current.scrollLeft,
+                behavior: "smooth",
+            });
+            setCurrentQuestion(currentQuestion - 1);
+        }
+    };
     return (
         <div>
             <div className="flex min-h-screen flex-col md:flex-row">
                 {/* mobile */}
-                <div className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3  my-2 px-4">
-                    {listQuestions?.questions.map((item, index) => (
-                        <div
-                            key={index}
-                            onClick={() => setCurrentQuestion(index + 1)}
-                            className={`${
-                                currentQuestion === Number(index + 1) && "btn btn-primary"
-                            } ${item.yourChoice ? "btn btn-primary" : "btn btn-outline"} w-24`}
-                        >
-                            Câu {index + 1}{" "}
-                            {item?.flag && (
+                <div className="flex flex-col md:hidden mt-1">
+                    <div className="flex flex-row justify-between">
+                        <p className="ml-4 text-base">
+                            Số câu đã làm:{" "}
+                            {
+                                listQuestions?.questions.filter(
+                                    (q) => !!q.yourChoice
+                                ).length
+                            }
+                            / {listQuestions?.questions.length}
+                        </p>
+                        <div className="px-2">
+                            <Filter handleChangeFilter={handleChangeFilter} />
+                        </div>
+                    </div>
+                    <div
+                        className="flex md:hidden h-16 w-full overflow-x-scroll shadow-md items-center gap-3 px-4 my-1 pb-1"
+                        ref={containerRef}
+                    >
+                        {filterQuestion?.questions.map((item, index) => (
+                            <Questions
+                                item={item}
+                                index={index}
+                                elementRefs={elementRefs}
+                                currentQuestion={currentQuestion}
+                                onClick={(questionIndex) =>
+                                    setCurrentQuestion(questionIndex)
+                                }
+                            />
+                        ))}
+                    </div>
+                </div>
+                {/* main */}
+                <div className=" w-full md:w-9/12 px-10 py-2 ">
+                    {!!filterQuestion?.questions?.length && (
+                        <div>
+                            <p className="">Câu {currentQuestion}:</p>
+                            <p className="text-lg ">
+                                {
+                                    listQuestions?.questions[
+                                        currentQuestion - 1
+                                    ].question
+                                }
+                            </p>
+
+                            <div className="flex flex-col gap-5 mt-3">
+                                {listQuestions?.questions[
+                                    currentQuestion - 1
+                                ].answers.map((q, i) => {
+                                    return (
+                                        <div
+                                            className="flex flex-row py-3"
+                                            key={i}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="radio-10"
+                                                className="radio radio-primary mr-4"
+                                                value={q}
+                                                checked={
+                                                    listQuestions.questions[
+                                                        currentQuestion - 1
+                                                    ].yourChoice === q
+                                                }
+                                            />
+                                            <div className="flex flex-row">
+                                                <span className=""> {q}</span>
+                                                {listQuestions.questions[
+                                                    currentQuestion - 1
+                                                ].yourChoice === q &&
+                                                    q ===
+                                                        listQuestions
+                                                            ?.questions[
+                                                            currentQuestion - 1
+                                                        ].correctAnswer && (
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth={1.5}
+                                                            stroke="currentColor"
+                                                            className="w-6 h-6 text-green-600 ml-10"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                    )}
+                                                {listQuestions.questions[
+                                                    currentQuestion - 1
+                                                ].yourChoice !== q &&
+                                                    q ===
+                                                        listQuestions
+                                                            ?.questions[
+                                                            currentQuestion - 1
+                                                        ].correctAnswer && (
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth={1.5}
+                                                            stroke="currentColor"
+                                                            className="w-6 h-6 text-green-600 ml-10"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                    )}
+                                                {listQuestions.questions[
+                                                    currentQuestion - 1
+                                                ].yourChoice === q &&
+                                                    q !==
+                                                        listQuestions
+                                                            ?.questions[
+                                                            currentQuestion - 1
+                                                        ].correctAnswer && (
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            strokeWidth={1.5}
+                                                            stroke="currentColor"
+                                                            className="w-6 h-6 ml-10 text-red-500"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                                            />
+                                                        </svg>
+                                                    )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
                                 <svg
+                                    onClick={() =>
+                                        handlePrevQuestion(currentQuestion)
+                                    }
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     strokeWidth={1.5}
                                     stroke="currentColor"
-                                    className="text-red-600 h-4 w-4"
+                                    className={`btn btn-primary ${
+                                        currentQuestion <= 1 && "btn-disabled"
+                                    }`}
                                 >
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5"
+                                        d="M15.75 19.5L8.25 12l7.5-7.5"
                                     />
                                 </svg>
-                            )}
-                        </div>
-                    ))}
-                </div>
-                <div className="w-9/12 min-h-screen p-10">
-                    <p className="">Câu {currentQuestion}:</p>
-                    <p className="text-lg ">
-                        {listQuestions?.questions[currentQuestion - 1].question}
-                    </p>
 
-                    <div className="flex flex-col gap-5 mt-3">
-                        {listQuestions?.questions[currentQuestion - 1].answers.map((q, i) => {
-                            return (
-                                <div className="flex flex-row py-3" key={i}>
-                                    <input
-                                        type="radio"
-                                        name="radio-10"
-                                        className="radio radio-primary mr-4"
-                                        value={q}
-                                        checked={
-                                            listQuestions.questions[currentQuestion - 1]
-                                                .yourChoice === q
-                                        }
+                                <Link to="/history" className="btn btn-primary">
+                                    Quay lại
+                                </Link>
+
+                                <svg
+                                    onClick={() =>
+                                        handleNextQuestion(currentQuestion)
+                                    }
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className={`btn btn-primary ${
+                                        currentQuestion >=
+                                            listQuestions.questions.length &&
+                                        "btn-disabled"
+                                    }`}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
                                     />
-                                    <div className="flex flex-row">
-                                        <span className=""> {q}</span>
-                                        {listQuestions.questions[currentQuestion - 1].yourChoice ===
-                                            q &&
-                                            q ===
-                                                listQuestions?.questions[currentQuestion - 1]
-                                                    .correctAnswer && (
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={1.5}
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6 text-green-600 ml-10"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                            )}
-                                        {listQuestions.questions[currentQuestion - 1].yourChoice !==
-                                            q &&
-                                            q ===
-                                                listQuestions?.questions[currentQuestion - 1]
-                                                    .correctAnswer && (
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={1.5}
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6 text-green-600 ml-10"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                            )}
-                                        {listQuestions.questions[currentQuestion - 1].yourChoice ===
-                                            q &&
-                                            q !==
-                                                listQuestions?.questions[currentQuestion - 1]
-                                                    .correctAnswer && (
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={1.5}
-                                                    stroke="currentColor"
-                                                    className="w-6 h-6 ml-10 text-red-500"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                    />
-                                                </svg>
-                                            )}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                </svg>
+                            </div>
+                        </div>
+                    )}
                 </div>
-                <div className="w-3/12 flex-col pt-5 shadow-md  hidden md:flex">
+                {/* right sidebar */}
+                <div className="w-3/12 flex-col  pt-5 shadow-md hidden md:flex">
                     <div className="pl-4 mb-5 ">
                         <p>
                             Số câu đã làm:{" "}
-                            {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
-                            {listQuestions?.questions.length}
+                            {
+                                listQuestions?.questions.filter(
+                                    (q) => !!q.yourChoice
+                                ).length
+                            }
+                            / {listQuestions?.questions.length}
                         </p>
                     </div>
-                    <div className="grid grid-flow-row grid-cols-2 gap-3 lg:grid-cols-3 mx-2">
-                        {listQuestions?.questions.map((item, index) => (
-                            <div
-                                key={index}
-                                onClick={() => setCurrentQuestion(index + 1)}
-                                className={`${
-                                    currentQuestion === Number(index + 1)
-                                        ? "btn btn-primary"
-                                        : "btn btn-secondary"
-                                } `}
-                            >
-                                Câu {index + 1}{" "}
-                                {item.correctAnswer === item.yourChoice ? (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-secondary-content"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                ) : (
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-6 h-6 text-success-content"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                )}
-                            </div>
+                    <div className="px-2">
+                        <Filter handleChangeFilter={handleChangeFilter} />
+                    </div>
+                    <div className="grid grid-flow-row grid-cols-2 gap-3 xl:grid-cols-3 mx-2">
+                        {filterQuestion?.questions.map((item, index) => (
+                            <Questions
+                                item={item}
+                                index={index}
+                                elementRefs={elementRefs}
+                                currentQuestion={currentQuestion}
+                                onClick={(questionIndex) =>
+                                    setCurrentQuestion(questionIndex)
+                                }
+                            />
                         ))}
                     </div>
                     <div className="text-center mt-5 ">
-                        <Link to="/history" className="btn btn-ghost">
-                            Go back
+                        <Link to="/history" className="btn btn-success">
+                            Quay lại
                         </Link>
                     </div>
                 </div>

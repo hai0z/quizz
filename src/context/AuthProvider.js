@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { setAuth, setPageLoading, setUser } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
     const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const AuthProvider = ({ children }) => {
         const user = await getDoc(userRef);
         dispatch(setPageLoading(40));
         dispatch(setUser({ ...user.data() }));
-        updateUserStatus("online");
+         updateUserStatus("online");
         dispatch(setPageLoading(60));
         dispatch(setPageLoading(100));
         setLoading(false);
@@ -77,7 +77,7 @@ const AuthProvider = ({ children }) => {
                 getUserInfo();
                 dispatch(setAuth({ isLogin: true }));
             } else {
-                updateUserStatus("offline");
+                 updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
                 setLoading(false);
             }
