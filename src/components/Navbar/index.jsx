@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthProvider";
 import { useAppContext } from "../../context/AppProvider";
+import { BsCoin } from "react-icons/bs";
 
 function Navbar() {
     const location = useLocation();
@@ -83,6 +84,16 @@ function Navbar() {
                         </svg>
                     </label>
                 </div>
+                <Link
+                    to="/addcoin"
+                    className="dropdown tooltip-bottom dropdown-end flex flex-row items-center cursor-pointer tooltip "
+                    data-tip="add coin"
+                >
+                    <span className="text-secondary-content text-xl  ">
+                        {user.coin}
+                    </span>
+                    <BsCoin className="text-yellow-500 text-2xl ml-2" />
+                </Link>
                 <div className="dropdown dropdown-end">
                     <label
                         tabIndex={0}

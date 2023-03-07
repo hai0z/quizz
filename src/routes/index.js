@@ -20,6 +20,7 @@ import UserManager from "../page/manager/userManager/index";
 import LoadingBar from "react-top-loading-bar";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLoading } from "../redux/authSlice";
+import AddCoin from "../page/AddCoin";
 
 const AuthLayOut = () => {
     const loading = useSelector((state) => state.authSlice.loading);
@@ -67,6 +68,8 @@ export const router = createBrowserRouter([
                 children: [
                     { path: "/", element: <App /> },
                     { path: "/profile", element: <Profile /> },
+                    { path: "/addcoin", element: <AddCoin /> },
+
                     {
                         path: "/exam/:id",
                         element: <ListExam />,

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 import { useAuthContext } from "../../context/AuthProvider";
+import { BsCoin } from "react-icons/bs";
 function Profile() {
     const user = useSelector((state) => state.authSlice.user);
     const { setTitle } = useAppContext();
@@ -27,8 +28,13 @@ function Profile() {
                     <p className="lg:text-3xl text-lg font-bold text-primary">
                         {user.displayName}
                     </p>
+
                     <p className="text-base md:text-lg mt-10">
                         Email:{user.email}
+                    </p>
+                    <p className="text-base md:text-lg mt-10 flex flex-row items-center">
+                        Coin: {user.coin}{" "}
+                        <BsCoin className="text-yellow-400 text-xl ml-3" />
                     </p>
                     <p className="text-base md:text-lg mt-10">
                         Chức vụ: {user.role}
@@ -41,6 +47,9 @@ function Profile() {
                             Go to admin page
                         </Link>
                     )}
+                    <Link className="mt-10 btn btn-primary mr-3" to="/addcoin">
+                        Nạp coin
+                    </Link>
                     <button
                         className="mt-10 btn btn-primary"
                         onClick={handleLogout}

@@ -7,6 +7,7 @@ const initialState = {
         displayName: null,
         photoURL: null,
         email: null,
+        coin: 0,
     },
     loading: 0,
 };

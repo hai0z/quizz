@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-const InAExamModal = ({ isOpen, closeModal, content }) => {
+const AddCoinModal = ({ isOpen, closeModal, content }) => {
     return (
         <Fragment>
             <input type="checkbox" id="my-modal" className="modal-toggle" />
@@ -22,4 +22,4 @@ const InAExamModal = ({ isOpen, closeModal, content }) => {
     );
 };
 
-export default React.memo(InAExamModal);
+export default React.memo(AddCoinModal);

@@ -64,8 +64,8 @@ const AuthProvider = ({ children }) => {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const user = await getDoc(userRef);
         dispatch(setPageLoading(40));
-        dispatch(setUser({ ...user.data() }));
-         updateUserStatus("online");
+        dispatch(setUser({ ...user.data(), coin: user.data().coin || 0 }));
+        updateUserStatus("online");
         dispatch(setPageLoading(60));
         dispatch(setPageLoading(100));
         setLoading(false);
@@ -77,8 +77,9 @@ const AuthProvider = ({ children }) => {
                 getUserInfo();
                 dispatch(setAuth({ isLogin: true }));
             } else {
-                 updateUserStatus("offline");
+                updateUserStatus("offline");
                 dispatch(setAuth({ isLogin: false }));
+                dispatch(setUser({ coin: 0 }));
                 setLoading(false);
             }
         });
@@ -88,14 +89,23 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        window.addEventListener("beforeunload", () => updateUserStatus("offline"));
+        window.addEventListener("beforeunload", () =>
+            updateUserStatus("offline")
+        );
         return () => {
-            window.removeEventListener("beforeunload", updateUserStatus("offline"));
+            window.removeEventListener(
+                "beforeunload",
+                updateUserStatus("offline")
+            );
         };
     }, []);
 
     const defaultValue = { handleLogin, handleLogout, loading };
-    return <AuthContext.Provider value={defaultValue}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={defaultValue}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export const useAuthContext = () => {

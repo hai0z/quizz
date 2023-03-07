@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InAExamModal from "../modal/InAExamModal";
 import React from "react";
 import { setPageLoading, setUser } from "../../redux/authSlice";
+import { BsCoin } from "react-icons/bs";
 
 function ListExam() {
     const [loading, setLoading] = useState();
@@ -25,7 +26,10 @@ function ListExam() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.authSlice.user);
     const [isOpenModal, setIsOpenModal] = useState(false);
-
+    const [modalContent, setModalContent] = useState({
+        title: "1",
+        descriptions: "",
+    });
     useEffect(() => {
         const listExamLoader = async () => {
             dispatch(setPageLoading(10));
@@ -39,6 +43,7 @@ function ListExam() {
                     name: doc.data().examName,
                     time: doc.data().time,
                     id: doc.id,
+                    price: doc.data().price,
                     numberOfQuestion: doc.data().questions.length,
                 });
             });
@@ -47,6 +52,7 @@ function ListExam() {
         };
         listExamLoader();
     }, []);
+    console.log(listExam);
     function expire(currentTime, minutes) {
         // Tính toán timestamp của thời điểm hết hạn
         const expirationTime = currentTime + minutes * 60 * 1000;
@@ -54,11 +60,15 @@ function ListExam() {
         // Trả về timestamp của thời điểm hết hạn
         return expirationTime;
     }
-    const startExam = async (examId) => {
+    const startExam = async (examId, price) => {
         try {
             setLoading(examId);
-            if (user.role !== "ADMIN") {
-                alert("Hết lượt làm bài ");
+            if (+user.coin < +price) {
+                setIsOpenModal(true);
+                setModalContent({
+                    title: "Không thể làm bài thi này",
+                    descriptions: "Bạn không đủ tiền",
+                });
                 setLoading("");
                 return;
             }
@@ -67,6 +77,11 @@ function ListExam() {
                 user?.isTakingATest?.examId !== examId
             ) {
                 setIsOpenModal(true);
+                setModalContent({
+                    title: "Không thể làm bài thi này",
+                    descriptions:
+                        " Bạn đang làm 1 bài thi khác vui lòng kết thúc bài thi trước khi làm bài thi mới",
+                });
                 setLoading("");
                 return;
             }
@@ -105,25 +120,21 @@ function ListExam() {
                         index: index + 1,
                     })),
                 });
+                const isTakingATest = {
+                    status: true,
+                    examName: exam.data().examName,
+                    examId,
+                    startAt: now / 1000,
+                    expire: expire(now, +exam.data().time) / 1000,
+                };
                 await updateDoc(userRef, {
-                    isTakingATest: {
-                        status: true,
-                        examName: exam.data().examName,
-                        examId,
-                        startAt: now / 1000,
-                        expire: expire(now, +exam.data().time) / 1000,
-                    },
+                    isTakingATest,
+                    coin: +user.coin - +price,
                 });
                 dispatch(
                     setUser({
                         ...user,
-                        isTakingATest: {
-                            status: true,
-                            examName: exam.data().examName,
-                            examId,
-                            startAt: now / 1000,
-                            expire: expire(now, +exam.data().time) / 1000,
-                        },
+                        isTakingATest,
                     })
                 );
                 navigate("/test/" + examId);
@@ -169,12 +180,18 @@ function ListExam() {
                             <h2 className="card-title">{item.name}</h2>
                             <p>Thời gian: {item.time} phút</p>
                             <p>Số câu hỏi: {item.numberOfQuestion}</p>
+                            <div className="flex flex-row items-center">
+                                {item.price}
+                                <BsCoin className="text-yellow-500 ml-1 text-lg" />
+                            </div>
                             <div className="card-actions justify-end">
                                 <button
                                     className={`btn btn-primary  ${
                                         loading === item.id && "loading"
                                     }`}
-                                    onClick={() => startExam(item.id)}
+                                    onClick={() =>
+                                        startExam(item.id, item.price)
+                                    }
                                 >
                                     {user?.isTakingATest?.examId === item.id
                                         ? "tiếp tục làm"
@@ -188,7 +205,11 @@ function ListExam() {
                 ))}
             </div>
 
-            <InAExamModal isOpen={isOpenModal} closeModal={closeModal} />
+            <InAExamModal
+                isOpen={isOpenModal}
+                closeModal={closeModal}
+                content={modalContent}
+            />
         </div>
     );
 }
