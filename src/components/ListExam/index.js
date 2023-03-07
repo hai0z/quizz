@@ -68,6 +68,7 @@ function ListExam() {
                 setModalContent({
                     title: "Không thể làm bài thi này",
                     descriptions: "Bạn không đủ tiền",
+                    err: true,
                 });
                 setLoading("");
                 return;

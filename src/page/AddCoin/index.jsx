@@ -7,11 +7,12 @@ import {
     doc,
     deleteDoc,
 } from "firebase/firestore";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase";
 import { setUser } from "../../redux/authSlice";
 import AddCoinModal from "../../components/modal/AddCoin";
+import { useAppContext } from "../../context/AppProvider";
 
 function AddCoin() {
     const [seri, setSeri] = useState("");
@@ -25,8 +26,11 @@ function AddCoin() {
         title: "1",
         descriptions: "",
     });
+    const { setTitle } = useAppContext();
     const closeModal = useCallback(() => setIsOpenModal(false), []);
-
+    useEffect(() => {
+        setTitle("Nạp tiền");
+    }, [setTitle]);
     const nap_coin = async () => {
         setLoading(true);
         const q = query(

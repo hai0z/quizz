@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 const InAExamModal = ({ isOpen, closeModal, content }) => {
     return (
@@ -15,6 +16,11 @@ const InAExamModal = ({ isOpen, closeModal, content }) => {
                         >
                             OK
                         </button>
+                        {content.err && (
+                            <Link to="/addcoin" className="btn btn-primary">
+                                Nạp tiền
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
