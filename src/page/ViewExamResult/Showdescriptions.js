@@ -246,7 +246,7 @@ function ShowDescription(_props) {
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"
                                                 value={q}
-                                                defaultChecked={
+                                                checked={
                                                     listQuestions.questions[
                                                         currentQuestion - 1
                                                     ].yourChoice === q
