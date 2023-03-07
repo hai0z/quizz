@@ -1,9 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import QuizzBar from "../components/quizzBar";
 import ExamResult from "../page/ViewExamResult";
-import ShowDescription, {
-    examResultLoader,
-} from "../page/ViewExamResult/Showdescriptions";
+import ShowDescription from "../page/ViewExamResult/Showdescriptions";
 import { ProtectedRoute, AdminProtectedRoute } from "./ProtectedRoute";
 import AuthProvider from "../context/AuthProvider";
 import Login from "../page/login";

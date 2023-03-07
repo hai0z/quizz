@@ -79,7 +79,7 @@ function ExamHistory() {
                                         </td>
                                         <td>
                                             {!item.isDone ? (
-                                                <p className="badge badge-secondary">
+                                                <p className="badge badge-secondary hover:">
                                                     Đang làm
                                                 </p>
                                             ) : (

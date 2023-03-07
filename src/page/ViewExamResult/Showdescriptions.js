@@ -349,7 +349,10 @@ function ShowDescription(_props) {
                                     />
                                 </svg>
 
-                                <Link to="/history" className="btn btn-primary">
+                                <Link
+                                    to="/history"
+                                    className="btn btn-primary md:hidden"
+                                >
                                     Quay lại
                                 </Link>
 
