@@ -27,45 +27,45 @@ export function ProtectedRoute() {
     } else if (!auth.isLogin) {
         navigate("/login");
         return;
-    } else if (user.role !== "ADMIN") {
-        return (
-            <div className="hero min-h-screen">
-                {showGif && (
-                    <img
-                        src={cry}
-                        className="md:h-8/12 md:w-8/12 h-full w-full"
-                        alt="crying man"
-                    />
-                )}
-                <div className="hero-content text-center">
-                    <div className="max-w-md">
-                        <h1
-                            className="text-5xl font-bold"
-                            style={{
-                                color: showGif && "white",
-                            }}
-                        >
-                            Dự án đã dừng hoạt động
-                        </h1>
-                        <p
-                            className="py-6"
-                            style={{ color: showGif && "white" }}
-                        >
-                            Tôi hiểu rằng việc dừng hoạt động của dự án này sẽ
-                            là một cú sốc lớn đối với mọi người. Tôi mong rằng
-                            chúng ta sẽ tiếp tục học hỏi và phát triển từ kinh
-                            nghiệm này để chuẩn bị cho những dự án tương lai.
-                        </p>
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => setShowGif(true)}
-                        >
-                            I Feel Very Bad
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
+        // } else if (user.role !== "ADMIN") {
+        //     return (
+        //         <div className="hero min-h-screen">
+        //             {showGif && (
+        //                 <img
+        //                     src={cry}
+        //                     className="md:h-8/12 md:w-8/12 h-full w-full"
+        //                     alt="crying man"
+        //                 />
+        //             )}
+        //             <div className="hero-content text-center">
+        //                 <div className="max-w-md">
+        //                     <h1
+        //                         className="text-5xl font-bold"
+        //                         style={{
+        //                             color: showGif && "white",
+        //                         }}
+        //                     >
+        //                         Dự án đã dừng hoạt động
+        //                     </h1>
+        //                     <p
+        //                         className="py-6"
+        //                         style={{ color: showGif && "white" }}
+        //                     >
+        //                         Tôi hiểu rằng việc dừng hoạt động của dự án này sẽ
+        //                         là một cú sốc lớn đối với mọi người. Tôi mong rằng
+        //                         chúng ta sẽ tiếp tục học hỏi và phát triển từ kinh
+        //                         nghiệm này để chuẩn bị cho những dự án tương lai.
+        //                     </p>
+        //                     <button
+        //                         className="btn btn-primary"
+        //                         onClick={() => setShowGif(true)}
+        //                     >
+        //                         I Feel Very Bad
+        //                     </button>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     );
     }
 
     return <Outlet />;
