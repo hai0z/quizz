@@ -26,7 +26,7 @@ function Navbar() {
         if (theme === "dark") {
             handleChangeTheme(
                 [...themeList.filter((theme) => theme !== "dark")][
-                    Math.floor(Math.random() * themeList.length - 1)
+                    Math.floor(Math.random() * 9)
                 ]
             );
         } else {
