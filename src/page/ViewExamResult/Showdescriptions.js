@@ -242,6 +242,7 @@ function ShowDescription(_props) {
                                             key={i}
                                         >
                                             <input
+                                                readOnly
                                                 type="radio"
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"

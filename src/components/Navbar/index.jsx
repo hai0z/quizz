@@ -5,12 +5,34 @@ import { useAuthContext } from "../../context/AuthProvider";
 import { useAppContext } from "../../context/AppProvider";
 
 function Navbar() {
-    const theme = useSelector((state) => state.themeSlice.theme);
     const location = useLocation();
     const { handleChangeTheme, navBarTitle } = useAppContext();
-
+    const theme = useSelector((state) => state.themeSlice.theme);
+    const themeList = [
+        "light",
+        "dark",
+        "valentine",
+        "cupcake",
+        "lemonade",
+        "garden",
+        "lofi",
+        "bumblebee",
+        "winter",
+        "autumn",
+        "cmyk",
+    ];
     const { handleLogout } = useAuthContext();
-
+    const swapTheme = () => {
+        if (theme === "dark") {
+            handleChangeTheme(
+                [...themeList.filter((theme) => theme !== "dark")][
+                    Math.floor(Math.random() * themeList.length - 1)
+                ]
+            );
+        } else {
+            handleChangeTheme("dark");
+        }
+    };
     const user = useSelector((state) => state.authSlice.user);
     return (
         <div className="navbar bg-secondary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
@@ -39,108 +61,33 @@ function Navbar() {
             </div>
             <div className="flex-none gap-2">
                 <div className="dropdown dropdown-end ">
-                    <label tabIndex={0} className="btn m-1 btn-ghost ">
+                    <label className="swap swap-rotate md:mr-8 m-1">
+                        <input
+                            type="checkbox"
+                            checked={theme === "dark"}
+                            onChange={swapTheme}
+                        />
                         <svg
-                            width="20"
-                            height="20"
+                            className="swap-on fill-current w-10 text-secondary-content h-10"
                             xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            className="inline-block h-5 w-5 stroke-current md:h-6 md:w-6 text-secondary-content"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                            ></path>
+                            <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
                         </svg>
-                        <span className="mx-2 text-secondary-content">Theme</span>
                         <svg
+                            className="swap-off fill-current w-10 h-10 text-secondary-content"
                             xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
                             viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6 text-secondary-content"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                            />
+                            <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
                         </svg>
                     </label>
-                    <ul
-                        tabIndex={0}
-                        className="dropdown-content menu p-2 shadow bg-base-100  w-52 max-h-96 overflow-y-auto rounded-t-sm mt-4"
-                    >
-                        <div className="grid grid-cols-1 gap-3 p-3">
-                            <li onClick={() => handleChangeTheme("light")}>
-                                <span className={`${theme === "light" && "active"} lowercase`}>
-                                    Light
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("dark")}>
-                                <span className={`${theme === "dark" && "active"} lowercase`}>
-                                    Dark
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("valentine")}>
-                                <span className={`${theme === "valentine" && "active"} lowercase`}>
-                                    valentine
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("lemonade")}>
-                                <span className={`${theme === "lemonade" && "active"} lowercase`}>
-                                    Lemonade
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("garden")}>
-                                <span className={`${theme === "garden" && "active"} lowercase`}>
-                                    garden
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("lofi")}>
-                                <span className={`${theme === "lofi" && "active"} lowercase`}>
-                                    Lofi
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("forest")}>
-                                <span className={`${theme === "forest" && "active"} lowercase`}>
-                                    forest
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("cupcake")}>
-                                <span className={`${theme === "cupcake" && "active"} lowercase`}>
-                                    Cupcake
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("bumblebee")}>
-                                <span className={`${theme === "bumblebee" && "active"} lowercase`}>
-                                    Bumblebee
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("winter")}>
-                                <span className={`${theme === "winter" && "active"} lowercase`}>
-                                    winter
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("autumn")}>
-                                <span className={`${theme === "autumn" && "active"} lowercase`}>
-                                    autumn
-                                </span>
-                            </li>
-                            <li onClick={() => handleChangeTheme("cmyk")}>
-                                <span className={`${theme === "cmyk" && "active"} lowercase`}>
-                                    cmyk
-                                </span>
-                            </li>
-                        </div>
-                    </ul>
                 </div>
                 <div className="dropdown dropdown-end">
-                    <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                    <label
+                        tabIndex={0}
+                        className="btn btn-ghost btn-circle avatar"
+                    >
                         <div className="w-10 rounded-full">
                             <img src={user.photoURL} alt="user-img" />
                         </div>
