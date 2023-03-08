@@ -1,11 +1,11 @@
 import { addDoc, collection, getDocs, where } from "firebase/firestore";
 import React, { useState } from "react";
-import Drawer from "../../components/Drawer/AdminDrawer";
 import { db } from "../../firebase";
 function RandomExam() {
     const [examName, setExamName] = useState();
     const [numberQuestion, setNumberQuestion] = useState();
     const [time, setTime] = useState();
+    const [price, setPrice] = useState();
     const [subject, setSubject] = useState();
 
     const examRef = collection(db, "exams", `${subject}/exam`);
@@ -24,7 +24,10 @@ function RandomExam() {
             await addDoc(examRef, {
                 time,
                 examName,
-                questions: [...arr].sort(() => -0.5 + Math.random()).slice(0, numberQuestion),
+                price,
+                questions: [...arr]
+                    .sort(() => -0.5 + Math.random())
+                    .slice(0, numberQuestion),
             });
         } catch (error) {
             throw error;
@@ -70,6 +73,17 @@ function RandomExam() {
                             <option value={"physic"}>Lý</option>
                             <option value={"english"}>Anh</option>
                         </select>
+                    </div>
+                    <div className="form-control">
+                        <label htmlFor="" className="p-2 font-bold">
+                            Giá
+                        </label>
+                        <input
+                            type="text"
+                            className="input w-full max-w-md input-primary"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                        />
                     </div>
                     <div className="form-control">
                         <label htmlFor="" className="p-2 font-bold">

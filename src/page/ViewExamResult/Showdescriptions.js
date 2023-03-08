@@ -5,7 +5,12 @@ import { auth, db } from "../../firebase";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setPageLoading } from "../../redux/authSlice";
-
+import { AiOutlineCheckCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import {
+    HiOutlineXCircle,
+    HiChevronLeft,
+    HiChevronRight,
+} from "react-icons/hi";
 const Questions = ({ item, onClick, currentQuestion }) => {
     return (
         <div
@@ -18,50 +23,11 @@ const Questions = ({ item, onClick, currentQuestion }) => {
         >
             Câu {item.index}
             {item.correctAnswer === item.yourChoice ? (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 text-secondary-content"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                </svg>
+                <AiOutlineCheckCircle className="w-6 h-6 text-secondary-content" />
             ) : !!item.yourChoice === false ? (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                </svg>
+                <AiOutlineMinusCircle className="w-6 h-6" />
             ) : (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 text-success-content"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                </svg>
+                <HiOutlineXCircle className="w-6 h-6" />
             )}
         </div>
     );
@@ -166,7 +132,7 @@ function ShowDescription(_props) {
             return;
         } else {
             containerRef.current.scrollTo({
-                left: 90 + currentQuestion * 28,
+                left: currentQuestion * 90,
                 behavior: "smooth",
             });
             setCurrentQuestion(currentQuestion + 1);
@@ -263,20 +229,7 @@ function ShowDescription(_props) {
                                                             ?.questions[
                                                             currentQuestion - 1
                                                         ].correctAnswer && (
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            strokeWidth={1.5}
-                                                            stroke="currentColor"
-                                                            className="w-6 h-6 text-green-600 ml-10"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <AiOutlineCheckCircle className="w-6 h-6 text-green-600 ml-10" />
                                                     )}
                                                 {listQuestions.questions[
                                                     currentQuestion - 1
@@ -286,20 +239,7 @@ function ShowDescription(_props) {
                                                             ?.questions[
                                                             currentQuestion - 1
                                                         ].correctAnswer && (
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            strokeWidth={1.5}
-                                                            stroke="currentColor"
-                                                            className="w-6 h-6 text-green-600 ml-10"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <AiOutlineCheckCircle className="w-6 h-6 text-green-600 ml-10" />
                                                     )}
                                                 {listQuestions.questions[
                                                     currentQuestion - 1
@@ -309,20 +249,7 @@ function ShowDescription(_props) {
                                                             ?.questions[
                                                             currentQuestion - 1
                                                         ].correctAnswer && (
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none"
-                                                            viewBox="0 0 24 24"
-                                                            strokeWidth={1.5}
-                                                            stroke="currentColor"
-                                                            className="w-6 h-6 ml-10 text-red-500"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                                            />
-                                                        </svg>
+                                                        <HiOutlineXCircle className="w-6 h-6 ml-10 text-red-500" />
                                                     )}
                                             </div>
                                         </div>
@@ -330,54 +257,38 @@ function ShowDescription(_props) {
                                 })}
                             </div>
                             <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
-                                <svg
-                                    onClick={() =>
-                                        handlePrevQuestion(currentQuestion)
-                                    }
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
+                                <button
                                     className={`btn btn-primary ${
                                         currentQuestion <= 1 && "btn-disabled"
                                     }`}
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M15.75 19.5L8.25 12l7.5-7.5"
+                                    <HiChevronLeft
+                                        className="text-xl"
+                                        onClick={() =>
+                                            handlePrevQuestion(currentQuestion)
+                                        }
                                     />
-                                </svg>
-
+                                </button>
                                 <Link
                                     to="/history"
                                     className="btn btn-primary md:hidden"
                                 >
                                     Quay lại
                                 </Link>
-
-                                <svg
-                                    onClick={() =>
-                                        handleNextQuestion(currentQuestion)
-                                    }
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
+                                <button
                                     className={`btn btn-primary ${
                                         currentQuestion >=
                                             listQuestions.questions.length &&
                                         "btn-disabled"
                                     }`}
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                                    <HiChevronRight
+                                        className="text-xl"
+                                        onClick={() =>
+                                            handleNextQuestion(currentQuestion)
+                                        }
                                     />
-                                </svg>
+                                </button>
                             </div>
                         </div>
                     )}
@@ -398,7 +309,7 @@ function ShowDescription(_props) {
                     <div className="px-2">
                         <Filter handleChangeFilter={handleChangeFilter} />
                     </div>
-                    <div className="flex flex-row flex-wrap gap-4 justify-center">
+                    <div className="flex flex-row flex-wrap gap-4 justify-center h-1/3 overflow-y-auto overflow-x-hidden">
                         {filterQuestion?.questions.map((item, index) => (
                             <Questions
                                 key={index}

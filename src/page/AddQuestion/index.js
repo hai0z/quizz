@@ -26,6 +26,7 @@ function AddQuestion() {
                 difficult,
                 subject,
             });
+            console.log("adđ questions success");
         } catch (error) {
             throw error;
         }

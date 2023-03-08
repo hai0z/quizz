@@ -37,6 +37,7 @@ const AuthProvider = ({ children }) => {
                     displayName,
                     email,
                     role: "USER",
+                    coin: 0,
                 });
             }
             navigate("/");
@@ -64,7 +65,7 @@ const AuthProvider = ({ children }) => {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const user = await getDoc(userRef);
         dispatch(setPageLoading(40));
-        dispatch(setUser({ ...user.data(), coin: user.data().coin || 0 }));
+        dispatch(setUser({ ...user.data(), coin: user.data()?.coin }));
         updateUserStatus("online");
         dispatch(setPageLoading(60));
         dispatch(setPageLoading(100));
