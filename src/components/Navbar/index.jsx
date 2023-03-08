@@ -27,11 +27,7 @@ function Navbar() {
     const { handleLogout } = useAuthContext();
     const swapTheme = () => {
         if (theme === "dark") {
-            handleChangeTheme(
-                [...themeList.filter((theme) => theme !== "dark")][
-                    Math.floor(Math.random() * 9)
-                ]
-            );
+            handleChangeTheme([...themeList.filter((theme) => theme !== "dark")][Math.floor(Math.random() * 9)]);
         } else {
             handleChangeTheme("dark");
         }
@@ -39,10 +35,7 @@ function Navbar() {
     return (
         <div className="navbar bg-secondary sticky top-0  bg-opacity-90 backdrop-blur z-30 w-full text-base shadow-sm transition-all duration-150">
             <div className="flex-1">
-                <label
-                    htmlFor="my-drawer"
-                    className="lg:hidden p-4 btn btn-ghost text-secondary-content"
-                >
+                <label htmlFor="my-drawer" className="lg:hidden p-4 btn btn-ghost text-secondary-content">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -64,11 +57,7 @@ function Navbar() {
             <div className="flex-none gap-2">
                 <div className="dropdown dropdown-end ">
                     <label className="swap swap-rotate md:mr-8 m-1">
-                        <input
-                            type="checkbox"
-                            checked={theme === "dark"}
-                            onChange={swapTheme}
-                        />
+                        <input type="checkbox" checked={theme === "dark"} onChange={swapTheme} />
                         <svg
                             className="swap-on fill-current w-6 text-secondary-content h-6 md:w-10 md:h-10"
                             xmlns="http://www.w3.org/2000/svg"
@@ -96,10 +85,7 @@ function Navbar() {
                     <BsCoin className="text-yellow-500  text-sm md:text-2xl ml-2 transition-all duration-500" />
                 </Link>
                 <div className="dropdown dropdown-end">
-                    <label
-                        tabIndex={0}
-                        className="btn btn-ghost btn-circle avatar"
-                    >
+                    <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <img src={user.photoURL} alt="user-img" />
                         </div>
@@ -111,11 +97,7 @@ function Navbar() {
                         <li>
                             <Link
                                 className="justify-between"
-                                to={
-                                    location.pathname.includes("/admin")
-                                        ? "/admin/profile"
-                                        : "/profile"
-                                }
+                                to={location.pathname.includes("/admin") ? "/admin/profile" : "/profile"}
                             >
                                 Profile
                             </Link>

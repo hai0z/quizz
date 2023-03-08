@@ -10,10 +10,7 @@ const InAExamModal = ({ isOpen, closeModal, content }) => {
                     <h3 className="font-bold text-lg">{content.title}</h3>
                     <p className="py-4">{content.descriptions}</p>
                     <div className="modal-action">
-                        <button
-                            className="btn btn-primary"
-                            onClick={closeModal}
-                        >
+                        <button className="btn btn-primary" onClick={closeModal}>
                             OK
                         </button>
                         {content.err && (

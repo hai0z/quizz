@@ -66,11 +66,7 @@ function UserManager() {
                                     <th className="text-left ">
                                         <div className={`flex flex-row items-center`}>
                                             <div className="avatar hidden md:block">
-                                                <img
-                                                    src={item.photoURL}
-                                                    alt="user_img"
-                                                    className="rounded-full"
-                                                />
+                                                <img src={item.photoURL} alt="user_img" className="rounded-full" />
                                             </div>
                                             <span className="ml-2">{item?.displayName}</span>
                                         </div>

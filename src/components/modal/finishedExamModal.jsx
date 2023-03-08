@@ -12,10 +12,7 @@ function FinishedExamModal({ finished, loading }) {
                         <label htmlFor="my-modal" className="btn btn-error">
                             Quay lại
                         </label>
-                        <label
-                            className={`btn btn-success ${loading && "loading"}`}
-                            onClick={finished}
-                        >
+                        <label className={`btn btn-success ${loading && "loading"}`} onClick={finished}>
                             {loading ? "Đang nộp bài " : "Nộp bài"}
                         </label>
                     </div>

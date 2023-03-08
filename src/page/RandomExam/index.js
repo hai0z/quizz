@@ -25,9 +25,7 @@ function RandomExam() {
                 time,
                 examName,
                 price,
-                questions: [...arr]
-                    .sort(() => -0.5 + Math.random())
-                    .slice(0, numberQuestion),
+                questions: [...arr].sort(() => -0.5 + Math.random()).slice(0, numberQuestion),
             });
         } catch (error) {
             throw error;

@@ -68,20 +68,11 @@ function App() {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (
-            listQuestions.questions.filter(
-                (q) => q.correctAnswer === q.yourChoice
-            ).length * pointPerQuestion
+            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length * pointPerQuestion
         ).toFixed(2);
 
-        const correctAnswer =
-            listQuestions.questions.filter(
-                (q) => q.correctAnswer === q.yourChoice
-            ).length ?? 0;
-        const historyRef = doc(
-            db,
-            "histories",
-            `${user.uid}/exam/${user?.isTakingATest?.examId}`
-        );
+        const correctAnswer = listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length ?? 0;
+        const historyRef = doc(db, "histories", `${user.uid}/exam/${user?.isTakingATest?.examId}`);
         await setDoc(historyRef, {
             ...listQuestions,
             score,
@@ -91,26 +82,16 @@ function App() {
         await updateDoc(userRef, { isTakingATest: {} });
     };
     useEffect(() => {
-        const unsub = onSnapshot(
-            doc(
-                db,
-                "histories",
-                `${user.uid}/exam/${user?.isTakingATest?.examId}`
-            ),
-            (doc) => {
-                setListQuestions({ ...doc.data(), id: doc.id });
-            }
-        );
+        const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${user?.isTakingATest?.examId}`), (doc) => {
+            setListQuestions({ ...doc.data(), id: doc.id });
+        });
         return () => unsub();
     }, []);
 
     useEffect(() => {
-        const unsubscribe1 = onSnapshot(
-            doc(db, "users", auth.currentUser.uid),
-            (doc) => {
-                dispatch(setUser({ ...doc.data() }));
-            }
-        );
+        const unsubscribe1 = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+            dispatch(setUser({ ...doc.data() }));
+        });
         return () => unsubscribe1();
     }, []);
 
@@ -125,16 +106,10 @@ function App() {
                             className="card card-compact w-96 md:w-80 bg-base-200 shadow-xl cursor-pointer p-2"
                         >
                             <figure>
-                                <img
-                                    src={item.img}
-                                    alt="subject"
-                                    className="h-52 p-4"
-                                />
+                                <img src={item.img} alt="subject" className="h-52 p-4" />
                             </figure>
                             <div className="card-body items-center">
-                                <h2 className="card-title text-base-content drop-shadow-sm">
-                                    {item.name}
-                                </h2>
+                                <h2 className="card-title text-base-content drop-shadow-sm">{item.name}</h2>
                             </div>
                         </Link>
                     ))}
@@ -162,14 +137,8 @@ function App() {
                                 <div>
                                     {user?.isTakingATest?.examName}
                                     <Countdown
-                                        minutes={
-                                            formatTime(distanceInSeconds)
-                                                .minutes
-                                        }
-                                        seconds={
-                                            formatTime(distanceInSeconds)
-                                                .remainingSeconds
-                                        }
+                                        minutes={formatTime(distanceInSeconds).minutes}
+                                        seconds={formatTime(distanceInSeconds).remainingSeconds}
                                         finished={() => finished(listQuestions)}
                                     />
                                 </div>
@@ -177,12 +146,7 @@ function App() {
                             <div className="flex-none">
                                 <button
                                     className="btn btn-sm btn-primary"
-                                    onClick={() =>
-                                        navigate(
-                                            "/test/" +
-                                                user?.isTakingATest?.examId
-                                        )
-                                    }
+                                    onClick={() => navigate("/test/" + user?.isTakingATest?.examId)}
                                 >
                                     Tiếp tục làm
                                 </button>

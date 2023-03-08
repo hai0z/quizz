@@ -15,10 +15,7 @@ function AddQuestion() {
 
     const addQuestion = async () => {
         try {
-            const questionRef = collection(
-                db,
-                `questions/${subject}/questions`
-            );
+            const questionRef = collection(db, `questions/${subject}/questions`);
             await addDoc(questionRef, {
                 question,
                 answers: [answer1, answer2, answer3, answer4],
@@ -132,10 +129,7 @@ function AddQuestion() {
                         />
                     </div>
                     <div className="container">
-                        <button
-                            className="btn btn-primary w-36"
-                            onClick={addQuestion}
-                        >
+                        <button className="btn btn-primary w-36" onClick={addQuestion}>
                             add
                         </button>
                     </div>

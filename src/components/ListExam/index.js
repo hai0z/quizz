@@ -1,14 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../../firebase/";
-import {
-    getDoc,
-    collection,
-    doc,
-    getDocs,
-    setDoc,
-    updateDoc,
-} from "firebase/firestore";
+import { getDoc, collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppProvider";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,15 +66,11 @@ function ListExam() {
                 setLoading("");
                 return;
             }
-            if (
-                user?.isTakingATest?.status === true &&
-                user?.isTakingATest?.examId !== examId
-            ) {
+            if (user?.isTakingATest?.status === true && user?.isTakingATest?.examId !== examId) {
                 setIsOpenModal(true);
                 setModalContent({
                     title: "Không thể làm bài thi này",
-                    descriptions:
-                        " Bạn đang làm 1 bài thi khác vui lòng kết thúc bài thi trước khi làm bài thi mới",
+                    descriptions: " Bạn đang làm 1 bài thi khác vui lòng kết thúc bài thi trước khi làm bài thi mới",
                 });
                 setLoading("");
                 return;
@@ -91,11 +80,7 @@ function ListExam() {
             const userRef = doc(db, "users", auth.currentUser.uid);
             const exam = await getDoc(examRef);
             //check xem da lam chua
-            const docRef = doc(
-                db,
-                "histories",
-                `${auth.currentUser.uid}/exam/${examId}`
-            );
+            const docRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists() && docSnap.data().isDone === false) {
@@ -104,11 +89,7 @@ function ListExam() {
                 return;
             } else {
                 //neu ko thi them vao lich su lam bai(lam lai hoac lam moi')
-                const historyRef = doc(
-                    db,
-                    "histories",
-                    `${auth.currentUser.uid}/exam/${examId}`
-                );
+                const historyRef = doc(db, "histories", `${auth.currentUser.uid}/exam/${examId}`);
 
                 await setDoc(historyRef, {
                     ...exam.data(),
@@ -128,16 +109,8 @@ function ListExam() {
                     startAt: now / 1000,
                     expire: expire(now, +exam.data().time) / 1000,
                 };
-                await updateDoc(userRef, {
-                    isTakingATest,
-                    coin: +user.coin - +price,
-                });
-                dispatch(
-                    setUser({
-                        ...user,
-                        isTakingATest,
-                    })
-                );
+                await updateDoc(userRef, { isTakingATest, coin: +user.coin - +price });
+                dispatch(setUser({ ...user, isTakingATest }));
                 navigate("/test/" + examId);
             }
         } catch (error) {
@@ -155,27 +128,14 @@ function ListExam() {
             <div className="container p-8 flex flex-row flex-wrap gap-8 justify-center md:justify-start">
                 {listExam?.length === 0 && (
                     <div className="items-center justify-center flex flex-col container">
-                        <img
-                            src={require("../../asset/page.png")}
-                            alt="empty"
-                            className="h-40"
-                        />
-                        <h2 className="font-mono text-primary text-2xl text-center">
-                            Chưa có bài thi nào
-                        </h2>
+                        <img src={require("../../asset/page.png")} alt="empty" className="h-40" />
+                        <h2 className="font-mono text-primary text-2xl text-center">Chưa có bài thi nào</h2>
                     </div>
                 )}
                 {listExam?.map((item, index) => (
-                    <div
-                        className="card card-side bg-base-200 shadow-xl"
-                        key={index}
-                    >
+                    <div className="card card-side bg-base-200 shadow-xl" key={index}>
                         <figure>
-                            <img
-                                src={require("../../asset/exam.png")}
-                                alt="exam"
-                                className="h-36 lg:h52 p-4"
-                            />
+                            <img src={require("../../asset/exam.png")} alt="exam" className="h-36 lg:h52 p-4" />
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">{item.name}</h2>
@@ -187,12 +147,8 @@ function ListExam() {
                             </div>
                             <div className="card-actions justify-end">
                                 <button
-                                    className={`btn btn-primary  ${
-                                        loading === item.id && "loading"
-                                    }`}
-                                    onClick={() =>
-                                        startExam(item.id, item.price)
-                                    }
+                                    className={`btn btn-primary  ${loading === item.id && "loading"}`}
+                                    onClick={() => startExam(item.id, item.price)}
                                 >
                                     {user?.isTakingATest?.examId === item.id
                                         ? "tiếp tục làm"
@@ -206,11 +162,7 @@ function ListExam() {
                 ))}
             </div>
 
-            <InAExamModal
-                isOpen={isOpenModal}
-                closeModal={closeModal}
-                content={modalContent}
-            />
+            <InAExamModal isOpen={isOpenModal} closeModal={closeModal} content={modalContent} />
         </div>
     );
 }

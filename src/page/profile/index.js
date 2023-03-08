@@ -17,11 +17,7 @@ const GetCardModal = ({ open, close, card }) => {
                     <p className="py-4">seri: {card.seri}</p>
                     <p className="py-4">code: {card.code}</p>
                     <div className="modal-action">
-                        <label
-                            htmlFor="my-modal"
-                            className="btn"
-                            onClick={close}
-                        >
+                        <label htmlFor="my-modal" className="btn" onClick={close}>
                             Đóng
                         </label>
                     </div>
@@ -66,56 +62,32 @@ function Profile() {
             </div>
             <div className="justify-center items-center flex mt-20">
                 <div className="w-10/12">
-                    <p className="lg:text-3xl text-lg font-bold text-primary">
-                        {user.displayName}
-                    </p>
+                    <p className="lg:text-3xl text-lg font-bold text-primary">{user.displayName}</p>
 
-                    <p className="text-base md:text-lg mt-10">
-                        Email:{user.email}
-                    </p>
+                    <p className="text-base md:text-lg mt-10">Email:{user.email}</p>
                     <p className="text-base md:text-lg mt-10 flex flex-row items-center">
-                        Coin: {user.coin}{" "}
-                        <BsCoin className="text-yellow-400 text-xl ml-3" />
+                        Coin: {user.coin} <BsCoin className="text-yellow-400 text-xl ml-3" />
                     </p>
-                    <p className="text-base md:text-lg mt-10">
-                        Chức vụ: {user.role}
-                    </p>
+                    <p className="text-base md:text-lg mt-10">Chức vụ: {user.role}</p>
                     {user.role === "ADMIN" && (
-                        <Link
-                            className="mt-10 btn btn-primary mr-3"
-                            to="/admin"
-                        >
+                        <Link className="mt-10 btn btn-primary mr-3" to="/admin">
                             Go to admin page
                         </Link>
                     )}
                     {user.role !== "ADMIN" && (
-                        <Link
-                            className="mt-10 btn btn-primary mr-3"
-                            to="/addcoin"
-                        >
+                        <Link className="mt-10 btn btn-primary mr-3" to="/addcoin">
                             Nạp coin
                         </Link>
                     )}
-                    <label
-                        htmlFor="my-modal"
-                        onClick={getCard}
-                        className="mt-10 btn btn-primary mr-3"
-                    >
+                    <label htmlFor="my-modal" onClick={getCard} className="mt-10 btn btn-primary mr-3">
                         Get Card
                     </label>
-                    <button
-                        className="mt-10 btn btn-primary"
-                        onClick={handleLogout}
-                    >
+                    <button className="mt-10 btn btn-primary" onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
             </div>
-            <GetCardModal
-                open={openModal}
-                close={() => setOpenModal(false)}
-                card={card}
-            />
+            <GetCardModal open={openModal} close={() => setOpenModal(false)} card={card} />
         </div>
     );
 }

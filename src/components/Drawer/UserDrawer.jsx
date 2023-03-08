@@ -22,22 +22,13 @@ const Drawer = () => {
                     <div className="hidden lg:flex h-16 p-4 items-center">
                         <Link to="/" className="btn btn-ghost">
                             <span className="text-primary font-bold text-2xl capitalize font-mono ">
-                                Quizzes{" "}
-                                <span className="text-4xl text-secondary drop-shadow-sm font-serif">
-                                    {" "}
-                                    App
-                                </span>
+                                Quizzes <span className="text-4xl text-secondary drop-shadow-sm font-serif"> App</span>
                             </span>
                         </Link>
                     </div>
                     <ul className="menu menu-compact p-4 bg-base-200 text-base-content sticky">
                         <li>
-                            <Link
-                                to="/"
-                                className={`${
-                                    location.pathname === "/" && "active"
-                                } `}
-                            >
+                            <Link to="/" className={`${location.pathname === "/" && "active"} `}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -56,12 +47,7 @@ const Drawer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link
-                                to="/history"
-                                className={`${
-                                    location.pathname === "/history" && "active"
-                                } `}
-                            >
+                            <Link to="/history" className={`${location.pathname === "/history" && "active"} `}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"

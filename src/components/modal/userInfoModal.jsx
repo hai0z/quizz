@@ -10,12 +10,7 @@ function convertDateFormat(inputDate) {
     var year = date.getFullYear();
 
     // Định dạng lại chuỗi thời gian
-    var outputDate =
-        day.toString().padStart(2, "0") +
-        "/" +
-        month.toString().padStart(2, "0") +
-        "/" +
-        year.toString();
+    var outputDate = day.toString().padStart(2, "0") + "/" + month.toString().padStart(2, "0") + "/" + year.toString();
 
     return outputDate;
 }
@@ -37,19 +32,12 @@ function UserInfoModal({ user }) {
                         </div>
                         <div className="justify-center items-center flex mt-20">
                             <div className="w-10/12">
-                                <p className="text-lg font-bold text-base-content">
-                                    {user?.displayName}
-                                </p>
+                                <p className="text-lg font-bold text-base-content">{user?.displayName}</p>
                                 <p className="text-lg text-base-content mt-2">UID: {user?.uid}</p>
+                                <p className="text-lg text-base-content mt-2">Email:{user?.email}</p>
+                                <p className="text-lg text-base-content mt-2">Chức vụ: {user?.role}</p>
                                 <p className="text-lg text-base-content mt-2">
-                                    Email:{user?.email}
-                                </p>
-                                <p className="text-lg text-base-content mt-2">
-                                    Chức vụ: {user?.role}
-                                </p>
-                                <p className="text-lg text-base-content mt-2">
-                                    Ngày tham gia:{" "}
-                                    {convertDateFormat(user?.createdAt ?? "01/01/1970")}
+                                    Ngày tham gia: {convertDateFormat(user?.createdAt ?? "01/01/1970")}
                                 </p>
                             </div>
                         </div>

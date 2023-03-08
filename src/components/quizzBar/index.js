@@ -26,12 +26,9 @@ const QuizzBar = () => {
     const user = useSelector((state) => state.authSlice.user);
 
     useEffect(() => {
-        const unsubscribe1 = onSnapshot(
-            doc(db, "users", auth.currentUser.uid),
-            (doc) => {
-                dispatch(setUser({ ...doc.data() }));
-            }
-        );
+        const unsubscribe1 = onSnapshot(doc(db, "users", auth.currentUser.uid), (doc) => {
+            dispatch(setUser({ ...doc.data() }));
+        });
         return () => unsubscribe1();
     }, []);
 
@@ -50,16 +47,13 @@ const QuizzBar = () => {
     }, []);
 
     useEffect(() => {
-        const unsub = onSnapshot(
-            doc(db, "histories", `${user.uid}/exam/${id}`),
-            (doc) => {
-                if (doc.exists()) {
-                    setListQuestions({ ...doc.data(), id: doc.id });
-                } else {
-                    navigate("/");
-                }
+        const unsub = onSnapshot(doc(db, "histories", `${user.uid}/exam/${id}`), (doc) => {
+            if (doc.exists()) {
+                setListQuestions({ ...doc.data(), id: doc.id });
+            } else {
+                navigate("/");
             }
-        );
+        });
         return () => unsub();
     }, []);
 
@@ -81,9 +75,7 @@ const QuizzBar = () => {
     const chooseAnswer = async (questionId, choice) => {
         const l = {
             ...listQuestions,
-            questions: listQuestions.questions.map((q) =>
-                q.id === questionId ? { ...q, yourChoice: choice } : q
-            ),
+            questions: listQuestions.questions.map((q) => (q.id === questionId ? { ...q, yourChoice: choice } : q)),
         };
         setFilterQuestion(l);
         const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
@@ -95,15 +87,10 @@ const QuizzBar = () => {
         const userRef = doc(db, "users", auth.currentUser.uid);
         const pointPerQuestion = 10 / listQuestions.questions.length;
         const score = (
-            listQuestions.questions.filter(
-                (q) => q.correctAnswer === q.yourChoice
-            ).length * pointPerQuestion
+            listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length * pointPerQuestion
         ).toFixed(2);
 
-        const correctAnswer =
-            listQuestions.questions.filter(
-                (q) => q.correctAnswer === q.yourChoice
-            ).length ?? 0;
+        const correctAnswer = listQuestions.questions.filter((q) => q.correctAnswer === q.yourChoice).length ?? 0;
         const historyRef = doc(db, "histories", `${user.uid}/exam/${id}`);
         await setDoc(historyRef, {
             ...listQuestions,
@@ -118,9 +105,7 @@ const QuizzBar = () => {
     const toggleFlag = async (questionId) => {
         const l = {
             ...listQuestions,
-            questions: listQuestions.questions.map((q) =>
-                q.id === questionId ? { ...q, flag: !q.flag ?? true } : q
-            ),
+            questions: listQuestions.questions.map((q) => (q.id === questionId ? { ...q, flag: !q.flag ?? true } : q)),
         };
         setFilterQuestion(l);
         const examRef = doc(db, "histories", `${user.uid}/exam/${id}`);
@@ -136,36 +121,23 @@ const QuizzBar = () => {
             case "done":
                 setFilterQuestion({
                     ...filterQuestion,
-                    questions: listQuestions.questions.filter(
-                        (q) => q.yourChoice
-                    ),
+                    questions: listQuestions.questions.filter((q) => q.yourChoice),
                 });
-                setCurrentQuestion(
-                    listQuestions.questions.filter((q) => q.yourChoice)[0]
-                        ?.index
-                );
+                setCurrentQuestion(listQuestions.questions.filter((q) => q.yourChoice)[0]?.index);
                 break;
             case "undone":
                 setFilterQuestion({
                     ...filterQuestion,
-                    questions: listQuestions.questions.filter(
-                        (q) => !!q.yourChoice === false
-                    ),
+                    questions: listQuestions.questions.filter((q) => !!q.yourChoice === false),
                 });
-                setCurrentQuestion(
-                    listQuestions.questions.filter(
-                        (q) => !!q.yourChoice === false
-                    )[0]?.index
-                );
+                setCurrentQuestion(listQuestions.questions.filter((q) => !!q.yourChoice === false)[0]?.index);
                 break;
             case "flag":
                 setFilterQuestion({
                     ...filterQuestion,
                     questions: listQuestions.questions.filter((q) => !!q.flag),
                 });
-                setCurrentQuestion(
-                    listQuestions.questions.filter((q) => !!q.flag)[0]?.index
-                );
+                setCurrentQuestion(listQuestions.questions.filter((q) => !!q.flag)[0]?.index);
                 break;
             default:
                 break;
@@ -179,10 +151,7 @@ const QuizzBar = () => {
         } else {
             const currentElement = elementRefs.current[currentQuestion];
             containerRef.current.scrollTo({
-                left:
-                    currentElement.offsetLeft -
-                    containerRef.current.offsetLeft +
-                    containerRef.current.scrollLeft,
+                left: currentElement.offsetLeft - containerRef.current.offsetLeft + containerRef.current.scrollLeft,
                 behavior: "smooth",
             });
             setCurrentQuestion(currentQuestion + 1);
@@ -193,10 +162,7 @@ const QuizzBar = () => {
             return;
         } else {
             containerRef.current.scrollTo({
-                left:
-                    currentQuestion.offsetLeft -
-                    containerRef.current.offsetLeft +
-                    containerRef.current.scrollLeft,
+                left: currentQuestion.offsetLeft - containerRef.current.offsetLeft + containerRef.current.scrollLeft,
                 behavior: "smooth",
             });
             setCurrentQuestion(currentQuestion - 1);
@@ -222,21 +188,14 @@ const QuizzBar = () => {
                 <div className="flex flex-col md:hidden mt-1">
                     <div className="flex flex-row justify-between">
                         <p className="ml-4 text-base">
-                            Số câu đã làm:{" "}
-                            {
-                                listQuestions?.questions.filter(
-                                    (q) => !!q.yourChoice
-                                ).length
-                            }
-                            / {listQuestions?.questions.length}
+                            Số câu đã làm: {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
+                            {listQuestions?.questions.length}
                         </p>
                         <div className="px-2">
                             <select
                                 defaultValue={"all"}
                                 className="select select-bordered w-full max-w-xs select-sm ml-2 mb-2"
-                                onChange={(e) =>
-                                    handleChangeFilter(e.target.value)
-                                }
+                                onChange={(e) => handleChangeFilter(e.target.value)}
                             >
                                 <option value={"all"}>Tất cả</option>
                                 <option value={"done"}>Đã làm</option>
@@ -252,20 +211,14 @@ const QuizzBar = () => {
                         {filterQuestion?.questions.map((item, index) => (
                             <div
                                 key={index}
-                                ref={(ref) =>
-                                    (elementRefs.current[index] = ref)
-                                }
+                                ref={(ref) => (elementRefs.current[index] = ref)}
                                 onClick={() => setCurrentQuestion(item.index)}
                                 className={`${
-                                    currentQuestion === item.index
-                                        ? "btn btn-primary"
-                                        : "btn btn-secondary"
+                                    currentQuestion === item.index ? "btn btn-primary" : "btn btn-secondary"
                                 }  w-24`}
                             >
                                 Câu {item.index}{" "}
-                                {item?.flag && (
-                                    <AiOutlineFlag className="w-6 h-6 text-secondary-content" />
-                                )}
+                                {item?.flag && <AiOutlineFlag className="w-6 h-6 text-secondary-content" />}
                                 {item?.yourChoice && (
                                     <AiOutlineCheckCircle className="w-6 h-6 text-secondary-content" />
                                 )}
@@ -279,10 +232,7 @@ const QuizzBar = () => {
                         <div className="flex md:justify-end items-center">
                             <Countdown
                                 minutes={formatTime(distanceInSeconds).minutes}
-                                seconds={
-                                    formatTime(distanceInSeconds)
-                                        .remainingSeconds
-                                }
+                                seconds={formatTime(distanceInSeconds).remainingSeconds}
                                 finished={finished}
                             />
                         </div>
@@ -290,28 +240,15 @@ const QuizzBar = () => {
                     {!!filterQuestion?.questions?.length && (
                         <div>
                             <p>Câu {currentQuestion}:</p>
-                            <p className="text-lg ">
-                                {
-                                    listQuestions?.questions[
-                                        currentQuestion - 1
-                                    ]?.question
-                                }
-                            </p>
+                            <p className="text-lg ">{listQuestions?.questions[currentQuestion - 1]?.question}</p>
                             <div className="flex flex-col gap-5 mt-3">
-                                {listQuestions?.questions[
-                                    currentQuestion - 1
-                                ]?.answers.map((q, i) => {
+                                {listQuestions?.questions[currentQuestion - 1]?.answers.map((q, i) => {
                                     return (
-                                        <div
-                                            className="flex flex-row py-3"
-                                            key={i}
-                                        >
+                                        <div className="flex flex-row py-3" key={i}>
                                             <input
                                                 onChange={(e) =>
                                                     chooseAnswer(
-                                                        listQuestions.questions[
-                                                            currentQuestion - 1
-                                                        ]?.id,
+                                                        listQuestions.questions[currentQuestion - 1]?.id,
                                                         e.target.value
                                                     )
                                                 }
@@ -319,11 +256,7 @@ const QuizzBar = () => {
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"
                                                 value={q}
-                                                checked={
-                                                    listQuestions.questions[
-                                                        currentQuestion - 1
-                                                    ].yourChoice === q
-                                                }
+                                                checked={listQuestions.questions[currentQuestion - 1].yourChoice === q}
                                             />
                                             <span className="">{q}</span>
                                         </div>
@@ -334,54 +267,33 @@ const QuizzBar = () => {
                                         <span className=" mr-2 ">Phân vân</span>
                                         <AiOutlineFlag
                                             className={`w-6 h-6 ${
-                                                listQuestions?.questions[
-                                                    currentQuestion - 1
-                                                ]?.flag && "text-red-600"
+                                                listQuestions?.questions[currentQuestion - 1]?.flag && "text-red-600"
                                             } cursor-pointer`}
-                                            onClick={() =>
-                                                toggleFlag(
-                                                    listQuestions.questions[
-                                                        currentQuestion - 1
-                                                    ].id
-                                                )
-                                            }
+                                            onClick={() => toggleFlag(listQuestions.questions[currentQuestion - 1].id)}
                                         />
                                     </div>
                                 )}
                             </div>
                             {/* next and prev btn */}
                             <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
-                                <button
-                                    className={`btn btn-primary ${
-                                        currentQuestion <= 1 && "btn-disabled"
-                                    }`}
-                                >
+                                <button className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}>
                                     <HiChevronLeft
                                         className="text-xl"
-                                        onClick={() =>
-                                            handlePrevQuestion(currentQuestion)
-                                        }
+                                        onClick={() => handlePrevQuestion(currentQuestion)}
                                     />
                                 </button>
 
-                                <label
-                                    className="btn btn-success md:hidden"
-                                    htmlFor="my-modal"
-                                >
+                                <label className="btn btn-success md:hidden" htmlFor="my-modal">
                                     Nộp bài
                                 </label>
                                 <button
                                     className={`btn btn-primary ${
-                                        currentQuestion >=
-                                            listQuestions.questions.length &&
-                                        "btn-disabled"
+                                        currentQuestion >= listQuestions.questions.length && "btn-disabled"
                                     }`}
                                 >
                                     <HiChevronRight
                                         className="text-xl"
-                                        onClick={() =>
-                                            handleNextQuestion(currentQuestion)
-                                        }
+                                        onClick={() => handleNextQuestion(currentQuestion)}
                                     />
                                 </button>
                             </div>
@@ -392,13 +304,8 @@ const QuizzBar = () => {
                 <div className="w-3/12 flex-col pt-5 shadow-md hidden md:flex">
                     <div className="pl-4 mb-5 ">
                         <p>
-                            Số câu đã làm:{" "}
-                            {
-                                listQuestions?.questions.filter(
-                                    (q) => !!q.yourChoice
-                                ).length
-                            }
-                            / {listQuestions?.questions.length}
+                            Số câu đã làm: {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
+                            {listQuestions?.questions.length}
                         </p>
                     </div>
                     <div className="px-2">
@@ -420,15 +327,10 @@ const QuizzBar = () => {
                                 key={item.index}
                                 onClick={() => setCurrentQuestion(item.index)}
                                 className={`${
-                                    currentQuestion === Number(item.index)
-                                        ? "btn-primary"
-                                        : "btn-secondary"
+                                    currentQuestion === Number(item.index) ? "btn-primary" : "btn-secondary"
                                 }  w-24 lg:w-20 btn `}
                             >
-                                Câu {item.index}{" "}
-                                {item?.flag && (
-                                    <AiOutlineFlag className="text-error h-4 w-4 ml-1" />
-                                )}
+                                Câu {item.index} {item?.flag && <AiOutlineFlag className="text-error h-4 w-4 ml-1" />}
                                 {item?.yourChoice && (
                                     <AiOutlineCheckCircle className="w-6 h-6 text-secondary-content" />
                                 )}

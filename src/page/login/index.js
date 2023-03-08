@@ -28,15 +28,8 @@ function Login() {
                 <h3 className="font-mono text-4xl pb-10 text-primary">
                     Quizz <span className="text-base-content">App</span>
                 </h3>
-                <button
-                    className="btn btn-outline btn-primary gap-2"
-                    onClick={handleLogin}
-                >
-                    <img
-                        src={require("../../asset/google.png")}
-                        alt="google_icon"
-                        className="object-cover h-8"
-                    />
+                <button className="btn btn-outline btn-primary gap-2" onClick={handleLogin}>
+                    <img src={require("../../asset/google.png")} alt="google_icon" className="object-cover h-8" />
                     Login with google
                 </button>
             </div>

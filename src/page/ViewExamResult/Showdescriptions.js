@@ -6,19 +6,13 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setPageLoading } from "../../redux/authSlice";
 import { AiOutlineCheckCircle, AiOutlineMinusCircle } from "react-icons/ai";
-import {
-    HiOutlineXCircle,
-    HiChevronLeft,
-    HiChevronRight,
-} from "react-icons/hi";
+import { HiOutlineXCircle, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 const Questions = ({ item, onClick, currentQuestion }) => {
     return (
         <div
             onClick={() => onClick(item.index)}
             className={`${
-                currentQuestion === item.index
-                    ? "btn btn-primary"
-                    : "btn btn-secondary"
+                currentQuestion === item.index ? "btn btn-primary" : "btn btn-secondary"
             }  w-24 lg:w-20 md:w-18`}
         >
             Câu {item.index}
@@ -62,43 +56,27 @@ function ShowDescription(_props) {
             case "correct":
                 setFilterQuestion({
                     ...filterQuestion,
-                    questions: listQuestions.questions.filter(
-                        (q) => q.yourChoice === q.correctAnswer
-                    ),
+                    questions: listQuestions.questions.filter((q) => q.yourChoice === q.correctAnswer),
                 });
-                setCurrentQuestion(
-                    listQuestions.questions.filter(
-                        (q) => q.yourChoice === q.correctAnswer
-                    )[0]?.index
-                );
+                setCurrentQuestion(listQuestions.questions.filter((q) => q.yourChoice === q.correctAnswer)[0]?.index);
                 break;
             case "incorrect":
                 setFilterQuestion({
                     ...filterQuestion,
                     questions: listQuestions.questions.filter(
-                        (q) =>
-                            q.yourChoice !== q.correctAnswer && !!q.yourChoice
+                        (q) => q.yourChoice !== q.correctAnswer && !!q.yourChoice
                     ),
                 });
                 setCurrentQuestion(
-                    listQuestions.questions.filter(
-                        (q) =>
-                            q.yourChoice !== q.correctAnswer && !!q.yourChoice
-                    )[0]?.index
+                    listQuestions.questions.filter((q) => q.yourChoice !== q.correctAnswer && !!q.yourChoice)[0]?.index
                 );
                 break;
             case "uncompleted":
                 setFilterQuestion({
                     ...filterQuestion,
-                    questions: listQuestions.questions.filter(
-                        (q) => !!q.yourChoice === false
-                    ),
+                    questions: listQuestions.questions.filter((q) => !!q.yourChoice === false),
                 });
-                setCurrentQuestion(
-                    listQuestions.questions.filter(
-                        (q) => !!q.yourChoice === false
-                    )[0]?.index
-                );
+                setCurrentQuestion(listQuestions.questions.filter((q) => !!q.yourChoice === false)[0]?.index);
                 break;
             default:
                 break;
@@ -111,11 +89,7 @@ function ShowDescription(_props) {
     useEffect(() => {
         dispatch(setPageLoading(10));
         const examResultLoader = async () => {
-            const examRef = doc(
-                db,
-                "histories",
-                `${auth?.currentUser?.uid}/exam/${id}`
-            );
+            const examRef = doc(db, "histories", `${auth?.currentUser?.uid}/exam/${id}`);
             const docSnap = await getDoc(examRef);
             dispatch(setPageLoading(60));
             if (docSnap.exists()) {
@@ -157,13 +131,8 @@ function ShowDescription(_props) {
                 <div className="flex flex-col md:hidden mt-1">
                     <div className="flex flex-row justify-between">
                         <p className="ml-4 text-base">
-                            Số câu đã làm:{" "}
-                            {
-                                listQuestions?.questions.filter(
-                                    (q) => !!q.yourChoice
-                                ).length
-                            }
-                            / {listQuestions?.questions.length}
+                            Số câu đã làm: {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
+                            {listQuestions?.questions.length}
                         </p>
                         <div className="px-2">
                             <Filter handleChangeFilter={handleChangeFilter} />
@@ -178,9 +147,7 @@ function ShowDescription(_props) {
                                 key={index}
                                 item={item}
                                 currentQuestion={currentQuestion}
-                                onClick={(questionIndex) =>
-                                    setCurrentQuestion(questionIndex)
-                                }
+                                onClick={(questionIndex) => setCurrentQuestion(questionIndex)}
                             />
                         ))}
                     </div>
@@ -190,65 +157,35 @@ function ShowDescription(_props) {
                     {!!filterQuestion?.questions?.length && (
                         <div>
                             <p className="">Câu {currentQuestion}:</p>
-                            <p className="text-lg ">
-                                {
-                                    listQuestions?.questions[
-                                        currentQuestion - 1
-                                    ].question
-                                }
-                            </p>
+                            <p className="text-lg ">{listQuestions?.questions[currentQuestion - 1].question}</p>
 
                             <div className="flex flex-col gap-5 mt-3">
-                                {listQuestions?.questions[
-                                    currentQuestion - 1
-                                ].answers.map((q, i) => {
+                                {listQuestions?.questions[currentQuestion - 1].answers.map((q, i) => {
                                     return (
-                                        <div
-                                            className="flex flex-row py-3"
-                                            key={i}
-                                        >
+                                        <div className="flex flex-row py-3" key={i}>
                                             <input
                                                 readOnly
                                                 type="radio"
                                                 name="radio-10"
                                                 className="radio radio-primary mr-4"
                                                 value={q}
-                                                checked={
-                                                    listQuestions.questions[
-                                                        currentQuestion - 1
-                                                    ].yourChoice === q
-                                                }
+                                                checked={listQuestions.questions[currentQuestion - 1].yourChoice === q}
                                             />
                                             <div className="flex flex-row">
                                                 <span className=""> {q}</span>
-                                                {listQuestions.questions[
-                                                    currentQuestion - 1
-                                                ].yourChoice === q &&
+                                                {listQuestions.questions[currentQuestion - 1].yourChoice === q &&
                                                     q ===
-                                                        listQuestions
-                                                            ?.questions[
-                                                            currentQuestion - 1
-                                                        ].correctAnswer && (
+                                                        listQuestions?.questions[currentQuestion - 1].correctAnswer && (
                                                         <AiOutlineCheckCircle className="w-6 h-6 text-green-600 ml-10" />
                                                     )}
-                                                {listQuestions.questions[
-                                                    currentQuestion - 1
-                                                ].yourChoice !== q &&
+                                                {listQuestions.questions[currentQuestion - 1].yourChoice !== q &&
                                                     q ===
-                                                        listQuestions
-                                                            ?.questions[
-                                                            currentQuestion - 1
-                                                        ].correctAnswer && (
+                                                        listQuestions?.questions[currentQuestion - 1].correctAnswer && (
                                                         <AiOutlineCheckCircle className="w-6 h-6 text-green-600 ml-10" />
                                                     )}
-                                                {listQuestions.questions[
-                                                    currentQuestion - 1
-                                                ].yourChoice === q &&
+                                                {listQuestions.questions[currentQuestion - 1].yourChoice === q &&
                                                     q !==
-                                                        listQuestions
-                                                            ?.questions[
-                                                            currentQuestion - 1
-                                                        ].correctAnswer && (
+                                                        listQuestions?.questions[currentQuestion - 1].correctAnswer && (
                                                         <HiOutlineXCircle className="w-6 h-6 ml-10 text-red-500" />
                                                     )}
                                             </div>
@@ -257,36 +194,23 @@ function ShowDescription(_props) {
                                 })}
                             </div>
                             <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
-                                <button
-                                    className={`btn btn-primary ${
-                                        currentQuestion <= 1 && "btn-disabled"
-                                    }`}
-                                >
+                                <button className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}>
                                     <HiChevronLeft
                                         className="text-xl"
-                                        onClick={() =>
-                                            handlePrevQuestion(currentQuestion)
-                                        }
+                                        onClick={() => handlePrevQuestion(currentQuestion)}
                                     />
                                 </button>
-                                <Link
-                                    to="/history"
-                                    className="btn btn-primary md:hidden"
-                                >
+                                <Link to="/history" className="btn btn-primary md:hidden">
                                     Quay lại
                                 </Link>
                                 <button
                                     className={`btn btn-primary ${
-                                        currentQuestion >=
-                                            listQuestions.questions.length &&
-                                        "btn-disabled"
+                                        currentQuestion >= listQuestions.questions.length && "btn-disabled"
                                     }`}
                                 >
                                     <HiChevronRight
                                         className="text-xl"
-                                        onClick={() =>
-                                            handleNextQuestion(currentQuestion)
-                                        }
+                                        onClick={() => handleNextQuestion(currentQuestion)}
                                     />
                                 </button>
                             </div>
@@ -297,13 +221,8 @@ function ShowDescription(_props) {
                 <div className="w-3/12 flex-col pt-5 shadow-md hidden md:flex">
                     <div className="pl-4 mb-5 ">
                         <p>
-                            Số câu đã làm:{" "}
-                            {
-                                listQuestions?.questions.filter(
-                                    (q) => !!q.yourChoice
-                                ).length
-                            }
-                            / {listQuestions?.questions.length}
+                            Số câu đã làm: {listQuestions?.questions.filter((q) => !!q.yourChoice).length}/{" "}
+                            {listQuestions?.questions.length}
                         </p>
                     </div>
                     <div className="px-2">
@@ -315,9 +234,7 @@ function ShowDescription(_props) {
                                 key={index}
                                 item={item}
                                 currentQuestion={currentQuestion}
-                                onClick={(questionIndex) =>
-                                    setCurrentQuestion(questionIndex)
-                                }
+                                onClick={(questionIndex) => setCurrentQuestion(questionIndex)}
                             />
                         ))}
                     </div>

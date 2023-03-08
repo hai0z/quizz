@@ -31,9 +31,7 @@ function ExamHistory() {
         dispatch(setPageLoading(10));
         const historyLoader = async () => {
             const arr = [];
-            const querySnapshot = await getDocs(
-                collection(db, `histories/${auth.currentUser.uid}/exam`)
-            );
+            const querySnapshot = await getDocs(collection(db, `histories/${auth.currentUser.uid}/exam`));
             dispatch(setPageLoading(50));
             querySnapshot.forEach((doc) => {
                 arr.push(doc.data());
@@ -65,23 +63,15 @@ function ExamHistory() {
                                 .sort((a, b) => b.startAt - a.startAt)
                                 ?.map((item) => (
                                     <tr key={item.id}>
-                                        <th className="text-left">
-                                            {item.examName}
-                                        </th>
+                                        <th className="text-left">{item.examName}</th>
                                         <th>{item.time} phút</th>
                                         <td>{item?.questions.length}</td>
                                         <td>{item?.correctAnswer}</td>
                                         <td>{item?.score}</td>
-                                        <td>
-                                            {timestampToDate(
-                                                item.startAt * 1000
-                                            )}
-                                        </td>
+                                        <td>{timestampToDate(item.startAt * 1000)}</td>
                                         <td>
                                             {!item.isDone ? (
-                                                <p className="badge badge-secondary hover:">
-                                                    Đang làm
-                                                </p>
+                                                <p className="badge badge-secondary hover:">Đang làm</p>
                                             ) : (
                                                 <Link
                                                     className="btn btn-ghost text-primary"

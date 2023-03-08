@@ -12,11 +12,7 @@ function AdminPage() {
         <div className="container p-8 flex flex-row gap-8 flex-wrap justify-center md:justify-start">
             <div className="card  w-96 lg:w-80 bg-base-200 shadow-xl">
                 <figure>
-                    <img
-                        src={require("../../asset/add-file.png")}
-                        alt="add-questions"
-                        className="h-52 p-4"
-                    />
+                    <img src={require("../../asset/add-file.png")} alt="add-questions" className="h-52 p-4" />
                 </figure>
                 <div className="card-body">
                     <h2 className="card-title">Thêm câu hỏi</h2>
@@ -30,11 +26,7 @@ function AdminPage() {
             </div>
             <div className="card  w-96 lg:w-80 bg-base-200 shadow-xl">
                 <figure>
-                    <img
-                        src={require("../../asset/edit-tools.png")}
-                        alt="create-exam"
-                        className="h-52 p-4 bg-cover"
-                    />
+                    <img src={require("../../asset/edit-tools.png")} alt="create-exam" className="h-52 p-4 bg-cover" />
                 </figure>
                 <div className="card-body">
                     <h2 className="card-title">Tạo đề thi ngẫu nhiên</h2>

@@ -1,12 +1,4 @@
-import {
-    collection,
-    where,
-    getDocs,
-    query,
-    updateDoc,
-    doc,
-    deleteDoc,
-} from "firebase/firestore";
+import { collection, where, getDocs, query, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase";
@@ -33,11 +25,7 @@ function AddCoin() {
     }, [setTitle]);
     const nap_coin = async () => {
         setLoading(true);
-        const q = query(
-            collection(db, "card"),
-            where("seri", "==", seri),
-            where("code", "==", code)
-        );
+        const q = query(collection(db, "card"), where("seri", "==", seri), where("code", "==", code));
         const snapdata = await getDocs(q);
         if (snapdata.docs.length > 0) {
             const data = snapdata.docs[0];
@@ -45,21 +33,16 @@ function AddCoin() {
                 coin: +user.coin + data.data().value,
             });
             await deleteDoc(doc(db, "card", data.id));
-            dispatch(
-                setUser({ ...user, coin: +user.coin + +data.data().value })
-            );
+            dispatch(setUser({ ...user, coin: +user.coin + +data.data().value }));
             setModalContent({
                 title: "Nạp coin Thành công",
-                descriptions: `Bạn vừa nạp thành công: ${
-                    data.data().value
-                } coin`,
+                descriptions: `Bạn vừa nạp thành công: ${data.data().value} coin`,
             });
             setIsOpenModal(true);
         } else {
             setModalContent({
                 title: "Nạp coin thất bại",
-                descriptions:
-                    "Mã thẻ không hợp lệ hoặc đã được sử dụng vui lòng kiểm tra lại",
+                descriptions: "Mã thẻ không hợp lệ hoặc đã được sử dụng vui lòng kiểm tra lại",
             });
             setIsOpenModal(true);
         }
@@ -88,17 +71,10 @@ function AddCoin() {
                     />
                 </div>
             </div>
-            <button
-                className={`btn btn-primary ml-2 ${loading && "loading"}`}
-                onClick={nap_coin}
-            >
+            <button className={`btn btn-primary ml-2 ${loading && "loading"}`} onClick={nap_coin}>
                 {loading ? "Đang xử lý" : "Nạp"}
             </button>
-            <AddCoinModal
-                isOpen={isOpenModal}
-                closeModal={closeModal}
-                content={modalContent}
-            />
+            <AddCoinModal isOpen={isOpenModal} closeModal={closeModal} content={modalContent} />
         </div>
     );
 }
