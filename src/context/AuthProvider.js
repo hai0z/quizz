@@ -22,7 +22,6 @@ const AuthProvider = ({ children }) => {
             const {
                 user: { uid, photoURL, displayName, email },
             } = userCredential;
-            console.log(userCredential);
             if (getAdditionalUserInfo(userCredential).isNewUser) {
                 const userRef = doc(db, "users", uid);
                 await setDoc(userRef, {
