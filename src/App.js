@@ -54,7 +54,7 @@ function App() {
     const navigate = useNavigate();
     useEffect(() => {
         setTitle("Trang chủ");
-    });
+    }, []);
     const user = useSelector((state) => state.authSlice.user);
     const [showAlert, setShowAlert] = useState(true);
 

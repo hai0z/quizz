@@ -10,10 +10,10 @@ export function ProtectedRoute() {
     const auth = useSelector((state) => state.authSlice.auth);
     const user = useSelector((state) => state.authSlice.user);
     const [showGif, setShowGif] = useState(false);
-    useEffect(() => {
-        const timeOut = setTimeout(() => setShowGif(false), 3000);
-        return () => clearTimeout(timeOut);
-    }, [showGif]);
+    // useEffect(() => {
+    //     const timeOut = setTimeout(() => setShowGif(false), 3000);
+    //     return () => clearTimeout(timeOut);
+    // }, [showGif]);
     if (loading) {
         return (
             <div className="flex items-center flex-col min-h-screen">

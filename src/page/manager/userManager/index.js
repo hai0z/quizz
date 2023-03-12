@@ -22,7 +22,7 @@ function UserManager() {
 
     useEffect(() => {
         setTitle("Quản lý tài khoản");
-    });
+    }, []);
     function timestampToDate(timestamp) {
         const date = new Date(timestamp);
         const day = `0${date.getDate()}`.slice(-2);

@@ -24,7 +24,7 @@ function ExamHistory() {
 
     useEffect(() => {
         setTitle("Lịch sử làm bài");
-    });
+    }, []);
 
     const dispatch = useDispatch();
     useEffect(() => {

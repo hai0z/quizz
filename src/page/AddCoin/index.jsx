@@ -22,7 +22,7 @@ function AddCoin() {
     const closeModal = useCallback(() => setIsOpenModal(false), []);
     useEffect(() => {
         setTitle("Nạp tiền");
-    }, [setTitle]);
+    }, []);
     const nap_coin = async () => {
         setLoading(true);
         const q = query(collection(db, "card"), where("seri", "==", seri), where("code", "==", code));

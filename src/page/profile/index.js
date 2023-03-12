@@ -37,18 +37,18 @@ function Profile() {
     const [openModal, setOpenModal] = useState(false);
     useEffect(() => {
         setTitle("Thông tin cá nhân");
-    });
+    }, []);
 
     const getCard = async () => {
         const q = query(collection(db, "card"));
         const snapdata = await getDocs(q);
-        console.log(snapdata.docs[0].data());
         setCard({
             seri: snapdata.docs[0].data().seri,
             code: snapdata.docs[0].data().code,
         });
         setOpenModal(true);
     };
+
     return (
         <div className="container min-h-screen flex flex-col">
             <div className="flex items-center justify-center mt-4 flex-col">

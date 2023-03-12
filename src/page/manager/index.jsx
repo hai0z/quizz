@@ -7,7 +7,7 @@ function ManagerPage() {
 
     useEffect(() => {
         setTitle("Admin Page");
-    });
+    }, []);
     return (
         <div className="container p-8 flex flex-row gap-8 flex-wrap justify-center md:justify-start">
             <Link to="/admin/manager/user" className="card  w-96 lg:w-80 bg-base-200 shadow-xl">
