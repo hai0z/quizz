@@ -321,14 +321,14 @@ const QuizzBar = () => {
                             <option value={"flag"}>Phân vân</option>
                         </select>
                     </div>
-                    <div className="flex flex-row flex-wrap gap-4 justify-center h-1/3 overflow-y-scroll">
+                    <div className="flex flex-row flex-wrap gap-4 justify-center max-h-1/3 overflow-y-scroll">
                         {filterQuestion?.questions.map((item) => (
                             <div
                                 key={item.index}
                                 onClick={() => setCurrentQuestion(item.index)}
                                 className={`${
                                     currentQuestion === Number(item.index) ? "btn-primary" : "btn-secondary"
-                                }  w-24 lg:w-20 btn `}
+                                }  w-24 lg:w-20 btn`}
                             >
                                 Câu {item.index} {item?.flag && <AiOutlineFlag className="text-error h-4 w-4 ml-1" />}
                                 {item?.yourChoice && (

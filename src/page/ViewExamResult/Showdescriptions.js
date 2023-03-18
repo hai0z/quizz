@@ -228,7 +228,7 @@ function ShowDescription(_props) {
                     <div className="px-2">
                         <Filter handleChangeFilter={handleChangeFilter} />
                     </div>
-                    <div className="flex flex-row flex-wrap gap-4 justify-center h-1/3 overflow-y-auto overflow-x-hidden">
+                    <div className="flex flex-row flex-wrap gap-4 justify-center max-h-1/3 overflow-y-auto overflow-x-hidden">
                         {filterQuestion?.questions.map((item, index) => (
                             <Questions
                                 key={index}

@@ -8,6 +8,7 @@ const initialState = {
         photoURL: null,
         email: null,
         coin: 0,
+        role: "USER",
     },
     loading: 0,
 };
