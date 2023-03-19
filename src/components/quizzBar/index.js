@@ -276,25 +276,20 @@ const QuizzBar = () => {
                             </div>
                             {/* next and prev btn */}
                             <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
+                                onClick={() => handlePrevQuestion(currentQuestion)}
                                 <button className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}>
-                                    <HiChevronLeft
-                                        className="text-xl"
-                                        onClick={() => handlePrevQuestion(currentQuestion)}
-                                    />
+                                    <HiChevronLeft className="text-xl" />
                                 </button>
-
                                 <label className="btn btn-success md:hidden" htmlFor="my-modal">
                                     Nộp bài
                                 </label>
                                 <button
+                                    onClick={() => handleNextQuestion(currentQuestion)}
                                     className={`btn btn-primary ${
                                         currentQuestion >= listQuestions.questions.length && "btn-disabled"
                                     }`}
                                 >
-                                    <HiChevronRight
-                                        className="text-xl"
-                                        onClick={() => handleNextQuestion(currentQuestion)}
-                                    />
+                                    <HiChevronRight className="text-xl" />
                                 </button>
                             </div>
                         </div>
