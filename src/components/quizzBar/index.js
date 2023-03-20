@@ -154,7 +154,7 @@ const QuizzBar = () => {
                 left: currentElement.offsetLeft - containerRef.current.offsetLeft + containerRef.current.scrollLeft,
                 behavior: "smooth",
             });
-            setCurrentQuestion(currentQuestion + 1);
+            setCurrentQuestion((prev) => prev + 1);
         }
     };
     const handlePrevQuestion = (currentQuestion) => {
@@ -275,11 +275,11 @@ const QuizzBar = () => {
                                 )}
                             </div>
                             {/* next and prev btn */}
-                            <div
-                                className="h-16 w-full justify-between items-center flex flex-row mt-4"
-                                onClick={() => handlePrevQuestion(currentQuestion)}
-                            >
-                                <button className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}>
+                            <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
+                                <button
+                                    onClick={() => handlePrevQuestion(currentQuestion)}
+                                    className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}
+                                >
                                     <HiChevronLeft className="text-xl" />
                                 </button>
                                 <label className="btn btn-success md:hidden" htmlFor="my-modal">

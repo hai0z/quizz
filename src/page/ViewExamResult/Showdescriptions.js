@@ -194,24 +194,22 @@ function ShowDescription(_props) {
                                 })}
                             </div>
                             <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
-                                <button className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}>
-                                    <HiChevronLeft
-                                        className="text-xl"
-                                        onClick={() => handlePrevQuestion(currentQuestion)}
-                                    />
+                                <button
+                                    onClick={() => handlePrevQuestion(currentQuestion)}
+                                    className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}
+                                >
+                                    <HiChevronLeft className="text-xl" />
                                 </button>
                                 <Link to="/history" className="btn btn-primary md:hidden">
                                     Quay lại
                                 </Link>
                                 <button
+                                    onClick={() => handleNextQuestion(currentQuestion)}
                                     className={`btn btn-primary ${
                                         currentQuestion >= listQuestions.questions.length && "btn-disabled"
                                     }`}
                                 >
-                                    <HiChevronRight
-                                        className="text-xl"
-                                        onClick={() => handleNextQuestion(currentQuestion)}
-                                    />
+                                    <HiChevronRight className="text-xl" />
                                 </button>
                             </div>
                         </div>
