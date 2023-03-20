@@ -30,7 +30,7 @@ const AuthProvider = ({ children }) => {
                     displayName,
                     email,
                     role: "USER",
-                    coin: 0,
+                    coin: 3000,
                 });
             }
             navigate("/");
