@@ -275,8 +275,10 @@ const QuizzBar = () => {
                                 )}
                             </div>
                             {/* next and prev btn */}
-                            <div className="h-16 w-full justify-between items-center flex flex-row mt-4">
+                            <div
+                                className="h-16 w-full justify-between items-center flex flex-row mt-4"
                                 onClick={() => handlePrevQuestion(currentQuestion)}
+                            >
                                 <button className={`btn btn-primary ${currentQuestion <= 1 && "btn-disabled"}`}>
                                     <HiChevronLeft className="text-xl" />
                                 </button>
